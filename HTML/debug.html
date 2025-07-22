@@ -100,7 +100,85 @@
             localStorage.clear();
             document.getElementById('storageOutput').innerHTML = '🗑️ localStorage vidé';
         };
-        
+
+        //Tests de l'application
+        window.loadApp = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                output.innerHTML = '🔄️ Chargement de l\'application...';
+
+                //Charger l'application
+                console.log('📦 Import du module init.js...');
+                const initModule = await import('./js/init.js');
+                console.log('📦 Module importé:', initModule);
+
+                if (!initModule.initHeroesArena) {
+                    throw new Error('La fonction initHeroesArena n\'est pas exportée du module');
+                }
+
+                console.log('🚀 Appel de initHeroesArena...');
+                const app = await initModule.initHeroesArena();
+
+                window.HeroesArena = app;
+                window.app = app;
+
+                output.innerHTML = `✅ Application chargée! Héros: ${app.data ? 'OK':'ERREUR'}`;
+                console.log('✅ Application chargée avec succès:', app);
+            } catch (error) {
+                console.error('❌ Erreur détaillée:', error);
+                output.innerHTML = `❌ Erreur: ${error.message}<br><pre>${error.stack}</pre`;
+            }
+        };
+
+        window.debugApp = function() {
+            const output = document.getElementById('appOutput');
+            if (window.app) {
+                window.app.debug();
+                output.innerHTML = '🔎 Debug envoyé à la console';
+            } else {
+                output.innerHTML = '❌ Application non chargée';
+            }
+        };
+
+        window.createTestHero = async function () {
+            const output = document.getElementById('appOutput');
+            if (!window.app) {
+                output.innerHTML = '❌ Chargez d\'abord l\'application';
+                return;
+            }
+
+            try {
+                const result = await window.app.data.addHero({
+                    nom: 'TestHero_' + Date.now(),
+                    classe: 'Guerrier',
+                    force: 25,
+                    agility: 25,
+                    magic: 25,
+                    defense: 25,
+                    avatar: 'warrior1.pnj'
+                });
+
+                if (result.success) {
+                    output.innerHTML = `✅ Héros créé: ${result.hero.nom}`;
+                    window.showStorageContent();
+                } else {
+                    output.innerHTML = `❌ Erreur création: ${result.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Exception: ${error.message}`;
+            }
+        };
+
+        window.testHeroDetails = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                //Vérifier que l'app est chargée
+                if (!window.app) {
+                    output.innerHTML = '❌ Application non chargée';
+                    return;
+                }    
+            }
+        }
     </script>
 </body>
 </html>
