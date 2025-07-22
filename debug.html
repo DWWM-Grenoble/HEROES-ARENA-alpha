@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Heroes Arena</title>
+    <style>
+
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            background: #222;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .output {
+            background: #111;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #00ff00;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>🔧Debug Heroes Arena</h1>
+    
+    <div class="debug-section">
+
+        <h2>Tests de Storage</h2>
+        <button onclick="testStorage()">Tester localStorage</button>
+        <button onclick="showStorageContent()">Afficher contenu localStorage</button>
+        <button onclick="clearStorage()">Vider localStorage</button>
+        <div id="storageOutput" class="output"></div>
+
+    </div>
+
+    <div class="debug-section">
+
+        <h2>Test de l'Application</h2>
+        <button onclick="testImport()">test Import</button>
+        <button onclick="loadApp()">Charger l'application</button>
+        <button onclick="debugApp()">Debug App</button>
+        <button onclick="createTest()">Créer héros test</button>
+        <button onclick="testHeroDetails()">Tester bouton Détails</button>
+        <div id="appOutput" class="output"></div>
+
+    </div>
+
+    <script type="module">
+
+        //Tests de Storage
+        window.testStorage = function() {
+            const output = document.getElementById('storageOutput');
+            try {
+                //Test d'Ecriture
+                localStorage.setItem('test', JSON.stringify({test: 'valeur'}));
+
+                //Test de lecture
+                const value = JSON.parse(localStorage.getItem('test'));
+
+                output.innerHTML = `✅ localStorage fonctionne: ${JSON.stringify(value)}`;
+            } catch (error) {
+                output.innerHTML = `❌ Erreur localStorage: ${error.message}`;
+            }
+        };
+
+        window.showStorageContent = fonction() {
+            const output = document.getElementById('storageOutput');
+            const heroes = localStorage.getItem('heroesArena_heroes');
+            output.innerHTML = `
+            <strong>Contenu localStorage:</strong><br>
+            heroesArena_heroes: ${heroes || 'vide'}<br>
+            Taille: ${heroes ? heroes.length : 0} caractères
+            `;
+        };
+
+        window.clearStorage = function() {
+            localStorage.clear();
+            document.getElementById('storageOutput').innerHTML = '🗑️ localStorage vidé';
+        };
+
+        //Tests de l'application
+        window.loadApp = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                output.innerHTML = '🔄️ Chargement de l\'application...';
+
+                //Charger l'application
+                console.log('📦 Import du module init.js...');
+                const initModule = await import('./js/init.js');
+                console.log('📦 Module importé:', initModule);
+
+                if (!initModule.initHeroesArena) {
+                    throw new Error('La fonction initHeroesArena n\'est pas exportée du module');
+                }
+
+                console.log('🚀 Appel de initHeroesArena...');
+                const app = await initModule.initHeroesArena();
+
+                window.HeroesArena = app;
+                window.app = app;
+
+                output.innerHTML = `✅ Application chargée! Héros: ${app.data ? 'OK':'ERREUR'}`;
+                console.log('✅ Application chargée avec succès:', app);
+            } catch (error) {
+                console.error('❌ Erreur détaillée:', error);
+                output.innerHTML = `❌ Erreur: ${error.message}<br><pre>${error.stack}</pre`;
+            }
+        };
+
+        window.debugApp = function() {
+            const output = document.getElementById('appOutput');
+            if (window.app) {
+                window.app.debug();
+                output.innerHTML = '🔎 Debug envoyé à la console';
+            } else {
+                output.innerHTML = '❌ Application non chargée';
+            }
+        };
+
+        window.createTestHero = async function () {
+            const output = document.getElementById('appOutput');
+            if (!window.app) {
+                output.innerHTML = '❌ Chargez d\'abord l\'application';
+                return;
+            }
+
+            try {
+                const result = await window.app.data.addHero({
+                    nom: 'TestHero_' + Date.now(),
+                    classe: 'Guerrier',
+                    force: 25,
+                    agility: 25,
+                    magic: 25,
+                    defense: 25,
+                    avatar: 'warrior1.pnj'
+                });
+
+                if (result.success) {
+                    output.innerHTML = `✅ Héros créé: ${result.hero.nom}`;
+                    window.showStorageContent();
+                } else {
+                    output.innerHTML = `❌ Erreur création: ${result.error}`;
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Exception: ${error.message}`;
+            }
+        };
+
+        window.testHeroDetails = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                //Vérifier que l'app est chargée
+                if (!window.app) {
+                    output.innerHTML = '❌ Application non chargée';
+                    return;
+                }    
+
+                //Accès correct au AppState via l'import
+                const {AppState} = await import('./js/core/config.js');
+
+                console.log('🔎 Debug AppState:', {
+                    'AppState.heroes': AppState.heroes?.length || 0,
+                    'window.app exists': !!window.app,
+                    'AppState complet': AppState
+                });
+
+                if (!AppState.heroes || AppState.heroes.length === 0) {
+
+                    output.innerHTML = `❌ Aucun héros trouvé dans AppState(${AppState.heroes?.length || 0} héros). Créez d'abord un héros de test!`;
+
+                    return;
+                }
+
+                output.innerHTML = '🧪 Test du bouton Détails...';
+
+                //Tester la fonction globale
+                if (window.showHeroDetailsNow) {
+                    window.showHeroDetailsNow(0);
+                    output.innerHTML = `✅ Fonction showHeroDetailsNow appelée pour le héros: ${AppState.heroes[0].nom}`;
+                } else {
+                    output.innerHTML = '❌ Fonction showHeroDetailsNow non trouvée';
+                    console.log('Fonctions globales disponibles:', Object.keys(window).filter(k => k.includes('Hero')));
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Erreur test: ${error.message}`;
+                console.error('Erreur complète:', error);
+            }
+        };
+
+        //Test simple d'import
+        window.testImport = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                output.innerHTML = '🔎 Test d\'import...';
+                const module = await import('./js/init.js');
+                output.innerHTML = '✅ Import réussi! Fonctions: ${Object.keys(module).join(',')}';
+                console.log('Module init.js:', module);
+            } catch (error) {
+                output.innerHTML = `❌ Erreur import: ${error.message}`;
+                console.error('Erreur import:', error);
+            }
+        };
+    </script>
+</body>
+</html>
