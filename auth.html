@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heroes Arena - Authentification</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Modal d'authentification -->
+    <div id="authOverlay" class="auth-overlay" style="display: none;">
+        <div class="auth-modal">
+            <div class="auth-header">
+                <h2>Heroes Arena</h2>
+                <p>Connectez-vous pour sauvegarder vos héros</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="AuthUI.switchTab('login')">Connexion</button>
+                <button class="auth-tab" onclick="AuthUI.switchTab('register')">Inscription</button>
+            </div>
+
+            <!-- Formulaire de connexion -->
+            <form id="loginForm" class="auth-form active">
+                <div id="loginError" class="error-message" style="display: none;"></div>
+
+                <div class="auth-field">
+                    <label for="loginUsername">Nom d'utilisateur</label>
+                    <input type="text" id="loginUsername" required autocomplete="username"
+                        placeholder="Entrez votre nom d'utilisateur">
+                </div>
+                <div class="auth-field">
+                    <label for="loginPassword">Mot de passe</label>
+                    <div class="password-field">
+                        <input type="password" id="loginPassword" required autocomplete="current-password"
+                            placeholder="Entrez votre mot de passe">
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                            <span class="password-icon">👁️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-button" id="loginBtn">Se connecter</button>
+            </form>
+
+            <!-- Formulaire d'inscription -->
+            <form id="registerForm" class="auth-form">
+                <div id="registerError" class="error-message" style="display: none;"></div>
+                <div id="registerSuccess" class="success-message" style="display: none;"></div>
+
+                <div class="auth-field">
+                    <label for="registerUsername">Nom d'utilisateur</label>
+                    <input type="text" id="registerUsername" required autocomplete="username"
+                        placeholder="Choisissez votre nom d'utilisateur">
+                </div>
+
+                <div class="auth-field">
+                    <label for="registerEmail">Email (optionnel)</label>
+                    <input type="email" id="registerEmail" autocomplete="email" placeholder="votre.email@exemple.com">
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="registerPassword">Mot de passe</label>
+                    <div class="password-field">
+                        <input type="password" id="registerPassword" required autocomplete="new-password"
+                            placeholder="Créez un mot de passe sécurisé">
+                        <button type="button" class="password-toggle" onclick="togglePassword('registerPassword')">
+                            <span class="password-icon">👁️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="registerPasswordConfirm">Confirmer le mot de passe</label>
+                    <div class="password-field">
+                        <input type="password" id="registerPasswordConfirm" required autocomplete="new-password"
+                            placeholder="Confirmez votre mot de passe">
+                        <button type="button" class="password-toggle"
+                            onclick="togglePassword('registerPasswordConfirm')">
+                            <span class="password-icon">👁️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-button" id="registerBtn">S'inscrire</button>
+            </form>
+
+            <!-- Option hors ligne -->
+            <div class="auth-offline">
+                <p><strong>Jouer hors ligne ?</strong></p>
+                <p style="font-size: 14px; margin: 8px 0;">
+                    Vos héros seront sauvegardés localement uniquement
+                </p>
+                <button onclick="AuthUI.playOffline()">Continuer hors ligne</button>
+            </div>
+        </div>
+
+        <!-- Panneau utilisateur (quand connecté) -->
+        <div id="userPanel" class="user-panel" style="display: none;">
+            <div class="user-avatar" id="userAvatar">?</div>
+            <div class="user-info">
+                <h3 id="userName">Utilisateur</h3>
+                <p id="userEmail">user@example.com</p>
+            </div>
+            <div class="sync-status">
+                <div class="sync-indicator" id="syncIndicator"></div>
+                <span id="syncText">Synchronisé</span>
+            </div>
+            <button onclick="AuthUI.logout()" style="
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #ef4444;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        margin-left: 16px;
+    ">Déconnexion</button>
+        </div>
+
+        <script type="module">
+            import { AuthUI } from '/js/modules/auth-ui.js';
+
+            // Fonction pour toggle password visibility
+            window.togglePassword = function (inputId) {
+                const input = document.getElementById(inputId);
+                const icon = input.parentElement.querySelector('.password-icon');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.textContent = '🙈';
+                } else {
+                    input.type = 'password';
+                    icon.textContent = '👁️';
+                }
+            };
+
+            // Fonction pour sauvegarder les valeurs des inputs
+            window.saveFormValues = function () {
+                const formData = {
+                    loginUsername: document.getElementById('loginUsername').value,
+                    registerUsername: document.getElementById('registerUsername').value,
+                    registerEmail: document.getElementById('registerEmail').value,
+                    registerPassword: document.getElementById('registerPassword').value,
+                    registerPasswordConfirm: document.getElementById('registerPasswordConfirm').value,
+                    currentTab: window.AuthUI ? window.AuthUI.currentTab : 'login'
+                };
+                localStorage.setItem('authFormData', JSON.stringify(formData));
+            };
+
+            // Fonction pour restaurer les valeurs des inputs
+            window.restoreFormValues = function () {
+                const savedData = localStorage.getItem('authFormData');
+                if (savedData) {
+                    try {
+                        const formData = JSON.parse(savedData);
+
+                        // Restaurer les valeurs
+                        if (formData.loginUsername)
+                            document.getElementById('loginUsername').value = formData.loginUsername;
+
+                        if (formData.registerUsername)
+                            document.getElementById('registerUsername').value = formData.registerUsername;
+                        if (formData.registerEmail)
+                            document.getElementById('registerEmail').value = formData.registerEmail;
+
+                        if (formData.registerPassword)
+                            document.getElementById('registerPassword').value = formData.registerPassword;
+
+                        if (formData.registerPasswordConfirm)
+                            document.getElementById('registerPasswordConfirm').value = formData.registerPasswordConfirm;
+
+                        // Restaurer l'onglet actif
+                        if (formData.currentTab && window.AuthUI) {
+                            window.AuthUI.switchTab(formData.currentTab);
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la restauration des données :', error);
+                    }
+                }
+            };
+
+            // Fonction pour vider les données sauvegardées
+            window.clearSavedFormData = function () {
+                localStorage.removeItem('authFormData');
+            };
+
+            // Instance globale
+            window.AuthUI = new AuthUI();
+
+            // Exposer les méthodes nécessaires
+            window.AuthUI.switchTab = window.AuthUI.switchTab.bind(window.AuthUI);
+            window.AuthUI.logout = window.AuthUI.logout.bind(window.AuthUI);
+            window.AuthUI.playOffline = window.AuthUI.playOffline.bind(window.AuthUI);
+
+            // Restaurer les valeurs au chargement
+            document.addEventListener('DOMContentLoaded', () => {
+                window.restoreFormValues();
+
+                // Sauvegarder les valeurs quand l'utilisateur tape
+                document.querySelectorAll('#loginForm input, #registerForm input').forEach(input => {
+                    input.addEventListener('input', window.saveFormValues);
+                    input.addEventListener('change', window.saveFormValues);
+                });
+            });
+        </script>
+</body>
+
+</html>
