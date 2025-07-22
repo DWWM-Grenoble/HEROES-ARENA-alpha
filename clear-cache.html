@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clear Cache-Heroes Arena</title>
+
+<style>      body {
+        font-family: arial, sans-serif;
+        margin: 20px;
+        background: #1a1a1a;
+        color: white;
+        text-align: center;
+      }
+      
+      .button{
+        background: #3b82f6;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+        font-size: 16px;
+      }
+
+      .button:hover{background: #2563eb;}
+      .instruction{
+        background: #374151;
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px 0;
+        text-align: left;
+      }
+    </style>
+
+<body>
+
+  <h1>Clear-Cache</h1>
+
+  <div class="instructions">
+    <h3>Instructions pour résoudre les problèmes de cache:</h3>
+    <ol>
+        <li>><strong>Méthode 1 (Recommandée):</strong>Cliquez sur"Force Reload" ci-dessous</li>
+        <li><strong>Méthode 2:</strong>Appuyer sur <kbd>Ctrl+Shift+R</kbd> (ou<kbd>Cmd+Shift+R</kbd>sur Mac)</li>
+        <li><strong>Méthode 3:</strong> Ouvrez les outils de développement (F12), faites un clic droit sur le bouton de rechargement et sélectionnez"Vider le cache et recharger"</li>
+        <li><strong>Méthode 4:</strong>Ajoutez <code>?v=123</code>à la finde l'URL</li>
+    </ol>
+  </div>
+
+  <button class="button" onclick="forceReload()">Force Reload</button>
+  <button class="button" onclick="goToApp()">Retour à l'app</button>
+  <button class="button" onclick="testModules()">Test Modules</button>
+
+  <div id="status" style="margin-top: 20px;"></div>
+
+
+  <script>
+    function forceReload() {
+        //Nettoyer le localStorage pour être sûr
+        if(confirm('Voulez-vous aussi nettoyer les données locales sauvegardées?')){
+           localStorage.clear();
+           sessionStorage.clear();
+        }
+
+        //Forcer le rechargement avec cache-busting
+        window.location.href = window.location.href.split('?')[0] + '?v=' + Date.now();
+
+      function goToApp(){
+        window.location.href ='index.html?v=' + Date.now();
+        }
+
+        function testModules(){
+            window.location.href = 'test-modules-fresh.html?v=' + Date.now();
+        }
+
+        // Auto-test auchargement
+        document.addEventListener('DOMContentLoaded', function(){
+            const status = document.getElementById('status');
+            status.innerHTML = '<p> Page de nettoyage de cache chargée</p>';
+
+
+            //Vérifier si on a des problèmes de cache
+            if(performance.navigation.type === 1){
+                status.innerHTML +='<p> Page rechargée-bon signal!</p>'
+            }
+
+            //Afficher la version du navigateur
+            status.innerHTML += `<p> Navigateur:${navigator.userAgent.split('')[0]}</p>`;});
+    
+    }
+  </script>
+  </body>
+</html>
