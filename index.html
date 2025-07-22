@@ -32,10 +32,26 @@
                     </div>
                     <button type="submit" class="btn-auth">Se connecter</button>
                 </form>
-                <div class="">
-
+                <div class="auth-switch">
+                    <p>Pas encore de compte ?
+                        <a href="#" onclick="HeroesAuth.showRegister()">Créer un compte</a>
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <a href="#" onclick="HeroesAuth.showForgotPassword()">Mot de passe oublié ?</a>
+                    </p>
                 </div>
              </div>
+             <!-- Formulaire d'inscription -->
+              <div id="registerForm" class="auth-form">
+                <h2>Créer un compte</h2>
+                <form onsubmit="return HeroesAuth.handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerUsername">Nom d'utilisateur</label>
+                        <input type="text" id="registerUsername" class="form-input" placeholder="Votre nom d'utilisateur" required>
+                        <div class="error-message" id="register"></div>
+                    </div>
+                </form>
+              </div>
         </div>
      </div>
     
