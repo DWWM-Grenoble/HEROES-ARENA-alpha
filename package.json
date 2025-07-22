@@ -1,0 +1,34 @@
+{
+    "name":"heroes-arena",
+    "version": "1.0.0",
+    "description": "Jeu de combat de héros avec système de sauvegarde cloud",
+    "main": "index.html",
+    "type": "module",
+    "scripts":{
+        "dev":"netlify dev",
+        "build": "echo 'Build complete - static files ready'",
+        "test": "node js/test-simple.js",
+        "deploy": "netlify deploy --prod",
+        "sass:watch": "sass --watch scss/main.scss:css/style.css --style expanded",
+        "sass:build":"sass scss/main.scss:css/style.css --style compressed",
+        "sass:dev":"sass --watch scss/main.scss:css/style.css --style expanded --source-map"
+    },
+    "dependencies": {
+        "@netlify/functions": "^2.4.0"
+    },
+    "devDependencies": {
+        "netlify-cli": "17.0.0"
+    },
+    "keywords": [
+        "game",
+        "heroes",
+        "combat",
+        "javascript",
+        "netlify"
+    ],
+    "author": "Heroes Arena Team",
+    "license":"MIT",
+    "engines": {
+        "node":">= 18.0.0"
+    }
+}
