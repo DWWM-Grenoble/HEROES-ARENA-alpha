@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heroes Arena - Ultimate Edition</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background"></div>
+    <!-- Ecran d'authentification -->
+     <div id="authScreen" class="auth-screen">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>HEROES ARENA</h1>
+                <p>Connectez-vous pour créer vos héros légendaires</p>
+            </div>
+            <!-- Formulaire de Connexion -->
+             <div id="loginForm" class="auth-form active">
+                <h2>Connexion</h2>
+                <form onsubmit="return HeroesAuth.handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="Votre adresse email" required>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+                </form>
+             </div>
+        </div>
+     </div>
+    
+</body>
+</html>
