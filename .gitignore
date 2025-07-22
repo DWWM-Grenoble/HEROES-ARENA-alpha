@@ -1,0 +1,201 @@
+# =====================================Heroes Arena - GITIGNORE====================================#
+
+# =================================FICHIERS DE SAUVEGARDE GENERES==================================#
+
+# Fichiers JSON de sauvegarde générés par l'application
+heroes_*.json
+*_stats_*.json
+backup_*.json
+export_*.json
+
+
+# ================FICHIERS SYSTEME=====================#
+#Fichiers systeme Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+#Fichiers systeme MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+icon
+_*
+.documentRevisions-V100
+.fsenvensd
+.Spotlight-V100
+.temporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+
+#Fichiers systeme Linux
+*~
+
+.directory
+.Trash-*
+
+
+
+# ================EDITEUR ET IDEs=====================#
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+
+
+#Sublime Text
+*.sublime-priject
+*.sublime-workspace
+
+
+#Atom
+*.atom/
+
+
+#JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
+#VIM
+*.swp
+*.swo
+*~
+
+.netrwhist
+
+#Emacs
+*~
+\#*\#
+# .emacs.desktop
+.emacs.desktop.lock
+*.elc
+auto-save-list/
+tramp
+.\#*
+
+
+# ================NODE.JS (si utilisé pour outils de build)=====================#
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+
+# ================SERVEURS DE DEVELOPPEMENT=====================#
+# Live Server
+.vscode/settings.json
+
+
+# Python simple serveur
+__pycache__/
+*.py[cod]
+
+
+# ================FICHIERS DE BUILD ET DISTRIBUTION=====================#
+dist/
+build/
+.cache/
+.parcel-cache/
+
+
+# ================LOG=====================#
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ================FICHIERS TEMPORAIRES=====================#
+
+*.tmp
+*.temp
+.temp/
+temp/
+
+# ================ENVIRONNEMENT ET CONFIGURATION=====================#
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ================ARCHIVES ET BACKUPS=====================#
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.bak
+*.backup
+*.old   
+
+
+# ================ASSETS VOLUMINEUX=====================#
+# Décommentez si vous avez beaucoup d'images lourdes
+# images/*.png
+# images/*.jpg
+# images/*.jpeg
+# images/*.gif
+# images/*.bmp
+# images/*.tiff
+# images/*.webp
+# Mais garder un dossier d'exemple
+!images/example/
+!images/README.md
+
+
+# =====================================DOCUMENTATION GENEREE====================================#
+docs/generated/
+coverage/
+
+
+# =====================================DEPENDANCE BROWSER====================================#
+# Si vous utilisez des CND locaux
+libs/
+vendor/
+third-party/
+
+
+# =====================================TESTS====================================#
+.nyc_output/
+coverage/
+*.Icov
+
+# =====================================DIVERS====================================#
+# Fichiers de verrouillage
+*.lock
+
+
+# Fichiers de cache
+.cache/
+*.cache
+
+# Fichiers de debug
+debug.log
+error.log
+
+
+# =====================================EXCLUSIONS SPECIFIQUES AU PROJET====================================#
+# Ajoutez ici des exclusions spécifiques au projet Heroes Arena
+
+#Exemples :
+# config/local.js
+# data/test.heroes.json
+# screenshots/
+# demos/
+# Local Netlify folder
+# .netlify
+
+
+
+# =====================================FIN DU FICHIER .gitignore====================================#

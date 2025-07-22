@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Heroes Arena</title>
+    <style>
+
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+
+        .debug-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #333;
+            background: #222;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .output {
+            background: #111;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 3px solid #00ff00;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>🔧Debug Heroes Arena</h1>
+    
+    <div class="debug-section">
+
+        <h2>Tests de Storage</h2>
+        <button onclick="testStorage()">Tester localStorage</button>
+        <button onclick="showStorageContent()">Afficher contenu localStorage</button>
+        <button onclick="clearStorage()">Vider localStorage</button>
+        <div id="storageOutput" class="output"></div>
+
+    </div>
+
+    <div class="debug-section">
+
+        <h2>Test de l'Application</h2>
+        <button onclick="testImport()">test Import</button>
+        <button onclick="loadApp()">Charger l'application</button>
+        <button onclick="debugApp()">Debug App</button>
+        <button onclick="createTest()">Créer héros test</button>
+        <button onclick="testHeroDetails()">Tester bouton Détails</button>
+        <div id="appOutput" class="output"></div>
+
+    </div>
+
+    <script type="module">
+
+        //Tests de Storage
+        window.testStorage = function() {
+            const output = document.getElementById('storageOutput');
+            try {
+                //Test d'Ecriture
+                localStorage.setItem('test', JSON.stringify({test: 'valeur'}));
+
+                //Test de lecture
+                const value = JSON.parse(localStorage.getItem('test'));
+
+                output.innerHTML = `✅ localStorage fonctionne: ${JSON.stringify(value)}`;
+            } catch (error) {
+                output.innerHTML = `❌ Erreur localStorage: ${error.message}`;
+            }
+        };
+
+        window.showStorageContent = fonction() {
+            const output = document.getElementById('storageOutput');
+            const heroes = localStorage.getItem('heroesArena_heroes');
+            output.innerHTML = `
+            <strong>Contenu localStorage:</strong><br>
+            heroesArena_heroes: ${heroes || 'vide'}<br>
+            Taille: ${heroes ? heroes.length : 0} caractères
+            `;
+        };
+
+        window.clearStorage = function() {
+            localStorage.clear();
+            document.getElementById('storageOutput').innerHTML = '🗑️ localStorage vidé';
+        };
+        
+    </script>
+</body>
+</html>
