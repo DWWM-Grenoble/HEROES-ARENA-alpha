@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Simple - Heroes Arena</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #1a1a1a;
+      color: white;
+    }
+    .test {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      background: #374151;
+    }
+    .success {
+      background: #10b981;
+    }
+    .error {
+      background: #ef4444;
+    }
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Test Simple - Heroes Arena</h1>
+
+  <div id="results"></div>
+
+  <div>
+    <button onclick="testNavigation()">Test Navigation</button>
+    <button onclick="testHeroCreation()">Test Création Héros</button>
+    <button onclick="window.location.href='index.html'">Retour à l'app</button>
+  </div>
+
+  <script type="module">
+  const results = document.getElementById('results');
+
+  function addResult(text, success = true) {
+    const div = document.createElement('div');
+    div.className = success ? 'test success' : 'test error';
+    div.textContent = text;
+    results.appendChild(div);
+  }
+
+  window.testNavigation = function () {
+    addResult('Test navigation lancé..');
+
+    if (window.HeroesArena) {
+      addResult('✔️ HeroesArena est défini');
+
+      const methods = ['showSection', 'updateStats', 'randomStats'];
+      methods.forEach(method => {
+        if (typeof window.HeroesArena[method] === 'function') {
+          addResult(`✔️ Méthode ${method} disponible`);
+        } else {
+          addResult(`❌ Méthode ${method} manquante`, false);
+        }
+      });
+    } else {
+      addResult('❌ HeroesArena non défini', false);
+    }
+  };
+
+  window.testHeroCreation = async function () {
+    addResult('Test création héros lancé...');
+
+    if (window.HeroesArena && window.HeroesArena.data) {
+      try {
+        const result = await window.HeroesArena.data.addHero({
+          nom: 'TestHero',
+          classe: 'Guerrier',
+          force: 30,
+          agility: 25,
+          magic: 20,
+          defense: 25,
+          avatar: 'warrior1.png'
+        });
+
+        if (result.success) {
+          addResult('✔️ Héros créé avec succès');
+        } else {
+          addResult(`❌ Erreur création : ${result.error}`, false);
+        }
+      } catch (error) {
+        addResult(`❌ Exception : ${error.message}`, false);
+      }
+    } else {
+      addResult('❌ Gestionnaire de données non disponible', false);
+    }
+  };
+
+  // Chargement du module et test d'initialisation
+  try {
+    await import('/js/main.js');
+    addResult('✔️ Module principal chargé');
+
+    // Attendre que l'app soit initialisée
+    setTimeout(() => {
+      if (window.HeroesArena) {
+        addResult('✔️ Application initialisée');
+      } else {
+        addResult('❌ Application non initialisée', false);
+      }
+    }, 2000);
+  } catch (error) {
+    addResult(`❌ Erreur chargement: ${error.message}`, false);
+    console.error('Erreur détaillée:', error);
+  }
+</script>
+</body>
+</html>
