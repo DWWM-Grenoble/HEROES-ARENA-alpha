@@ -123,10 +123,40 @@ async function handleLogin(data) {
   const userKey = username.toLowerCase();
 
   //Vérifier les tentatives de connexion
-  const attempts = loginAttempts.get(userKey) || { count: 0, lastAttemps: 0};
+  const attempts = loginAttempts.get(userKey) || { count: 0, lastAttemp: 0};
   const now = Date.now();
 
   if (attempts.count >= CONFIG.MAX_LOGIN_ATTEMPTS && (now - attempts.lastAttempt) < CONFIG.LOCKOUT_TIME) {
     return createResponse (429, { error: 'Trop de tentatives de connexion. Veuillez réessayer dans 15 minutes.'});
   }
+
+  //Réinitialiser les tentatives si le délai est écoulé
+  if ((now - attempts.lastAttemp) >= CONFIG.LOCKOUT_TIME) {
+    attempts.count = 0;
+  }
+
+  const user = users.get(userKey);
+
+  if (!user || !user.isActive) {
+    attempts.count++;
+    attempts.lastAttemp = now;
+    loginAttempts.set(userKey, attempts);
+    return createResponse (401, { error: 'Identifiantes invalides'});
+  }
+
+  //Vérifier mot de passe
+  const isValid = await verifyPassword(password, user.password);
+
+  if (!isValid) {
+    attempts.count++;
+    attempts.lastAttempts = now;
+    loginAttempts.set(userKey, attempts);
+    return createResponse (401, {'error: 'identifiantes invalides});
+  }
+
+  //Connexion réussie - réinitialiser les tentatives
+  loginAttempts.delete(userKey);
+
+  //Créer le token
+  
 }
