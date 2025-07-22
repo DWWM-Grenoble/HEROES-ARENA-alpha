@@ -96,7 +96,7 @@ export const handler = async(event, context) =>{
 async function getHeroes(userId){
     const heroes = userHeroes.get(userId)||[];
 
-    return createResponde(200,{
+    return createResponse(200,{
         success: true,
         heroes,
         count: heroes.length,
@@ -234,5 +234,57 @@ async function updateHero(userId,heroId,heroData){
     }
 
     // Valider les nouvelles données 
-    
+    const validation = validateHeroData({...heroes[heroIndex], ...heroData});
+    if(!validation.valid){
+        return createResponse(400,{error:validation.error});
+    }
+
+
+    //Verifier les doublons de nom (sauf pour le héros actuel)
+    if(heroData.nom && heroes.some((h, idx)=> idx !== heroIndex && h.nom.toLowerCase() === heroData.nom.toLowerCase()
+    )){
+return createResponse(409, {error: 'Un autre héros avec ce nom existe déjà'});
+}
+
+// Mettre à jour
+const oldHero = {...heroes[heroIndex] };
+heroes[heroIndex] ={
+    ...heroes[heroIndex],
+    ...heroData,
+    updatedAt: new Date().toISOString()
+};
+
+
+userHeroes.set(userId, heroes);
+
+
+// Mettre à jour les stats si nécéssaire
+if(heroData.victoires !== undefined || heroData.defaites !== undefined){
+    updateGlobalStats('heroUpdated',{
+        oldHero,
+        newHero: heroes[heroIndex]
+    })
+}
+
+
+console.log(`Héros mis à jour : ${heroes[heroIndex].nom}`);
+
+
+return createResponse(200,{
+    success: true,
+    message: 'Héros mis à jour',
+    hero:heroes[heroIndex]
+});
+
+}
+
+//Supprimer un héro
+
+async function deleteHero(userId,heroId){
+    const heroes = userHeroes.get(userId)|| [];
+    const heroIndex = heroes.findIndex(h=> h.id === heroId);
+
+    if(heroIndex === -1){
+        return createResponse(404,{error:'Héros non trouvés'});
+    }
 }
