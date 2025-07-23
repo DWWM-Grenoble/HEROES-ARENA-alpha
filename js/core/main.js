@@ -354,8 +354,89 @@ class HeroesArena {
                     this.ui.updateFighterSelectors();
                 }
             }
-        })
+        });
+    }
+
+    //=== Méthodes de debug ===
+
+    debug() {
+        console.log('=== ÉTAT DE L\'APPLICATION ===');
+        console.log('Heroes Arena:', this);
+        console.log('App State:', AppState);
+        console.log('UI Manager:', this.ui);
+        console.log('Data Manager:', this.data);
+        console.log('Combat System:', this.combat);
+        console.log('Héros:', AppState.heroes);
+        console.log('Combat en cours:', this.combat.getCurrentCombat());
+    }
+
+    getState() {
+        return {
+            isInitialized: this.isInitialized,
+            heroCount: AppState.hero.length,
+            currentSection: this.ui.currentSection,
+            currentCombat: this.combat.getCurrentCombat(),
+            fighters: {
+                fighter1: AppState.fighter1?.nom || null,
+                fighter2: AppState.fighter2?.nom || null
+            }
+        };
     }
 }
+
+//Créer l'instance globale
+const heroesArena = new HeroesArena();
+
+//Initialiser l'application
+document.addEventListener('DOMContentLoaded', async() => {
+    try {
+        await heroesArena.initialize();
+
+        //Remplacer l'objet temporaire par l'application réelle
+        window.HeroesArena = heroesArena;
+        window.uiManager = heroesArena.ui;
+
+        //Marquer comme initialisé
+        window.HeroesArena.isInitialized = heroesArena.isInitialized;
+
+        console.log('🎮 Heroes Arena prêt !');
+
+    } catch (error) {
+        console.error('💥 Erreur fatale lors de l\'initialisation:', error);
+
+        //Afficher un message d'erreur à l'utilisateur
+        const errorDiv = document.createElement('div');
+        errorDiv.innerrHTML = `
+        <div style="
+        background: #fee2e2;
+        border: 1px solid #ef4444;
+        border-radius: 8px;
+        padding: 16px
+        margin: 20px;
+        color: #991b1b;
+        text-align: center;
+        ">
+        
+        <h3>❌ Erreur de chargement</h3>
+        <p>L'application n'a pas pu se charger correctement.</p>
+        <button onclick="location.reload()" style="
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        ">Recharger la page</button>
+        </div>
+        `;
+        document.body.appendChild(errorDiv);
+    }
+});
+
+//Exposer pour le debug
+window.app = heroesArena;
+
+export default heroesArena;
 
 
