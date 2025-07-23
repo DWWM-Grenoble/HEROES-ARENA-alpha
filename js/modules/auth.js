@@ -395,4 +395,359 @@ class AuthSystem {
       return { success: false, message: "Erreur technique" };
     }
   }
+
+  // Récupération de mot de passe - Étape 2: Vérification du code
+  async veryfyRecoveryCode(email, code) {
+    try {
+      this.cleanExpiredCodes(); // Nettoyer les codes expirés
+
+      if (!email || !code) {
+        return {
+          success: false,
+          field: "email",
+          message: "L'email et le code sont requis",
+        };
+      }
+      const recoveryData = this.recoveryCodes[email.toLowerCase()];
+      if (!recoveryData) {
+        return {
+          success: false,
+          field: "email",
+          message: "Aucun code de récupération trouvé pour cet email",
+        };
+      }
+      //Vérifier l'expiration
+      if (Date.now() > recoveryData.expiresAt) {
+        delete this.recoveryCodes[email.toLowerCase()];
+        this.saveRecoveryCodes();
+        return {
+          success: false,
+          field: "code",
+          message: "Le code de récupération a expiré",
+        };
+      }
+
+      //Vérifier le nombre de tentatives
+      if (recoveryData.attempts >= recoveryData.maxAttempts) {
+        delete this.recoveryCodes[email.toLowerCase()];
+        this.saveRecoveryCodes();
+        return {
+          success: false,
+          field: "code",
+          message: "Trop de tentatives. Veuillez réessayer plus tard.",
+        };
+      }
+
+      //Vérifier le code
+      if (code.trim() !== recoveryData.code) {
+        recoveryData.attempts++;
+        this.saveRecoveryCodes();
+        const attemptsLeft =
+          recoveryData.maxAttempts - recoveryData.attempts;
+        return {
+          success: false,
+          field: "code",
+          message: `Code de récupération incorrect ${attemptsLeft} tentatives restantes`,
+        };
+      }
+
+      //Code correct
+      recoveryData.verified = true;
+      this.saveRecoveryCodes();
+
+      return {
+        success: true,
+        message: "Code de récupération vérifié avec succès",
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification du code de récupération:", error);
+      return { success: false, message: "Erreur technique lors de la vérification" };
+    }
+  }
+
+
+  //Récupération de mot de passe - Étape 3: Réinitialisation du mot de passe
+  async resetPassword(email, newPassword, confirmPassword) {
+    try {
+      this.cleanExpiredCodes(); // Nettoyer les codes expirés
+      const recoveryData = this.recoveryCodes[email.toLowerCase()];
+      if (!recoveryData || !recoveryData.verified) {
+        return {
+          success: false,
+          field: "email",
+          message: "Aucun code de récupération vérifié trouvé pour cet email, veuillez vérifier votre code"
+        };
+      }
+
+      //Vérifier l'expiration
+      if (Date.now() > recoveryData.expiresAt) {
+        delete this.recoveryCodes[email.toLowerCase()];
+        this.saveRecoveryCodes();
+        return {
+          success: false,
+          field: "code",
+          message: "Le code de récupération a expiré, veuillez en générer un nouveau",
+        };
+      }
+
+      //Validation du mot de passe 
+      const passwordValidation = this.validatePassword(newPassword);
+      if (!passwordValidation.valid) {
+        return {
+          success: false,
+          field: "newPassword",
+          message: passwordValidation.message,
+        };
+      }
+
+      if (newPassword !== confirmPassword) {
+        return {
+          success: false,
+          field: "confirmPassword",
+          message: "Les mots de passe ne correspondent pas.",
+        };
+      }
+
+      //Trouver l'utilisateur et changer le mot de passe
+      const userIndex = this.users.findIndex(
+        (u) => u.email.toLowerCase() === email.toLowerCase()
+      );
+      if (userIndex === -1) {
+        return {
+          success: false,
+          field: "email",
+          message: "Aucun compte associé à cette adresse email",
+        };
+      }
+
+      //Mettre à jour le mot de passe
+      this.users[userIndex].password = this.hashPassword(newPassword);
+      if (!this.savedUser()) {
+        return {
+          success: false,
+          message: "Erreur lors de la sauvegarde du nouveau mot de passe",
+        };
+      }
+
+      //Supprimer le code de récupération
+      delete this.recoveryCodes[email.toLowerCase()];
+      this.saveRecoveryCodes();
+
+      //Réinitialiser l'email de récupération
+      this.currentRecoveryEmail = null;
+      return {
+        success: true,
+        message: "Mot de passe réinitialisé avec succès",
+      };
+    } catch (error) {
+      console.error("Erreur lors de la réinitialisation du mot de passe:", error);
+      return {
+        success: false,
+        message: "Erreur technique lors de la réinitialisation du mot de passe",
+      };
+    }
+  }
+
+  //Interface utilisateur 
+  showAuthScreen() {
+    const authScreen = document.getElementById("authScreen");
+    const mainApp = document.getElementById("mainApp");
+    if (authScreen) {
+      authScreen.style.display = "flex";
+      mainApp.style.display = "none";
+    }
+
+    showMainApp() {
+      const authScreen = document.getElementById("authScreen");
+      const mainApp = document.getElementById("mainApp");
+      if (authScreen) {
+        authScreen.style.display = "none";
+        mainApp.style.display = "block";
+
+        //Mettre à jour l'interface utilisateur
+        this.updateUserCard() {
+          if (!this.currentUser) return;
+          //Nom d'utilisateur 
+          const usernameElement = document.getElementById("username");
+          if (usernameElement) {
+            usernameElement.textContent = this.currentUser.username;
+          }
+
+          //Initiales de l'avatar 
+          const userInitials = document.getElementById("userInitials");
+          if (userInitials) {
+            const initials = this.currentUser.username
+              .split(" ")
+              .map(word => word.charAt(0).toUpperCase())
+              .join("");
+              .substring(0, 2); // Limiter à 2 initiales
+            userInitials.textContent = initials;
+          }
+
+          //Email
+          const userEmail = document.getElementById("userEmail");
+          if (userEmail) {
+            userEmail.textContent = this.currentUser.email;
+          }
+
+          //Date d'inscription
+          const userJoinDate = document.getElementById("userJoinDate");
+          if (userJoinDate && this.currentUser.createdAt) {
+            const date = new Date(this.currentUser.createdAt);
+            userJoinDate.textContent = date.toLocaleDateString("fr-FR")
+          };
+
+          // Statistique des héros
+          this.updateUserStats();
+        }
+
+        //Mettre à jour les statistiques de l'utilisateur
+        updateUserStats() {
+          if (!this.currentUser) return;
+          const userHeroes = this.getUserHeroes();
+
+          //Nombre de héros 
+          const heroCountElement = document.getElementById("UserHeroCount");
+          if (heroCountElement) {
+            heroCountElement.textContent = userHeroes.length.toString();
+          }
+
+          //Calcul des victoires totales 
+          const totalWins = userHeroes.reduce((total, hero) => {
+            return total + (hero.victoires || 0);
+          }, 0);
+
+          const totalWinsElement = document.getElementById("UserTotalWins");
+          if (totalWinsElement) {
+            totalWinsElement.textContent = totalWins.toString();
+          }
+        }
+
+        //Méthode pour rafraîchir les stats après une bataille 
+        refreshUserStats() {
+          this.updateUserStats();
+        }
+
+        showLogin() {
+          this.hideAllForms();
+          const loginForm = document.getElementById("loginForm");
+          if (loginForm) {
+            loginForm.style.display = "block";
+            loginForm.classList.add("active");
+          }
+          this.clearAllErrors();
+        }
+
+        showForgotPassword() {
+          this.hideAllForms();
+          const forgotForm = document.getElementById("forgotPasswordForm");
+          if (forgotForm) {
+            forgotForm.style.display = "block";
+            forgotForm.classList.add("active");
+          }
+          this.clearAllErrors();
+        }
+
+        showVerifyCode() {
+          this.hideAllForms();
+          const verifyForm = document.getElementById("verifyCodeForm");
+          if (verifyForm) {
+            verifyForm.style.display = "block";
+            verifyForm.classList.add("active");
+          }
+          this.clearAllErrors();
+        }
+
+        showResetPassword() {
+          this.hideAllForms();
+          const resetForm = document.getElementById("resetPasswordForm");
+          if (resetForm) {
+            resetForm.style.display = "block";
+            resetForm.classList.add("active");
+          }
+          this.clearAllErrors();
+        }
+
+        hideAllForms() {
+          const forms = [
+            'loginForm',
+            'registerForm',
+            'forgotPasswordForm',
+            'verifyCodeForm',
+            'resetPasswordForm'
+          ];
+          forms.forEach(formId => {
+            const form = document.getElementById(formId);
+            if (form) {
+              form.style.display = "none";
+              form.classList.remove("active");
+            }
+          });
+      }
+
+      // Gestion des erreurs d'affichage
+      showFieldError(fieldId, message) {
+        const errorElement = document.getElementById(fieldId + "Error");
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = "block";
+        }
+
+        const inputElement = document.getElementById(fieldId);
+        if (inputElement) {
+          inputElement.classList.add("error");
+        }
+
+        clearFieldError(fieldId) {
+          const errorElement = document.getElementById(fieldId + "Error");
+          if (errorElement) {
+            errorElement.textContent = "";
+            errorElement.style.display = "none";
+          }
+
+          const inputElement = document.getElementById(fieldId);
+          if (inputElement) {
+            inputElement.classList.remove("error");
+          }
+        }
+        clearAllErrors() {
+          const errorFields = [
+            "loginEmail",
+            "loginPassword",
+            "registerEmail",
+            "registerUsername",
+            "registerPassword",
+            "registerConfirmPassword",
+            "forgotEmail",
+            "verificationCode",
+            "newPassword",
+            "confirmNewPassword",
+          ];
+
+          errorFields.forEach(fieldId => {
+            this.clearFieldError(fieldId);
+          });
+
+          const authMessage = document.getElementById("authMessage");
+          if (authMessage) {
+            authMessage.innerHTML = "";
+          }
+        }
+        showGenericError(message, type = "error" ) {
+          const authMessage = document.getElementById("authMessage");
+          if (authMessage) {
+            authMessage.innerHTML = `<div class="${type}">${message}</div>`;
+
+            //Effacer le message après 5 secondes
+            setTimeout(() => {
+              authMessage.innerHTML = "";
+            }, 5000); 
+          }
+        }
+
+        //Gestionnaire d'événements 
+        
+      }
+    }
+  }
 }
