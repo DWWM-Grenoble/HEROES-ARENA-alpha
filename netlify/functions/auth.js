@@ -312,4 +312,16 @@ function verifyToken(token) {
   }
 }
 
-//
+//Nettoyage des sessions expirées(appelée périodiquement)
+function cleanupSessions() {
+  const now = Date.now();
+  for (const [sessionId, session] of sessions.entries()) {
+    if (session.expiresAt < now) {
+      sessions.delete(sessionId);
+      console.log(`Session expirée supprimée: ${sessionId}`);
+    }
+  }
+}
+
+//Nettoyer toutes les 15 minutes
+setInterval(cleanupSessions, 15 * 60 * 1000);
