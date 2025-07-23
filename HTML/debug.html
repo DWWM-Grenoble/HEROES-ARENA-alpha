@@ -86,7 +86,7 @@
             }
         };
 
-        window.showStorageContent = fonction() {
+        window.showStorageContent = function() {
             const output = document.getElementById('storageOutput');
             const heroes = localStorage.getItem('heroesArena_heroes');
             output.innerHTML = `
@@ -177,6 +177,50 @@
                     output.innerHTML = '❌ Application non chargée';
                     return;
                 }    
+
+                //Accès correct au AppState via l'import
+                const {AppState} = await import('./js/core/config.js');
+
+                console.log('🔎 Debug AppState:', {
+                    'AppState.heroes': AppState.heroes?.length || 0,
+                    'window.app exists': !!window.app,
+                    'AppState complet': AppState
+                });
+
+                if (!AppState.heroes || AppState.heroes.length === 0) {
+
+                    output.innerHTML = `❌ Aucun héros trouvé dans AppState(${AppState.heroes?.length || 0} héros). Créez d'abord un héros de test!`;
+
+                    return;
+                }
+
+                output.innerHTML = '🧪 Test du bouton Détails...';
+
+                //Tester la fonction globale
+                if (window.showHeroDetailsNow) {
+                    window.showHeroDetailsNow(0);
+                    output.innerHTML = `✅ Fonction showHeroDetailsNow appelée pour le héros: ${AppState.heroes[0].nom}`;
+                } else {
+                    output.innerHTML = '❌ Fonction showHeroDetailsNow non trouvée';
+                    console.log('Fonctions globales disponibles:', Object.keys(window).filter(k => k.includes('Hero')));
+                }
+            } catch (error) {
+                output.innerHTML = `❌ Erreur test: ${error.message}`;
+                console.error('Erreur complète:', error);
+            }
+        };
+
+        //Test simple d'import
+        window.testImport = async function() {
+            const output = document.getElementById('appOutput');
+            try {
+                output.innerHTML = '🔎 Test d\'import...';
+                const module = await import('./js/init.js');
+                output.innerHTML = '✅ Import réussi! Fonctions: ${Object.keys(module).join(',')}';
+                console.log('Module init.js:', module);
+            } catch (error) {
+                output.innerHTML = `❌ Erreur import: ${error.message}`;
+                console.error('Erreur import:', error);
             }
         }
     </script>
