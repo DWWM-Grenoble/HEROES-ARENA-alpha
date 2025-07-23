@@ -231,7 +231,212 @@ class HeroesArena {
 
     //=== Méthodes de combat ===
 
-    
+    async startCombat() {
+        if (!AppState.fighter1 || !AppState.fighter2) {
+            this.ui.showError('Veuillez sélectionner deux combattants');
+            return;
+        }
+
+        if (AppState.fighter1.id === AppState.fighter2.id) {
+            this.ui.showError('Un héros ne peut pas combattre contre lui-même');
+            return;
+        }
+
+        try {
+            //Désactiver le bouton de combat
+            const fightBtn = document.getElementById('fightBtn');
+            if (fightBtn) fightBtn.disabled = true;
+
+            //Nettoyer le log de combat
+            this.ui.clearCombatLog();
+
+            //Démarrer le combat
+            const result = await this.combat.startCombat(AppState.fighter1, AppState.fighter2);
+
+            if (result.success) {
+                //Sauvegarder automatiquement
+                await this.data.saveHeroes();
+
+                //Mettre à jour l'affichage
+                this.ui.displayHeroes();
+                this.ui.updateFighterDisplay();
+            } else {
+                this.ui.showError(result.error);
+            }
+
+        } catch (error) {
+            console.error('Erreur lors du démarrage du combat:', error);
+            this.ui.showError('Erreur lors du démarrage du combat');
+        } finally {
+            //Réactiver le bouton
+            setTimeout(() => {
+                const fightBtn = document.getElementById('fightBtn');
+                if (fightBtn) fightBtn.disabled = false;
+            }, 1000);
+        }
+    }
+
+    //=== Méthodes d'import/export ===
+
+    async exportData() {
+        const result = await this.data.exportToFile();
+
+        if (result.success) {
+            this.ui.showSuccess(`Export réussi: ${result.filename}`);
+        } else {
+            this.ui.showError(result.error);
+        }
+    }
+
+    async importData(file) {
+        const result = await this.data.importFromFile(file);
+
+        if (result.success) {
+            this.ui.showSuccess(`Import réussi: ${result.imported}/${result.total} héros importés`);
+            this.ui.displayHeroes();
+            this.ui.updateFighterSelectors();
+
+            if(result.errors.length > 0) {
+                console.warn('Erreurs d\'import:', result.errors);
+            }
+        } else {
+            this.ui.showError(result.error);
+        }
+
+        return result;
+    }
+
+    async loadData() {
+        const result = await this.data.loadHeroes();
+
+        if (result.success) {
+            this.ui.showSuccess(`${result.count} héros chargés`);
+            this.ui.displayHeroes();
+            this.ui.updateFighterSelectors();
+        } else {
+            this.ui.showError(result.error);
+        }
+    }
+
+    async clearAllData() {
+        if (confirm('Êtes-vous sûr de vouloir supprimer tous les héros ?')) {
+            const result = await this.data.clearAllHeroes();
+
+            if (result.success) {
+                this.ui.showSuccess(`${result.count} héros supprimés`);
+                this.ui.displayHeroes();
+                this.ui.updateFighterSelectors();
+                this.resetArena();
+            } else {
+                this.ui.showError(result.error);
+            }
+        }
+    }
+
+    createDemoHeroes() {
+        //Créer quelques héros de démonstration
+        const demoHeroes = [
+            { nom: 'Aragorn', classe : 'Guerrier', force: 35, agility: 25, mangic: 15, defense: 25, avatar: 'warrior1.png'},
+            { nom: 'Gandalf', classe : 'Mage', force: 20, agility: 20, mangic: 35, defense: 25, avatar: 'wizard1.png'},
+            { nom: 'Legolas', classe : 'Archer', force: 25, agility: 35, mangic: 20, defense: 20, avatar: 'archer1.png'},
+            { nom: 'Gimli', classe : 'Paladin', force: 30, agility: 15, mangic: 20, defense: 35, avatar: 'paladin1.png'}
+        ];
+
+        let created = 0;
+
+        demoHeroes.forEach(async (heroData) => {
+            const result = await this.data.addHero(heroData);
+            if (result.success) {
+                created++;
+                if (created === demoHeroes.length) {
+                    this.ui.showSuccess(`${created} héros de démo crées !`);
+                    this.ui.displayHeroes();
+                    this.ui.updateFighterSelectors();
+                }
+            }
+        });
+    }
+
+    //=== Méthodes de debug ===
+
+    debug() {
+        console.log('=== ÉTAT DE L\'APPLICATION ===');
+        console.log('Heroes Arena:', this);
+        console.log('App State:', AppState);
+        console.log('UI Manager:', this.ui);
+        console.log('Data Manager:', this.data);
+        console.log('Combat System:', this.combat);
+        console.log('Héros:', AppState.heroes);
+        console.log('Combat en cours:', this.combat.getCurrentCombat());
+    }
+
+    getState() {
+        return {
+            isInitialized: this.isInitialized,
+            heroCount: AppState.hero.length,
+            currentSection: this.ui.currentSection,
+            currentCombat: this.combat.getCurrentCombat(),
+            fighters: {
+                fighter1: AppState.fighter1?.nom || null,
+                fighter2: AppState.fighter2?.nom || null
+            }
+        };
+    }
 }
+
+//Créer l'instance globale
+const heroesArena = new HeroesArena();
+
+//Initialiser l'application
+document.addEventListener('DOMContentLoaded', async() => {
+    try {
+        await heroesArena.initialize();
+
+        //Remplacer l'objet temporaire par l'application réelle
+        window.HeroesArena = heroesArena;
+        window.uiManager = heroesArena.ui;
+
+        //Marquer comme initialisé
+        window.HeroesArena.isInitialized = heroesArena.isInitialized;
+
+        console.log('🎮 Heroes Arena prêt !');
+
+    } catch (error) {
+        console.error('💥 Erreur fatale lors de l\'initialisation:', error);
+
+        //Afficher un message d'erreur à l'utilisateur
+        const errorDiv = document.createElement('div');
+        errorDiv.innerrHTML = `
+        <div style="
+        background: #fee2e2;
+        border: 1px solid #ef4444;
+        border-radius: 8px;
+        padding: 16px
+        margin: 20px;
+        color: #991b1b;
+        text-align: center;
+        ">
+        
+        <h3>❌ Erreur de chargement</h3>
+        <p>L'application n'a pas pu se charger correctement.</p>
+        <button onclick="location.reload()" style="
+        background: #ef4444;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        ">Recharger la page</button>
+        </div>
+        `;
+        document.body.appendChild(errorDiv);
+    }
+});
+
+//Exposer pour le debug
+window.app = heroesArena;
+
+export default heroesArena;
 
 
