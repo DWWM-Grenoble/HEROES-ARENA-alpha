@@ -442,8 +442,7 @@ class AuthSystem {
       if (code.trim() !== recoveryData.code) {
         recoveryData.attempts++;
         this.saveRecoveryCodes();
-        const attemptsLeft =
-          recoveryData.maxAttempts - recoveryData.attempts;
+        const attemptsLeft = recoveryData.maxAttempts - recoveryData.attempts;
         return {
           success: false,
           field: "code",
@@ -458,13 +457,18 @@ class AuthSystem {
       return {
         success: true,
         message: "Code de récupération vérifié avec succès",
-      }
+      };
     } catch (error) {
-      console.error("Erreur lors de la vérification du code de récupération:", error);
-      return { success: false, message: "Erreur technique lors de la vérification" };
+      console.error(
+        "Erreur lors de la vérification du code de récupération:",
+        error
+      );
+      return {
+        success: false,
+        message: "Erreur technique lors de la vérification",
+      };
     }
   }
-
 
   //Récupération de mot de passe - Étape 3: Réinitialisation du mot de passe
   async resetPassword(email, newPassword, confirmPassword) {
@@ -475,7 +479,8 @@ class AuthSystem {
         return {
           success: false,
           field: "email",
-          message: "Aucun code de récupération vérifié trouvé pour cet email, veuillez vérifier votre code"
+          message:
+            "Aucun code de récupération vérifié trouvé pour cet email, veuillez vérifier votre code",
         };
       }
 
@@ -486,11 +491,12 @@ class AuthSystem {
         return {
           success: false,
           field: "code",
-          message: "Le code de récupération a expiré, veuillez en générer un nouveau",
+          message:
+            "Le code de récupération a expiré, veuillez en générer un nouveau",
         };
       }
 
-      //Validation du mot de passe 
+      //Validation du mot de passe
       const passwordValidation = this.validatePassword(newPassword);
       if (!passwordValidation.valid) {
         return {
@@ -540,7 +546,10 @@ class AuthSystem {
         message: "Mot de passe réinitialisé avec succès",
       };
     } catch (error) {
-      console.error("Erreur lors de la réinitialisation du mot de passe:", error);
+      console.error(
+        "Erreur lors de la réinitialisation du mot de passe:",
+        error
+      );
       return {
         success: false,
         message: "Erreur technique lors de la réinitialisation du mot de passe",
@@ -548,7 +557,7 @@ class AuthSystem {
     }
   }
 
-  //Interface utilisateur 
+  //Interface utilisateur
   showAuthScreen() {
     const authScreen = document.getElementById("authScreen");
     const mainApp = document.getElementById("mainApp");
@@ -556,197 +565,254 @@ class AuthSystem {
       authScreen.style.display = "flex";
       mainApp.style.display = "none";
     }
+  }
+  showMainApp() {
+    const authScreen = document.getElementById("authScreen");
+    const mainApp = document.getElementById("mainApp");
+    if (authScreen) {
+      authScreen.style.display = "none";
+      mainApp.style.display = "block";
 
-    showMainApp() {
-      const authScreen = document.getElementById("authScreen");
-      const mainApp = document.getElementById("mainApp");
-      if (authScreen) {
-        authScreen.style.display = "none";
-        mainApp.style.display = "block";
+      //Mettre à jour l'interface utilisateur
+      this.updateUserCard();
+    }
+  }
+  updateUserCard() {
+    if (!this.currentUser) return;
+    //Nom d'utilisateur
+    const usernameElement = document.getElementById("username");
+    if (usernameElement) {
+      usernameElement.textContent = this.currentUser.username;
+    }
 
-        //Mettre à jour l'interface utilisateur
-        this.updateUserCard() {
-          if (!this.currentUser) return;
-          //Nom d'utilisateur 
-          const usernameElement = document.getElementById("username");
-          if (usernameElement) {
-            usernameElement.textContent = this.currentUser.username;
-          }
+    //Initiales de l'avatar
+    const userInitials = document.getElementById("userInitials");
+    if (userInitials) {
+      const initials = this.currentUser.username
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase())
+        .join("")
+        .substring(0, 2); // Limiter à 2 initiales
+      userInitials.textContent = initials;
+    }
 
-          //Initiales de l'avatar 
-          const userInitials = document.getElementById("userInitials");
-          if (userInitials) {
-            const initials = this.currentUser.username
-              .split(" ")
-              .map(word => word.charAt(0).toUpperCase())
-              .join("");
-              .substring(0, 2); // Limiter à 2 initiales
-            userInitials.textContent = initials;
-          }
+    //Email
+    const userEmail = document.getElementById("userEmail");
+    if (userEmail) {
+      userEmail.textContent = this.currentUser.email;
+    }
 
-          //Email
-          const userEmail = document.getElementById("userEmail");
-          if (userEmail) {
-            userEmail.textContent = this.currentUser.email;
-          }
+    //Date d'inscription
+    const userJoinDate = document.getElementById("userJoinDate");
+    if (userJoinDate && this.currentUser.createdAt) {
+      const date = new Date(this.currentUser.createdAt);
+      userJoinDate.textContent = date.toLocaleDateString("fr-FR");
+    }
 
-          //Date d'inscription
-          const userJoinDate = document.getElementById("userJoinDate");
-          if (userJoinDate && this.currentUser.createdAt) {
-            const date = new Date(this.currentUser.createdAt);
-            userJoinDate.textContent = date.toLocaleDateString("fr-FR")
-          };
+    // Statistique des héros
+    this.updateUserStats();
+  }
+  //Mettre à jour les statistiques de l'utilisateur
+  updateUserStats() {
+    if (!this.currentUser) return;
+    const userHeroes = this.getUserHeroes();
 
-          // Statistique des héros
-          this.updateUserStats();
-        }
+    //Nombre de héros
+    const heroCountElement = document.getElementById("UserHeroCount");
+    if (heroCountElement) {
+      heroCountElement.textContent = userHeroes.length.toString();
+    }
 
-        //Mettre à jour les statistiques de l'utilisateur
-        updateUserStats() {
-          if (!this.currentUser) return;
-          const userHeroes = this.getUserHeroes();
+    //Calcul des victoires totales
+    const totalWins = userHeroes.reduce((total, hero) => {
+      return total + (hero.victoires || 0);
+    }, 0);
 
-          //Nombre de héros 
-          const heroCountElement = document.getElementById("UserHeroCount");
-          if (heroCountElement) {
-            heroCountElement.textContent = userHeroes.length.toString();
-          }
-
-          //Calcul des victoires totales 
-          const totalWins = userHeroes.reduce((total, hero) => {
-            return total + (hero.victoires || 0);
-          }, 0);
-
-          const totalWinsElement = document.getElementById("UserTotalWins");
-          if (totalWinsElement) {
-            totalWinsElement.textContent = totalWins.toString();
-          }
-        }
-
-        //Méthode pour rafraîchir les stats après une bataille 
-        refreshUserStats() {
-          this.updateUserStats();
-        }
-
-        showLogin() {
-          this.hideAllForms();
-          const loginForm = document.getElementById("loginForm");
-          if (loginForm) {
-            loginForm.style.display = "block";
-            loginForm.classList.add("active");
-          }
-          this.clearAllErrors();
-        }
-
-        showForgotPassword() {
-          this.hideAllForms();
-          const forgotForm = document.getElementById("forgotPasswordForm");
-          if (forgotForm) {
-            forgotForm.style.display = "block";
-            forgotForm.classList.add("active");
-          }
-          this.clearAllErrors();
-        }
-
-        showVerifyCode() {
-          this.hideAllForms();
-          const verifyForm = document.getElementById("verifyCodeForm");
-          if (verifyForm) {
-            verifyForm.style.display = "block";
-            verifyForm.classList.add("active");
-          }
-          this.clearAllErrors();
-        }
-
-        showResetPassword() {
-          this.hideAllForms();
-          const resetForm = document.getElementById("resetPasswordForm");
-          if (resetForm) {
-            resetForm.style.display = "block";
-            resetForm.classList.add("active");
-          }
-          this.clearAllErrors();
-        }
-
-        hideAllForms() {
-          const forms = [
-            'loginForm',
-            'registerForm',
-            'forgotPasswordForm',
-            'verifyCodeForm',
-            'resetPasswordForm'
-          ];
-          forms.forEach(formId => {
-            const form = document.getElementById(formId);
-            if (form) {
-              form.style.display = "none";
-              form.classList.remove("active");
-            }
-          });
+    const totalWinsElement = document.getElementById("UserTotalWins");
+    if (totalWinsElement) {
+      totalWinsElement.textContent = totalWins.toString();
+    }
+  }
+  //Méthode pour rafraîchir les stats après une bataille
+  refreshUserStats() {
+    this.updateUserStats();
+  }
+  showLogin() {
+    this.hideAllForms();
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.style.display = "block";
+      loginForm.classList.add("active");
+    }
+    this.clearAllErrors();
+  }
+  showForgotPassword() {
+    this.hideAllForms();
+    const forgotForm = document.getElementById("forgotPasswordForm");
+    if (forgotForm) {
+      forgotForm.style.display = "block";
+      forgotForm.classList.add("active");
+    }
+    this.clearAllErrors();
+  }
+  showVerifyCode() {
+    this.hideAllForms();
+    const verifyForm = document.getElementById("verifyCodeForm");
+    if (verifyForm) {
+      verifyForm.style.display = "block";
+      verifyForm.classList.add("active");
+    }
+    this.clearAllErrors();
+  }
+  showResetPassword() {
+    this.hideAllForms();
+    const resetForm = document.getElementById("resetPasswordForm");
+    if (resetForm) {
+      resetForm.style.display = "block";
+      resetForm.classList.add("active");
+    }
+    this.clearAllErrors();
+  }
+  hideAllForms() {
+    const forms = [
+      "loginForm",
+      "registerForm",
+      "forgotPasswordForm",
+      "verifyCodeForm",
+      "resetPasswordForm",
+    ];
+    forms.forEach((formId) => {
+      const form = document.getElementById(formId);
+      if (form) {
+        form.style.display = "none";
+        form.classList.remove("active");
       }
+    });
+  }
+  // Gestion des erreurs d'affichage
+  showFieldError(fieldId, message) {
+    const errorElement = document.getElementById(fieldId + "Error");
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = "block";
+    }
 
-      // Gestion des erreurs d'affichage
-      showFieldError(fieldId, message) {
-        const errorElement = document.getElementById(fieldId + "Error");
-        if (errorElement) {
-          errorElement.textContent = message;
-          errorElement.style.display = "block";
+    const inputElement = document.getElementById(fieldId);
+    if (inputElement) {
+      inputElement.classList.add("error");
+    }
+  }
+  clearFieldError(fieldId) {
+    const errorElement = document.getElementById(fieldId + "Error");
+    if (errorElement) {
+      errorElement.textContent = "";
+      errorElement.style.display = "none";
+    }
+
+    const inputElement = document.getElementById(fieldId);
+    if (inputElement) {
+      inputElement.classList.remove("error");
+    }
+  }
+  clearAllErrors() {
+    const errorFields = [
+      "loginEmail",
+      "loginPassword",
+      "registerEmail",
+      "registerUsername",
+      "registerPassword",
+      "registerConfirmPassword",
+      "forgotEmail",
+      "verificationCode",
+      "newPassword",
+      "confirmNewPassword",
+    ];
+
+    errorFields.forEach((fieldId) => {
+      this.clearFieldError(fieldId);
+    });
+
+    const authMessage = document.getElementById("authMessage");
+    if (authMessage) {
+      authMessage.innerHTML = "";
+    }
+  }
+  showGenericError(message, type = "error") {
+    const authMessage = document.getElementById("authMessage");
+    if (authMessage) {
+      authMessage.innerHTML = `<div class="${type}">${message}</div>`;
+
+      //Effacer le message après 5 secondes
+      setTimeout(() => {
+        authMessage.innerHTML = "";
+      }, 5000);
+    }
+  }
+
+  //Gestionnaire d'événements
+  async handleLogin(event) {
+    event.preventDefault();
+    this.clearAllErrors();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const result = await this.login(email, password);
+
+    if (result.success) {
+      this.showGeneralMessage("Connexion réussie", "success");
+      setTimeout(() => {
+        this.showMainApp();
+        //ren
+        if (window.HeroesArena && window.HeroesArena.loadData) {
+          window.HeroesArena.loadData();
         }
+      }, 1000);
+    } else {
+      if (result.field) {
+        this.showFieldError(
+          "login" +
+            result.field.charAt(0).toUpperCase() +
+            result.field.slice(1),
+          result.message
+        );
+      } else {
+        this.showGeneralMessage(result.message);
+      }
+    }
+    return false;
+  }
+  async handleRegister(event) {
+    event.preventDefault();
+    this.clearAllErrors();
 
-        const inputElement = document.getElementById(fieldId);
-        if (inputElement) {
-          inputElement.classList.add("error");
+    const userData = {
+      username: document.getElementById("registerUsername").value.trim(),
+      email: document.getElementById("registerEmail").value.trim(),
+      password: document.getElementById("registerPassword").value,
+      confirmPassword: document.getElementById("registerConfirmPassword").value,
+    };
+
+    const result = await this.register(userData);
+    if (result.success) {
+      this.showGeneralMessage("Inscription réussie", "success");
+      setTimeout(() => {
+        this.showMainApp();
+        // Charger les données de l'arène
+        if (window.HeroesArena && window.HeroesArena.loadData) {
+          window.HeroesArena.loadData();
         }
-
-        clearFieldError(fieldId) {
-          const errorElement = document.getElementById(fieldId + "Error");
-          if (errorElement) {
-            errorElement.textContent = "";
-            errorElement.style.display = "none";
-          }
-
-          const inputElement = document.getElementById(fieldId);
-          if (inputElement) {
-            inputElement.classList.remove("error");
-          }
-        }
-        clearAllErrors() {
-          const errorFields = [
-            "loginEmail",
-            "loginPassword",
-            "registerEmail",
-            "registerUsername",
-            "registerPassword",
-            "registerConfirmPassword",
-            "forgotEmail",
-            "verificationCode",
-            "newPassword",
-            "confirmNewPassword",
-          ];
-
-          errorFields.forEach(fieldId => {
-            this.clearFieldError(fieldId);
-          });
-
-          const authMessage = document.getElementById("authMessage");
-          if (authMessage) {
-            authMessage.innerHTML = "";
-          }
-        }
-        showGenericError(message, type = "error" ) {
-          const authMessage = document.getElementById("authMessage");
-          if (authMessage) {
-            authMessage.innerHTML = `<div class="${type}">${message}</div>`;
-
-            //Effacer le message après 5 secondes
-            setTimeout(() => {
-              authMessage.innerHTML = "";
-            }, 5000); 
-          }
-        }
-
-        //Gestionnaire d'événements 
-        
+      }, 1000);
+    } else {
+      if (result.field) {
+        this.showFieldError(
+          "register" +
+            result.field.charAt(0).toUpperCase() +
+            result.field.slice(1),
+          result.message
+        );
+      } else {
+        this.showGeneralMessage(result.message);
       }
     }
   }
