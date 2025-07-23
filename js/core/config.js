@@ -108,7 +108,7 @@ export const classInfo = {
 
 };
 
-export const gameHeroes = {
+export const gameConfig = {
     maxHeroes:50,
     maxNameLenght:20,
     statPoints:100,
