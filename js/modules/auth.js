@@ -815,5 +815,57 @@ class AuthSystem {
         this.showGeneralMessage(result.message);
       }
     }
+
+    return false;
+  }
+
+  //Gestionnaire pour la récupération des mots de passe
+  async handleForgotPassword(event) {
+    event.preventDefault();
+    this.clearAllErrors();
+
+    const email = document.getElementById("forgotEmail").value.trim();
+    const result = await this.forgotPassword(email);
+
+    if (result.success) {
+      const codeDisplay = document.getElementById("recoveryCodeDisplay");
+      if (codeDisplay) {
+        codeDisplay.innerHTML = `<div class="recovery-code-box"> <H4>Code de récupération généré</H4> <div class="recovery-code">$(result.code)</div> <p class="recovery-note"> <strong> Important:</strong> Notez ce code, il sera nécessaire pour la vérification. Il expire dans 15 minutes. <br> <small> En production, ce code serait envoyé par email.</small></p> </div>`;
+      }
+      this.showGeneralMessage(
+        "Code de récupération généré avec succès",
+        "success"
+      );
+      setTimeout(() => {
+        this.showVerifyCode();
+      }, 2000);
+    } else {
+      if (result.field) {
+        this.showFieldError(
+          "forgot" +
+            result.field.charAt(0).toUpperCase() +
+            result.field.slice(1),
+          result.message
+        );
+      } else {
+        this.showGeneralMessage(result.message);
+      }
+    }
+
+    return false;
+  }
+  async handleVerifyCode(event) {
+    event.preventDefault();
+    this.clearAllErrors();
+
+    const code = document.getElementById("verificationCode").value.trim();
+
+    if (!this.currentRecoveryEmail) {
+      this.showGeneralMessage(
+        "Aucun email de récupération actif, recommencez le processus."
+      );
+      this.showForgotPassword();
+      return false;
+    }
   }
 }
