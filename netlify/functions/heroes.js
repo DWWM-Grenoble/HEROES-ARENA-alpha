@@ -1,5 +1,6 @@
-import { count, error } from 'console';
+import { count, error, timeStamp } from 'console';
 import crypto from 'crypto';
+import { stat } from 'fs';
 
 
 // Base de données simulée pour les héros
@@ -350,7 +351,132 @@ async function getGlobalStats(){
             };
 
             classeStats[hero.classe].count++;
-            classeStats[hero.classe]
+            classeStats[hero.classe].victoires += hero.victoires || 0;
+            classeStats[hero.classe].defaites += hero.defaites || 0;
         });
     }
+
+    return createResponse(200,{
+        success: true,
+        stats: {
+            totalHeroes,
+            totalUsers,
+            totalBattles,
+            classeStats,
+            lastUpdated: new Date().toISOString()
+        }
+    });
+}
+
+// Utilitaires
+
+function createResponse(statusCode, body){
+    return{
+        statusCode,
+        headers: corsHeaders,
+        body: JSON.stringify(body)
+    };
+}
+
+function generateHeroId(){
+    return 'hero_'+ Date.now()+ '_'+ crypto.randomBytes(8).toString('hex');
+}
+
+function extractHeroIdFromPath(path){
+    const parts = path.split('/');
+    return parts[parts.length -1];
+}
+
+
+function validateHeroData(heroData){
+    const {nom, classe,force,agility,magic,defense} = heroData;
+
+    // Validation du nom
+    if(!nom || typeof nom !== 'string'){
+        return{valid: false, error: 'Nom requis'};
+    }
+
+    if(nom.length< CONFIG.MIN_HERO_NAME_LENGTH|| nom.length > CONFIG.MAX_HERO_NAME_LENGTH){
+        return{
+            valid: false,
+            error: `Le nom doit contenir entre ${CONFIG.MIN_HERO_NAME_LENGTH} et ${CONFIG.MAX_HERO_NAME_LENGTH} caractères`
+        };
+    }
+
+    // validation de la classe
+    const validClasses = ['Guerrier','Mage','Archer','Paladin'];
+    if(!classe || !validClasses.includes(classe)){
+        return{valid: false,error:'Classe invalide'};
+    }
+
+    // Validation des stats
+    const stats = [force, agility, magic, defense];
+    if(!stats.every(stat => Number.isInteger(stat) && stat>= 10&& stat<=40 )){
+        return {valid: false,error: 'Les stats doivent être des entiers entre 10 et 40'};
+    }
+
+    const totalStats = force + agility + magic + defense;
+    if(totalStats > 100){
+        return{valid : false, error: 'Le total des stats ne peut dépasser 100'};
+    }
+
+    return{valid: true};
+} 
+
+async function verifyAuth(authHeader) {
+    if(!authHeader|| !authHeader.startsWith('Bearer')){
+        return{valid: false};
+    }
+    
+    const token = authHeader.substring(7);
+
+    try{
+        const [header,payload,signature]=token.split('.');
+
+        // Vérifier la signature
+
+        const expectedSignature = crypto
+        .createHmac('sha256', CONFIG.JWT_SECRET)
+        .update(`${header}.${payload}`)
+        .digest('base64url');
+        if(signature !== expectedSignature){
+            return {valid: false};
+        }
+
+        const decoded = JSON.parse(Buffer.from(payload,'base64').toString());
+
+        // Vérifier l'expiration
+        if(decoded.exp < Date.now()){
+            return{valid: false};
+        }
+        return{
+            valid: true,
+            user: {
+                id: decoded.id,
+                username: decoded.username
+            }
+        };
+    }catch (error){
+        console.error('Erreur de vérification token:', error);
+        return{valid: false};
+    }
+}
+
+function updateGlobalStats(action, data){
+    //Ici on pourrait sauvegarder dans une vraie base de données
+    //Pour l'instant, juste du logging
+
+    console.log(`Global stat update:${action}`, data);
+
+    // optionnel : Stocker les stats dans une Map pour analytics
+
+    const now = new Date().toISOString();
+    const statKey = `${action}_${now.split('T'[0])}`; // Grouper par jour
+    if(!heroStats.has(StatKey)){
+        heroStats.set(statKey,{count: 0, data: []});
+    }
+
+    const stat = heroStats.get(statKey);
+    stat.count++;
+    stat.data.push({timeStamp: now,data});
 }
