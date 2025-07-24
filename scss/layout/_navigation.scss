@@ -1,0 +1,100 @@
+// ========== LAYOUT NAVIGATION : layout/_navigation.scss ==========
+
+.nav {
+    display: flex;
+    background:
+    linear-gradient(135deg, rgba(78, 52, 46, 0.9) 0%, rgba(45, 24, 16, 0.8) 100%);
+    border-radius: get($border-radius, md);
+    padding: get($spacings, xs);
+    margin-bottom: get($spacings, xl);
+    border: 1px solid $primary-bronze;
+    box-shadow:
+    get($shadows, md),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2);
+
+    @include mobile {
+        flex-direction: column;
+        gap: get($spacings, xs);
+    }
+}
+
+.nav-tab {
+    flex: 1;
+    padding: get($spacings, md) get($spacings, lg);
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(78, 52, 46, 0.3));
+    color: $text-muted;
+    border: 1px solidrgba(205, 127, 50, 0.3);
+    border-radius: get($border-radius, sm);
+    cursor: pointer;
+    font-family: $font-family-primary;
+    font-size: get($font-size, base);
+    font-weight: get($font-weights, semibold);
+    transition: all get($transitions, normal);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(205, 127, 50, 0.2));
+        opacity: 0;
+        transition: opacity get($transitions, normal);
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: $primary-gold;
+        transition: all get($transitions, normal);
+        transform: translateX(-50%);
+    }
+
+    &:hover {
+        &::before {
+            opacity: 1;
+        }
+
+        &::after {
+            width: 80%;
+        }
+
+        color: $text-secondary;
+        transform: translateY(-1px);
+        border-color: rgba(212, 175, 55, 0.6);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, $primary-gold, $primary-bronze);
+        color: #1a0e0a;
+        border-color: $primary-gold;
+        box-shadow:
+        0 6px 16px rgba(212, 175, 55, 0.4),
+        inset 0 1px 0 rgba(255, 248, 225, 0.3);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+        &::before {
+            opacity: 0;
+        }
+
+        &::after {
+            width: 100%;
+            background: rgba(26, 14, 10, 0.3);
+        }
+    }
+
+    @include mobile {
+        text-align: center;
+        padding: get($spacings, sm) get($spacings, md);
+    }
+}
