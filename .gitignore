@@ -41,7 +41,7 @@ _*
 
 # ================EDITEUR ET IDEs=====================#
 # Visual Studio Code
-.vscode/
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -95,6 +95,9 @@ yarn.lock
 # ================SERVEURS DE DEVELOPPEMENT=====================#
 # Live Server
 .vscode/settings.json
+
+# ================FICHIERS SCSS=====================#
+git add *.scss
 
 
 # Python simple serveur
