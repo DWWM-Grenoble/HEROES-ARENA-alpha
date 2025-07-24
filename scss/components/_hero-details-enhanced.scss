@@ -153,10 +153,81 @@
         margin-bottom: 1.5rem;
     }
 
-    .stats-detail.enhanced {
+    .stat-detail.enhanced {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         padding: 1rem;
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+
+            .stat-name {
+                font-weight: bold;
+                color: #e2e8f0;
+            }
+        }
+
+        .stat-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .stat-bar {
+                flex: 1;
+                height: 8px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+                overflow: hidden;
+
+                .stat-bar-fill {
+                    height: 100%;
+                    border-radius: 4px;
+                    transition: width 1s ease;
+
+                    &.force-fill {
+                        background: linear-gradient(90deg, #ef4444, #dc2626);
+                    }
+
+                    &.agility-fill {
+                        background: linear-gradient(90deg, #10b981, #059669);
+                    }
+
+                    &.magic-fill {
+                        background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+                    }
+
+                    &.defense-fill {
+                        background: linear-gradient(90deg, #f59e0b, #d97706);
+                    }
+                }
+            }
+
+            .stat-value {
+                font-weight: bold;
+                color: #ffd700;
+                min-width: 3rem;
+                text-align: right;
+            }
+        }
+    }
+
+    .total-power {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(212, 175, 55, 0.1));
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        border-radius: 10px;
+        margin-top: 1rem;
+
+        .power-label {
+            font-weight: bold;
+            color: #e2e8f0;
+        }
     }
 }
