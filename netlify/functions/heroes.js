@@ -1,4 +1,4 @@
-import { error } from 'console';
+import { count, error } from 'console';
 import crypto from 'crypto';
 
 
@@ -286,5 +286,71 @@ async function deleteHero(userId,heroId){
 
     if(heroIndex === -1){
         return createResponse(404,{error:'Héros non trouvés'});
+    }
+
+    const deletedHero = Heroes[HeroIndex];
+    heroes.splice(heroIndex,1);
+    userHeroes.set(userId,heroes);
+
+    updateGlobalStats('heroDeleted',deletedHero);
+
+    console.log(`Héros supprimé: ${deletedHero.nom}`);
+
+    return createReponse(200,{
+        success: true,
+        message: 'Héros supprimé',
+        deletedHero:{
+            id: deletedHero.id,
+            nom: deletedHero.nom
+
+        }
+    });
+}
+
+//supprimer tous les héros 
+
+async function deleteAllHeroes(userId){
+    const heroes = userHeroes.get(userId)|| [];
+    const count = heroes.length;
+
+    userHeroes.set(userId, []);
+
+    updateGlobalStats('allHeroesDeleted',{userId, count});
+
+    console.log(`Tous les supprimés pour utilisateur ${userId}(${count} héros)`);
+
+
+    return createResponse(200,{
+        success: true,
+        message: `${count}héros supprimés`,
+        deletedCount: count
+    });
+}
+
+// Statistiques globales
+async function getGlobalStats(){
+    let totalHeroes = 0;
+    let totalUsers = 0;
+    let totalBattles = 0;
+    const classeStats = {};
+
+
+    for(const [userId, heroes] of userHeroes.entries()){
+
+        totalUsers++;
+        totalHeroes += heroes.length;
+
+        heroes.forEach(hero => {
+            totalBattles += (hero.victoires||0)+(hero.defaites||0);
+
+            classeStats[hero.classe] = classeStats[hero.classe]||{
+                count: 0,
+                victoires: 0,
+                defaites:0
+            };
+
+            classeStats[hero.classe].count++;
+            classeStats[hero.classe]
+        });
     }
 }

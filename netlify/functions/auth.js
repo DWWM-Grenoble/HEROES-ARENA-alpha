@@ -16,7 +16,7 @@ const CONFIG = {
 // Headers CORS
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers' 'Content-Type, Authorization',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'Content-Type': 'application/json'
 };
@@ -100,7 +100,7 @@ async function handleRegister(data) {
   users.set(username.toLowercase(), user);
   console.log(`Nouvel utilisateur créé: ${username}`);
 
-  retur createResponse(201, {
+  return createResponse(201, {
     success: true,
     message: 'Compte créé avec succès',
     user : {
