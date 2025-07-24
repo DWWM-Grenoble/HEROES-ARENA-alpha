@@ -1,0 +1,151 @@
+//======DECORATION ROMAINES : components/_roman-decoration.scss========================
+
+//Bordure décoration Romaine
+.roman-border {
+    position: relative;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, $primary-gold, transparent);
+    }
+
+    &::before {
+        top: -10px;
+        left: 10%;
+        right: 10%;
+    }
+
+    &::after {
+        bottom: -10px;
+        left: 10%;
+        right: 10%;
+    }
+}
+
+//Ornements romains pour les coins
+.roman-corners {
+    position: relative;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        font-size: 18px;
+        color: $primary-gold;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+
+    }
+
+    &::before {
+        top: -5px;
+        left: -5px;
+
+
+    }
+
+    &::after {
+        bottom: -5px;
+        right: -5px;
+        transform: rotate(180deg);
+    }
+}
+
+// Séparateur style colonnes romaines
+.roman-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $primary-bronze, $primary-gold, $primary-bronze, transparent);
+    margin: get($spacing, lg) 0;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: $bg-secondary;
+        color: $primary-gold;
+        padding: 0 get($spacing-sm);
+        font-size: get($font-size-sm);
+    }
+}
+
+// Médaillons romains pour les avatars
+.roman-medallion {
+    position: relative;
+    border-radius: 50%;
+    border: 3px solid $primary-bronze;
+    box-shadow:
+        0 0 20px rgba(0, 0, 0, 0.5),
+        inset 0 2px 0 rgba(212, 175, 55, 0.3) inset 0 -2px 0 rgba(0, 0, 0, 0.3);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border-radius: 50%;
+        background:
+            conic-gradient(from 0deg,
+                $primary-gold 0deg,
+                $primary-bronze 60deg,
+                $primary-gold 120deg,
+                $primary-bronze 180deg,
+                $primary-gold 240deg,
+                $primary-bronze 300deg,
+                $primary-gold 360deg);
+        z-index: -1;
+    }
+}
+
+// Effet parchemin pour les cartes
+.parchment-effect {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(139, 69, 19, 0.1) 0% transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(160, 82, 45, 0.1) 0% transparent 50%),
+        linear-gradient(135deg, #f4e4bc 0%, #e8d5b7 100%);
+    color: #3e2723;
+    box-shadow:
+        inset 0 0 20px rgba(139, 69, 19, 0.2),
+        0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+// Effet pierre gravée
+.stone-engraved {
+    background:
+        linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+    color: $text-primary;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.3),
+        inset -2px -2px 4px rgba(212, 175, 55, 0.1);
+
+    // Lettres gravées
+    &::engraved-text {
+        font-weight: get($font-weight, bold);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+}
+
+// Animation de lueur dorée
+@keyframes golden-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+    }
+}
+
+.golden-glow {
+    animation: golden-glow 2s ease-in-out infinite;
+}
