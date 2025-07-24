@@ -22,7 +22,7 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 icon
-_*
+._*
 .documentRevisions-V100
 .fsenvensd
 .Spotlight-V100
@@ -199,3 +199,5 @@ error.log
 
 
 # =====================================FIN DU FICHIER .gitignore====================================#
+# Local Netlify folder
+.netlify

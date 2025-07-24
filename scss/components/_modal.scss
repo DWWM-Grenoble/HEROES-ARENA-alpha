@@ -1,0 +1,145 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  @include flex-center;
+  align-items: flex-start;
+  z-index: get($z-indexes, modal);
+  padding: get($spacings, lg);
+  overflow-y: auto;
+  opacity: 0;
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal-content {
+  background: linear-gradient(
+    135deg,
+    rgba($bg-secondary, 0.95),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: get($border-radius, lg);
+  border: 1px solid $bg-glass;
+  box-shadow: get($shadows, xl);
+  backdrop-filter: blur(20px);
+  max-width: 800px;
+  width: 100%;
+  margin: get($spacings, 2xl) auto;
+  transform: translateY(get($spacings, lg));
+  animation: modalSlideIn 0.3s ease forwards;
+}
+
+.modal-header {
+  position: relative;
+  padding: get($spacings, lg) 50px get($spacings, lg) get($spacings, lg);
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: get($spacings, md);
+  right: get($spacings, md);
+  width: 32px;
+  height: 32px;
+  background: rgba($error, 0.8);
+  color: white;
+  border: none;
+  border-radius: $border-radius-round;
+  font-size: 18px;
+  font-weight: get($font-weights, bold);
+  cursor: pointer;
+  @include flex-center;
+  transition: all get($transitions, normal);
+  z-index: 10;
+  line-height: 1;
+
+  &:hover {
+    background: $error;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba($error, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.modal-footer {
+  margin-top: get($spacings, lg);
+  padding: get($spacings, lg);
+  border-top: 1px solid rgba(71, 85, 105, 0.3);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.modal-close-btn {
+  min-width: 120px;
+}
+
+// Actions Modal
+.modal-actions {
+  margin: get($spacings, xl) 0 get($spacings, lg) 0;
+  padding: get($spacings, lg);
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: get($border-radius, md);
+  border: 1px solid $bg-glass;
+
+  h3 {
+    color: $text-primary;
+    margin-bottom: get($spacings, md);
+    font-size: get($font-sizes, lg);
+    font-weight: get($font-weights, semibold);
+  }
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: get($spacings, sm);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  padding: get($spacings, md);
+  background: $bg-card;
+  border: 1px solid $bg-glass;
+  border-radius: get($border-radius, sm);
+  color: $text-primary;
+  cursor: pointer;
+  transition: all get($transitions, normal);
+  text-align: left;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: get($shadows, lg);
+  }
+
+  .action-icon {
+    font-size: get($font-sizes, xl);
+    margin-right: get($spacings, sm);
+    min-width: 32px;
+    text-align: center;
+  }
+
+  .action-text {
+    width: 300px;
+    @include flex-column;
+    gap: 2px;
+
+    strong {
+      margin: 1px;
+      font-weight: get($font-weights, semibold);
+      font-size: 0.95rem;
+    }
+
+    small {
+      color: $text-secondary;
+      font-size: get($font-sizes, sm);
+    }
+  }
+}
