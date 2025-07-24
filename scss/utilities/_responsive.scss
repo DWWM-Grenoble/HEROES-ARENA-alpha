@@ -1,0 +1,138 @@
+<<<<<<< HEAD
+// scss/utilities/_responsive.scss
+=======
+// Classes utilitaires responsive
+
+@each $breakpoint,
+$size in $breakpoints {
+    @media (max-width: #{size}) {
+
+        // Visibilité
+        .hidden-#{breakpoint} {
+            display: none !important;
+        }
+
+        .visible-#{brakpoint} {
+            display: block !important;
+        }
+
+        //Texte
+        .text-center-#{$breakpoint} {
+            text-align: center;
+        }
+
+        .text-left-#{breakpoint} {
+            text-align: left;
+        }
+
+        .text-right-#{breakpoint} {
+            text-align: right;
+        }
+
+        // Flexbox
+        .flex-column-#{$breakpoint} {
+            flex-direction: column;
+        }
+
+        .flex-row-#{$breakpoint} {
+            flex-direction: row;
+        }
+
+        // Grid
+
+        .grid-1-#{$breakpoint} {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-2-#{$breakpoint} {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+// Helpers pour les grilles responsive
+.heroes-grid {
+    @include responsive-grid(1, 2, 3);
+    gap: get($spacings, lg);
+    
+    @include mobile {
+    gap: get($spacings, md);
+}
+}
+
+.stats-grid {
+    @include responsive-grid(1, 2, 2);
+    gap: get($spacings, md);
+}
+
+// Responsive overrides from main CSS
+
+@include mobile {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+
+    .fighter-selection {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+
+    .fighters-display {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+
+    .vs-divider {
+        transform: rotate(90deg);
+        font-size: get($font-size, 2xl);
+    }
+
+    .hero-modal-content {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+
+    .hero-modal-left, .hero-avatar-large {
+        width: 120px;
+        height: 120px;
+    }
+
+    .record-grid {
+        grid-template-columns: 1fr;
+        gap: get($spacings, sm);
+    }
+
+    .filters {
+        justify-content: center;
+    }
+
+    .catalog-tabs {
+        justify-content: center;
+    }
+
+    .avatar-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .heroes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .file-buttons {
+        flex-direction: column;
+    }
+
+    .file-button {
+        width: 100%;
+    }
+
+    .hero-modal {
+        width: 95%;
+        margin: get($spacings, lg);
+    }
+}
+>>>>>>> origin/Luca_branch
