@@ -651,6 +651,133 @@ export class CombatSystem {
         await delay (800);
         this.addLogEntry (`Nouveau badge: ${originalWinner.getBadgeText()}`, 'info');
         await delay (600);
+        this.addLogEntry (` Bilan - ${originalWinner.nom}: ${originalWinner.victoires} V/ ${originalWinner.defaites}D (${originalWinner.getRatio()}%)`, 'info');
+        await delay (400);
+        this.addLogEntry(` Bilan - ${originalLoser.nom}: ${originalLoser.victoires} V/ ${originalLoser.defaites}D (${originalLoser.getRatio()}%)`, 'info');
+        await delay (600);
+
+        this.currentCombat.result = 'victory';
+        this.currentCombat.winner = originalWinner;
+        this.currentCombat.loser = originalLoser;
+    }
+
+    await delay (800);
+    this.addLogEntry ('=== FIN DU COMBAT ===', 'info');
+    await delay (400);
+    this.addLogEntry('Résultats sauvegardés automatiquement.', 'info');
+
+    // Préparer les données pour la modal
+    const combatResult = {
+      ...this.currentCombat,
+      log: [...this.combatLog],
+      draw: draw,
+      winner: winner,
+      loser: loser
+    };
+
+    if (!draw) {
+      combatResult.originalWinner = winner.id === this.currentCombat.originalFighter1.id ? this.currentCombat.originalFighter1 : this.currentCombat.originalFighter2;
+      combatResult.originalLoser = loser.id === this.currentCombat.originalFighter1.id ? this.currentCombat.originalFighter1 : this.currentCombat.originalFighter2;
+    }
+
+    // Afficher la modal après un délai pour laisser le temps de voir les derniers logs
+    setTimeout(() => {
+
+      if (this.combatEnd) {
+        this.onCombatEnd(combatResult);
+      }
+    }, 2000)
+
+    return combatResult;
+  }
+
+  updateHeroStats(winner,loser) {
+    const originalWinner = winner.id === this.currentCombat.originalFighter1.id ? this.currentCombat.originalFighter1 : this.currentCombat.originalFighter2;
+    const originalLoser = loser.id === this.currentCombat.originalFighter1.id ? this.currentCombat.originalFighter1 : this.currentCombat.originalFighter2;
+
+    originalWinner.victoires++;
+    originalLoser.defaites++;
+
+    const winnerXp = 50 + Math.floor(this.currentCombat.round * 5);
+    const loserXp = 20 + Math.floor(this.currentCombat.round * 2);
+
+    const winnerLevelBefore = originalWinner.niveau;
+    const loserLevelBefore = originalLoser.niveau;
+
+    originalWinner.gainXp(winnerXp);
+    originalLoser.gainXp(loserXp);
+
+    this.addLogEntry (` ${originalWinner.nom} gagne ${winnerXp} XP ! (Total: ${originalWinner.xp} XP)`, 'success');
+    this.addLogEntry (` ${originalLoser.nom} gagne ${loserXp} XP ! (Total : ${originalLoser.xp} XP)`, 'info');
+
+    if (originalWinner.niveau > winnerLevelBefore) {
+      this.addLogEntry (` ${originalWinner.nom} passe au niveau ${originalWinner.niveau} !`, 'success');
+    }
+
+    if (originalLoser.niveau > loserLevelBefore) {
+      this.addLogEntry (` ${originalLoser.nom} passe au niveau ${originalLoser.niveau} !`, 'sucess');
+    }
+
+    originalWinner.heal();
+    originalLoser.heal();
+
+    this.addLogEntry (` ${originalWinner.nom} : ${originalWinner.getBadgeText()}`, 'info');
+    this.addLogEntry (` ${originalLoser.nom} : ${originalLoser.getBadgeText()}`, 'info');
+  }
+
+  stopCombat () {
+    if (this.isRunning) {
+      this.isRunning = false;
+      this.addLogEntry('Combat interrompu', 'info');
+
+      // Réinitialiser les effets visuels
+      uiManager.resetCombatEffects();
+      if (this.currentCombat) {
+        this.currentCombat.endTime = new Date().toISOString();
+        this.currentCombat.result = 'interrupted';
+      }
     }
   }
+
+  addLogEntry (message, type = 'info') {
+    const entry = {
+      id: this.generateLogId(),
+      message,
+      type,
+      timestamp: new Date().toISOString(),
+      round: this.currentCombat ? this.currentCombat.round: 0
+    };
+
+    this.combatLog.push(entry);
+
+    if (this.currentCombat) {
+      this.currentCombat.log.push(entry);
+    }
+
+    if (this.onLogUpdate) {
+      this.onLogUpdate(entry);
+    }
+  }
+
+  getCurrentCombat () {
+    return this.currentCombat;
+  }
+
+  getCombatLog () {
+    return [...this.combatLog];
+  }
+
+  clearCombatLog () {
+    this.combatLog = [];
+  }
+
+  generateCombatId () {
+    return `combat_` +Date.now() + '_' + Math.random().toISOString(36).substr(2,9);
+  }
+
+  generateLogId () {
+    return `log_` + Date.now() + '_' + Math.random().toISOString(36).substr(2, 9);
+  }
 }
+
+export const CombatSystem = new CombatSystem();
