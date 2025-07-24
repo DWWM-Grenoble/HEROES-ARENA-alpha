@@ -1,5 +1,6 @@
-import { error } from 'console';
+import { count, error, timeStamp } from 'console';
 import crypto from 'crypto';
+import { stat } from 'fs';
 
 
 // Base de données simulée pour les héros
@@ -96,7 +97,7 @@ export const handler = async(event, context) =>{
 async function getHeroes(userId){
     const heroes = userHeroes.get(userId)||[];
 
-    return createResponde(200,{
+    return createResponse(200,{
         success: true,
         heroes,
         count: heroes.length,
@@ -234,5 +235,248 @@ async function updateHero(userId,heroId,heroData){
     }
 
     // Valider les nouvelles données 
+    const validation = validateHeroData({...heroes[heroIndex], ...heroData});
+    if(!validation.valid){
+        return createResponse(400,{error:validation.error});
+    }
+
+
+    //Verifier les doublons de nom (sauf pour le héros actuel)
+    if(heroData.nom && heroes.some((h, idx)=> idx !== heroIndex && h.nom.toLowerCase() === heroData.nom.toLowerCase()
+    )){
+return createResponse(409, {error: 'Un autre héros avec ce nom existe déjà'});
+}
+
+// Mettre à jour
+const oldHero = {...heroes[heroIndex] };
+heroes[heroIndex] ={
+    ...heroes[heroIndex],
+    ...heroData,
+    updatedAt: new Date().toISOString()
+};
+
+
+userHeroes.set(userId, heroes);
+
+
+// Mettre à jour les stats si nécéssaire
+if(heroData.victoires !== undefined || heroData.defaites !== undefined){
+    updateGlobalStats('heroUpdated',{
+        oldHero,
+        newHero: heroes[heroIndex]
+    })
+}
+
+
+console.log(`Héros mis à jour : ${heroes[heroIndex].nom}`);
+
+
+return createResponse(200,{
+    success: true,
+    message: 'Héros mis à jour',
+    hero:heroes[heroIndex]
+});
+
+}
+
+//Supprimer un héro
+
+async function deleteHero(userId,heroId){
+    const heroes = userHeroes.get(userId)|| [];
+    const heroIndex = heroes.findIndex(h=> h.id === heroId);
+
+    if(heroIndex === -1){
+        return createResponse(404,{error:'Héros non trouvés'});
+    }
+
+    const deletedHero = Heroes[HeroIndex];
+    heroes.splice(heroIndex,1);
+    userHeroes.set(userId,heroes);
+
+    updateGlobalStats('heroDeleted',deletedHero);
+
+    console.log(`Héros supprimé: ${deletedHero.nom}`);
+
+    return createReponse(200,{
+        success: true,
+        message: 'Héros supprimé',
+        deletedHero:{
+            id: deletedHero.id,
+            nom: deletedHero.nom
+
+        }
+    });
+}
+
+//supprimer tous les héros 
+
+async function deleteAllHeroes(userId){
+    const heroes = userHeroes.get(userId)|| [];
+    const count = heroes.length;
+
+    userHeroes.set(userId, []);
+
+    updateGlobalStats('allHeroesDeleted',{userId, count});
+
+    console.log(`Tous les supprimés pour utilisateur ${userId}(${count} héros)`);
+
+
+    return createResponse(200,{
+        success: true,
+        message: `${count}héros supprimés`,
+        deletedCount: count
+    });
+}
+
+// Statistiques globales
+async function getGlobalStats(){
+    let totalHeroes = 0;
+    let totalUsers = 0;
+    let totalBattles = 0;
+    const classeStats = {};
+
+
+    for(const [userId, heroes] of userHeroes.entries()){
+
+        totalUsers++;
+        totalHeroes += heroes.length;
+
+        heroes.forEach(hero => {
+            totalBattles += (hero.victoires||0)+(hero.defaites||0);
+
+            classeStats[hero.classe] = classeStats[hero.classe]||{
+                count: 0,
+                victoires: 0,
+                defaites:0
+            };
+
+            classeStats[hero.classe].count++;
+            classeStats[hero.classe].victoires += hero.victoires || 0;
+            classeStats[hero.classe].defaites += hero.defaites || 0;
+        });
+    }
+
+    return createResponse(200,{
+        success: true,
+        stats: {
+            totalHeroes,
+            totalUsers,
+            totalBattles,
+            classeStats,
+            lastUpdated: new Date().toISOString()
+        }
+    });
+}
+
+// Utilitaires
+
+function createResponse(statusCode, body){
+    return{
+        statusCode,
+        headers: corsHeaders,
+        body: JSON.stringify(body)
+    };
+}
+
+function generateHeroId(){
+    return 'hero_'+ Date.now()+ '_'+ crypto.randomBytes(8).toString('hex');
+}
+
+function extractHeroIdFromPath(path){
+    const parts = path.split('/');
+    return parts[parts.length -1];
+}
+
+
+function validateHeroData(heroData){
+    const {nom, classe,force,agility,magic,defense} = heroData;
+
+    // Validation du nom
+    if(!nom || typeof nom !== 'string'){
+        return{valid: false, error: 'Nom requis'};
+    }
+
+    if(nom.length< CONFIG.MIN_HERO_NAME_LENGTH|| nom.length > CONFIG.MAX_HERO_NAME_LENGTH){
+        return{
+            valid: false,
+            error: `Le nom doit contenir entre ${CONFIG.MIN_HERO_NAME_LENGTH} et ${CONFIG.MAX_HERO_NAME_LENGTH} caractères`
+        };
+    }
+
+    // validation de la classe
+    const validClasses = ['Guerrier','Mage','Archer','Paladin'];
+    if(!classe || !validClasses.includes(classe)){
+        return{valid: false,error:'Classe invalide'};
+    }
+
+    // Validation des stats
+    const stats = [force, agility, magic, defense];
+    if(!stats.every(stat => Number.isInteger(stat) && stat>= 10&& stat<=40 )){
+        return {valid: false,error: 'Les stats doivent être des entiers entre 10 et 40'};
+    }
+
+    const totalStats = force + agility + magic + defense;
+    if(totalStats > 100){
+        return{valid : false, error: 'Le total des stats ne peut dépasser 100'};
+    }
+
+    return{valid: true};
+} 
+
+async function verifyAuth(authHeader) {
+    if(!authHeader|| !authHeader.startsWith('Bearer')){
+        return{valid: false};
+    }
     
+    const token = authHeader.substring(7);
+
+    try{
+        const [header,payload,signature]=token.split('.');
+
+        // Vérifier la signature
+
+        const expectedSignature = crypto
+        .createHmac('sha256', CONFIG.JWT_SECRET)
+        .update(`${header}.${payload}`)
+        .digest('base64url');
+        if(signature !== expectedSignature){
+            return {valid: false};
+        }
+
+        const decoded = JSON.parse(Buffer.from(payload,'base64').toString());
+
+        // Vérifier l'expiration
+        if(decoded.exp < Date.now()){
+            return{valid: false};
+        }
+        return{
+            valid: true,
+            user: {
+                id: decoded.id,
+                username: decoded.username
+            }
+        };
+    }catch (error){
+        console.error('Erreur de vérification token:', error);
+        return{valid: false};
+    }
+}
+
+function updateGlobalStats(action, data){
+    //Ici on pourrait sauvegarder dans une vraie base de données
+    //Pour l'instant, juste du logging
+
+    console.log(`Global stat update:${action}`, data);
+
+    // optionnel : Stocker les stats dans une Map pour analytics
+
+    const now = new Date().toISOString();
+    const statKey = `${action}_${now.split('T'[0])}`; // Grouper par jour
+    if(!heroStats.has(StatKey)){
+        heroStats.set(statKey,{count: 0, data: []});
+    }
+
+    const stat = heroStats.get(statKey);
+    stat.count++;
+    stat.data.push({timeStamp: now,data});
 }
