@@ -81,90 +81,166 @@
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
     cursor: pointer;
   }
+}
 
-  .stat-bar {
-    height: 12px;
-    background: rgba(45, 24, 16, 0.8);
-    border-radius: get($border-radius, md);
-    overflow: hidden;
-    border: 1px solid rbga(205, 127, 50, 0.3);
-  }
+.stat-bar {
+  height: 12px;
+  background: rgba(45, 24, 16, 0.8);
+  border-radius: get($border-radius, md);
+  overflow: hidden;
+  border: 1px solid rbga(205, 127, 50, 0.3);
+}
 
-  .stat-fill {
+.stat-fill {
+  height: 100%;
+  position: relative;
+  border-radius: get($border-radius, sm);
+  transition: width 0.3s ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
     height: 100%;
-    position: relative;
-    border-radius: get($border-radius, sm);
-    transition: width 0.3s ease;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+  }
+  &.force {
+    background: linear-gradient(90deg, #8b0000, #cd5c5c);
+  }
+  &.agility {
+    background: linear-gradient(90deg, #228b22, #90ee90);
+  }
+  &.magic {
+    background: linear-gradient(90deg, #483d8b, #9370db);
+  }
+  &.defense {
+    background: linear-gradient(90deg, #b8860b, #d2b48c);
+  }
+}
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-      );
-    }
-    &.force {
-      background: linear-gradient(90deg, #8b0000, #cd5c5c);
-    }
-    &.agility {
-      background: linear-gradient(90deg, #228b22, #90ee90);
-    }
-    &.magic {
-      background: linear-gradient(90deg, #483d8b, #9370db);
-    }
-    &.defense {
-      background: linear-gradient(90deg, #b8860b, #d2b48c);
-    }
+.total-points {
+  text-align: center;
+  margin-top: get($spacings, lg);
+  padding: get($spacings, md);
+  background: rgba(45, 24, 16, 0.6);
+  border-radius: get($border-radius, md);
+  border: 2px solid $primary-bronze;
+  font-weight: get($font-weights, bold);
+  font-size: get($font-sizes, md);
+  &.valid {
+    color: $success;
+    border-color: $success;
+    box-shadow: 0 0 10px rgba(72, 124, 83, 0.3);
   }
 
-  .total-points {
-    text-align: center;
+  &.invalid {
+    color: $error;
+    border-color: $error;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+  }
+
+  // info de classe
+  &.class-info {
     margin-top: get($spacings, lg);
-    padding: get($spacings, md);
-    background: rgba(45, 24, 16, 0.6);
-    border-radius: get($border-radius, md);
-    border: 2px solid $primary-bronze;
+    padding: get($spacings, lg);
+    background: linear-gradient(
+      135deg,
+      rgba(78, 52, 46, 0.6) 0%,
+      rgba(45, 23, 16, 0.8) 100%
+    );
+    border-radius: get($border-radius, lg);
+    border: 2px solid rgba(212, 175, 55, 0.2);
+  }
+
+  h4 {
+    color: $primary-gold;
+    font-size: get($font-sizes, xl);
     font-weight: get($font-weights, bold);
-    font-size: get($font-sizes, md);
-    &.valid {
-      color: $success;
-      border-color: $success;
-      box-shadow: 0 0 10px rgba(72, 124, 83, 0.3);
-    }
+    font-family: $font-family-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
 
-    &.invalid {
-      color: $error;
-      border-color: $error;
-      box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
-    }
+  p {
+    color: $text-primary;
+    line-height: 1.6;
+    margin-bottom: get($spacings, md);
+  }
+}
+.power-preview {
+  background: rgbd(212, 175, 55, 0.1);
+  padding: get($spacings, md);
+  border-radius: get($border-radius, sm);
+  border-left: 4px solid $primary-gold;
+  margin-top: get($spacings, md);
+}
 
-    // info de classe
-    &.class-info {
-      margin-top: get($spacings, lg);
-      padding: get($spacings, lg);
-      background: linear-gradient(
-        135deg,
-        rgba(78, 52, 46, 0.6) 0%,
-        rgba(45, 23, 16, 0.8) 100%
-      );
-      border-radius: get($border-radius, lg);
-      border: 2px solid rgba(212, 175, 55, 0.2);
-    }
+h5 {
+  color: $primary-gold;
+  font-size: get($font-sizes, base);
+  font-weight: get($font-weights, bold);
+  margin-bottom: get($spacings, sm);
+}
 
-    h4 {
-      color: $primary-gold;
-      font-size: get($font-sizes, xl);
-      font-weight: get($font-weights, bold);
-      font-family: $font-family-secondary;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
+p {
+  color: $text-secondary;
+  font-size: get($font-sizes, sm);
+  line-height: 1.5;
+  margin: 0;
+}
+
+// filtres
+.filter-section {
+  margin-bottom: get($spacings, xl);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: get($spacings, sm);
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: get($spacings, sm) get($spacings, md);
+  background: rgba(78, 52, 46, 0.6);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  color: $text-muted;
+  border-radius: get($border-radius, sm);
+  font-size: get($font-sizes, sm);
+  font-family: $font-family-primary;
+  font-weight: get($font-weights, medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all get($transitions, normal);
+
+  &:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: $text-secondary;
+    border-color: rgba(212, 175, 55, 0.5);
+  }
+
+  &.active {
+    background: $primary-gradient;
+    color: #1a0e0a;
+    border-color: $primary-gold;
+    font-weight: get($font-weights, bold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+  }
+}
+@keyframes statShimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
   }
 }
