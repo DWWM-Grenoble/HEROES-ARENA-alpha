@@ -1,0 +1,162 @@
+// Enhanced Hero Details Modal Styles
+
+// Avatar Container Enhanced
+.hero-avatar-large-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .hero-avatar-large {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #d4af37;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5),
+        inset 0 0 10px rgba(212, 175, 55, 0.2);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-border-glow {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #d4af37, #b8860b, #ffd700);
+            z-index: -1;
+            animation: glow-pulse 2s ease-in-out infinite alternate;
+        }
+    }
+
+    .avatar-decoration {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        .level-crown {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: sparkle 1.5s ease-in-out infinite alternate;
+        }
+
+        .hero-badge-ornate {
+            background: linear-gradient(135deg, #d4af37, #b8860b);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+    }
+}
+
+// Enhanced Title Section
+.hero-details-title {
+    text-align: center;
+
+    .hero-name-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ffd700, #d4af37);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 1rem;
+    }
+
+    .hero-class-badge-enhanced {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .hero-title-decorations {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .victory-laurels {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .combat-record {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 600;
+        }
+    }
+}
+
+// Enhanced Close Button
+.enhanced-close {
+    background: linear-gradient(125deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0 4px 15px rgba(239, 68, 68, 0.3));
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    }
+}
+
+// Enhanced Stats Section
+.stats-section.enhanced {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+    border: 2px solid rgba(79, 70, 229, 0.2);
+    border-radius: 15px;
+    padding: 1.5rem;
+
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #ffd700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .stats-grid {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stats-detail.enhanced {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+}
