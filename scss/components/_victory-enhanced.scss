@@ -1,0 +1,64 @@
+// Enhanced Victory Modal Styles
+
+// Victory Effects
+.victory-effects, .draw-effects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.golden-sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg') repeat;
+    animation: sparkle-float 4s linear infinite;
+}
+
+.victory-rays {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    transform: translate(-50%, -50%);
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(255, 215, 0, 0.1),
+        transparent,
+        rgba(255, 215, 0, 0.1),
+        transparent,
+        rgba(255, 215, 0, 0.1),
+        transparent
+    );
+    animation: victory-rays-rotate 8s linear infinite;
+}
+
+.celebration-confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background:
+    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.8) 2px, transparent 2px),
+    radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.8) 2px, transparent 2px),
+    radial-gradient(circle at 60% 80%, rgba(16, 185, 129, 0.8) 2px, transparent 2px),
+    radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.8) 2px, transparent 2px);
+    background-size: 100px 100px;
+    animation: confetti-fall 3s ease-in-out infinite;
+}
+
+.sparkle-overlay {
+    position: absolute;
+    top: 0;
+}
