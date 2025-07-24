@@ -1,3 +1,27 @@
-body {
-    color: aqua;
+.hero-card {
+    //Style tablette romaine
+    background:
+    linear-gradient(135deg, rgba(160, 82, 45, 0.9) 0%, rgba(139, 69, 19, 0.8) 100%),
+    repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(213, 175, 55, 0.1) 2px,
+        rgba(212, 175, 55, 0.1) 3px
+    );
+    border: 2px solid $primary-bronze;
+    border-radius: get($border-radius, sm);
+    padding: get($spacings, lg);
+    min-height: 320px;
+    @include flex-column;
+    position: relative;
+    overflow: hidden;
+    transition: all get($transitions, normal);
+    box-shadow: 
+    get($shadows, md),
+    insert 0 1px 0 rgba(212, 175, 55, 0.3),
+    insert 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+    //Texture de pierre gravée
+    
 }
