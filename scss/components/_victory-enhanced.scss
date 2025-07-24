@@ -61,4 +61,513 @@
 .sparkle-overlay {
     position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+    radial-gradient(circle at 25% 25% rgba(255, 215, 0, 0.6) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75% rgba(255, 215, 0, 0.4) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: sparkle-twinkle 2s ease-in-out infinite alternate;
+}
+
+.celebration-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+    radial-gradient(circle at 40% 40% rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+    radial-gradient(circle at 60% 60% rgba(212, 175, 55, 0.6) 1px, transparent 1px);
+    background-size: 80px 80px;
+    animation: particles-dance 3s ease-in-out infinite;
+}
+
+// Enhanced Modal Content
+.victory-result, .draw-result {
+    position: relative;
+    background:
+    linear-gradient(135des, rgba(15, 23, 42,0.95), rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+    border: 3px solid;
+    border-image: linear-gradient(135deg, #ffd700, #d4af37, #b8860b) 1;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 215, 0, 0.2), 0 0 50px rgba(255, 215, 0, 0.3);
+}
+
+//Victory Header Enhanced
+.combat-result-header.victory.enhanced, .combat-result-header.draw.enhanced {
+    position: relative;
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rga(212, 175, 55, 0.1));
+    border-bottom: 2px solid rgba(255, 215,0, 0.3);
+    z-index: 2;
+}
+
+.victory-crown-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.crown-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(255, 215,0, 0.4) transparent);
+    border-radius: 50%;
+    animation: crown-pulse 2s ease-in-out infinite;
+}
+
+.result-crown.winner-crown {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+    animation: crown-bounce 1s ease-in-out infinite alternate;
+}
+
+
+.result-crown {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+    animation: crown-sway 2s ease-in-out infinite alternate;
+}
+
+.victory-title.animated {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffd700, #fff, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 1rem 0;
+    animation: title-glow 2s ease-in-out infinite alternate;
+}
+
+
+.victory-subtitle {
+    font-size: 1.3rem;
+    color: #e2e8f0;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.battle-decorations {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.decoration-line {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffd700, transparent);
+
+    &.gold {
+        background: linear-gradient(90deg, transparent, #ffd700, #d4af37, #ffd700, transparent);
+    }
+}
+
+.battle-emblem {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+
+    &.winner {
+        animation: emblem-spin 3s linear infinite;
+    }
+}
+
+
+// Enhanced Battle Showcase
+.battle-showcase {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 2rem;
+}
+
+.winner-section.enhanced, .loser-section.enhanced {
+    text-align: center;
+}
+
+.champion-banner, .honor-banner {
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+
+    background: linear-gradient(135deg, #ffd700, #d4af37);
+    color: #fff;
+}
+
+.honor-banner {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: #fff;
+}
+
+// Enhanced Hero Cards in Victory
+
+.hero-avatar-result-enhanced {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    border: 4px solid;
+
+    &.winner {
+        border-color: #ffd700;
+        box-shadow: 0 0 30px(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+
+    &.loser {
+        border-color: #6b7280;
+        box-shadow: 0 0 20px rgba(107, 114, 128, 0.4), inset 0 0 15px rgba(107, 114, 128, 0.1);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-glow {
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        border-radius: 50%;
+        z-index: -1;
+        
+        &.winner-glow {
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
+            animation: gentle-glow-pulse 2s ease-in-out infinite;
+        }
+
+        &.loser-glow, &.draw-glow {
+            background: radial-gradient(circle, rgba(107, 114, 128, 0.4), transparent);
+            animation: gentle-glow 3s ease-in-out infinite;
+        }
+    }
+
+    .vicory-aura {
+        position: absolute;
+        top: -15px;
+        left: -15px;
+        right: -15px;
+        bottom: -15px;
+        border-radius: 50%;
+        background: conic-gradient(
+            from 0deg,
+            rgba(255, 215, 0, 0.3), rgba(255, 255, 255, 0.2), rgba(255, 215, 0, 3)
+        );
+        animation: aura-rotate 4s liner infinite;
+        z-index: -2;
+    }
+}
+
+.hero-winner-name, .hero-loser-name, .hero-draw-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.hero-winner-name {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.hero-loser-name, .hero-draw-name {
+    color: #e2e8f0;
+}
+
+.winner-class, .loser-class, .hero-draw-class {
+    padding: 0.3rem 1rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.winner-class {
+    background: linear-gradient(135deg, #ffd700, #d4af37);
+    color: #000,
+}
+
+.loser-class, .hero-draw-class {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: #fff;
+}
+
+// Victory Stats
+.victory-stats, .defeat-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+
+    .stat-icon {
+        font-size: 1.2rem;
+    }
+
+    .stat-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+}
+}
+
+.victory-stats, .stat-text {
+    color: #ffd700;
+}
+
+.defeat-stats, .stat-text {
+    color: #9ca3af;
+}
+
+//Enhanced VS Divider
+.vs-divider.enhanced {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .vs-background {
+        position: relative;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        animation: vs-pulse 2s ease-in-out infinite;
+
+        .vs-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .battle-clash {
+            font-size: 1rem;
+            margin-top: 0.2rem;
+        }
+    }
+}
+
+// Draw Specific Styles
+.draw-heroes-display {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.hero-draw-card {
+    text-align: center;
+}
+
+.draw-vs-symbol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    .vs-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .equality-symbol {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #10b981;
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+}
+
+// Victory Messages
+.victory-message, .draw-message {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(255, 215, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.2);
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.victory-proclamation, .honor-text {
+    .main-victory, .main-honor {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #ffd700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .sub-victory, .sub-honor {
+        font-size: 1rem;
+        color: #e2e8f0;
+        font-style: italic;
+    }
+}
+
+// Enhanced Continue Button
+.victory-continue-btn {
+    background: linear-gradient(135deg, #ffd700, #d4af37) !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 1rem 2rem !important;
+    border-radius: 25px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    cursor: pointer !important;
+    transition: all 0.3 ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin: 0 auto !important;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3) !important;
+
+    &.champion {
+        animation: champion-button-glow 2s ease-in-out infinite alternate !important;
+    }
+
+    &:hover {
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 0 12px 35px rgba(255, 215, 0, 0.4) !important;
+    }
+
+    .btn-icon {
+        font-size: 1.2rem;
+    }
+}
+
+// Animations
+@keyframes crown-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale (1.1); opacity: 1; }
+}
+
+@keyframes crown-bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+@keyframes crown-sway {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(-5deg); }
+}
+
+@keyframes title-glow {
+    0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
+    100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+@keyframes victory-rays-rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes sparkle-float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px);}
+}
+
+@keyframes confetti-fall {
+    0% { transform: translateY(-100%); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes sparkle-twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.8; }
+}
+
+@keyframes particles-dance {
+    0%, 100% { transform: translate(0, 0); }
+    33% { transform: translate(10px, -10px); }
+    66% { transform: translate(-10px, 10px); }
+}
+
+@keyframes winner-glow-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1;}
+}
+
+@keyframes gentle-glow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes aura-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }    
+}
+
+@keyframes vs-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes emblem-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes champion-button-glow {
+    0% { box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3) !important; }
+    100% { box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6) !important; }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+    .battle-showcase, .draw-heroes-display {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 1rem;
+
+    .vs-divider.enhanced, .draw-vs-symbol {
+        order: 2;
+        margin: 1rem 0;
+    }
+
+    .loser-section.enhanced {
+        order: 3;
+    }
+    }
+
+    .victory-title.animated {
+        font-size: 2rem;
+    }
+
+    .result-crown.winner-crown {
+        font-size: 3rem;
+    }
 }
