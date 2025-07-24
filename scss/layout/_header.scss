@@ -1,0 +1,74 @@
+.header {
+  text-align: center;
+  padding: get($spacings, 3xl) 0 get($spacings, 2xl) 0;
+  background: linear-gradient(
+      180deg,
+      rgba(212, 175, 55, 0.1) 0%,
+      transparent 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(78, 52, 46, 0.8) 0%,
+      rgba(45, 24, 16, 0.9) 100%
+    );
+
+  border-radius: get($border-radius, lg);
+  border: 2px solid $primary-gold;
+  box-shadow: get($shadows, lg), inset 0 1px 0 rgba(212, 175, 55, 0.3),
+    0 0 30px rgba(212, 175, 55, 0.2);
+  margin-bottom: get($spacings, xl);
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    z-index: -1;
+    background: linear-gradient(
+      45deg,
+      $primary-gold,
+      $primary-bronze,
+      $primary-gold
+    );
+    border-radius: get($border-radius, lg);
+  }
+
+  h1 {
+    font-family: $font-family-secondary;
+    font-size: get($font-sizes, 5xl);
+    font-weight: get($font-weights, bold);
+    background: linear-gradient(
+      135deg,
+      $primary-gold 0%,
+      #fff8e1 50%,
+      $primary-gold 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: get($spacings, sm);
+    letter-spacing: 0.1em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+
+    @include mobile {
+      font-size: get($font-sizes, 4xl);
+    }
+  }
+
+  p {
+    font-family: $font-family-primary;
+    font-size: get($font-sizes, xl);
+    color: $text-primary;
+    font-weight: get($font-weights, normal);
+    font-style: italic;
+    letter-spacing: 0.05em;
+
+    @include mobile {
+      font-size: get($font-sizes, lg);
+    }
+  }
+}
