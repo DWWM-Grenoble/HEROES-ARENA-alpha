@@ -1,0 +1,201 @@
+//======== COMPOSANT USER CARD : components/_user-card.scss ========
+
+.user-card {
+    position: fixed;
+    top: get($spacings, lg);
+    right: get($spacings, lg);
+    background:
+    linear-gradient(135deg, rgba(78, 52, 46, 0.95) 0%, rgba(45, 24, 16, 0.9) 100%);
+    border: 2px solid $primary-bronze;
+    border-radius: get($border-radius, lg);
+    box-shadow:
+    get($shadows, lg),
+    0 0 20px rgba(212, 175, 55, 0.2);
+    backdrop-filter: blur(20px);
+    width: 200px;
+    z-index: 900;
+    transition: all get($transitions, normal);
+
+    &:hover {
+        border-color: $primary-gold;
+        box-shadow:
+        get($shadows, lg),
+        0 0 30px rgba(212, 175, 55, 0.4);
+    }
+
+    //État ouvert du menu
+    &.open .user-menu {
+        display: block;
+    }
+
+    &.open .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    @include mobile {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: get($spacings, lg);
+        width: 100%;
+        max-width: none;
+    }
+}
+
+.user-card-header {
+    display: flex;
+    align-items: center;
+    padding: get($spacings, sm) get($spacings, md);
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    border-radius: get($border-radius, md) get($border-radius, md) 0 0;
+
+    &:hover {
+        background: rgba(212, 175, 55, 0.1);
+    }
+
+    &:active {
+        transform: none;
+    }
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: $primary-gradient;
+    border-radius: 50%;
+    @include flex-center;
+    font-weight: get($font-weights, bold);
+    color: #1a0e0a;
+    font-size: get($font-sizes, base);
+    margin-right: get($spacings, sm);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.user-basic-info {
+    flex: 1;
+}
+
+.user-name {
+    font-family: $font-family-secondary;
+    font-weight: get($font-weight, bold);
+    color: $text-primary;
+    font-size: get($font-sizes, sm);
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-status {
+    color: $success;
+    font-size: get($font-sizes, xs);
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.dropdown-arrow {
+    color: $text-secondary;
+    transition: transform get($transitions, normal);
+    margin-left: get($spacings, sm);
+    font-size: 12px;
+
+    svg {
+        fill: currentColor;
+    }
+}
+
+.user-menu {
+    display: none;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+
+    &.active {
+        display: block;
+        animation: slideDown 0.3s ease;
+    }
+}
+
+.user-details {
+    padding: get($spacings, sm) get($spacings, md);
+}
+
+.user-details-item {
+    display: flex;
+    align-items: center;
+    padding: get($spacings, sm) 0;
+    border-bottom: 1px solid rgba(78, 52, 46, 0.3);
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.detail-icon {
+    width: 24px;
+    margin-right: get($spacings, md);
+    text-align: center;
+}
+
+.detail-label {
+    flex: 1;
+    color: $text-secondary;
+    font-size: get($font-sizes, sm);
+    font-weight: get($font-weights, medium);
+}
+
+.detail-value {
+    color: $text-primary;
+    font-weight: get($font-weights, semibold);
+    font-size: get($font-sizes, sm);
+}
+
+.user-actions {
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    padding: get($spacings, sm);
+}
+
+.user-action-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: get($spacings, sm) get($spacings, md);
+    background: transparent;
+    border: none;
+    color: $text-primary;
+    cursor: pointer;
+    border-radius: get($border-radius, sm);
+    transition: all get($transitions, normal);
+    margin-bottom: get($spacings, xs);
+    font-family: $font-family-primary;
+    font-size: get($font-sizes, sm);
+
+    &:hover {
+        background: rgba(212, 175, 55, 0.15);
+        color: $text-secondary;
+    }
+
+    &.logout-btn:hover {
+        background: rgba(139, 0, 0, 0.2);
+        color: #f87171;
+    }
+
+    .action-icon {
+        width: 20px;
+        margin-right: get($spacings, md);
+        text-align: center;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,220 @@
+//Couleurs primaires - Or et bronze romain
+$primary-gold: #d4af37;
+$primary-bronze: #cd7f32;
+$primary-gradient: linear-gradient(135deg, $primary-gold, $primary-bronze);
+$secondary-gradient: linear-gradient(135deg, #8b4513, #a0522d);
+
+
+//Couleurs de base - Pierre, marbre et terre
+$bg-primary: #2d1810;  //Terre sombre
+$bg-secondary: #3e2723;  //Pierre brune
+$bg-tertiary: #1a0e0a;  //Terre très sombre
+$bg-card: rgba(78, 52, 46, 0.9);  //Pierre avec transparence
+$bg-glass: rgba(212, 175, 55, 0.15);  //Reflet doré
+
+
+//Couleurs de texte - Inspirées des inscriptions romaines
+$text-primary: #f4e4bc;  //Parechemin antique
+$text-secondary: #d4af37;  //Or romain
+$text-muted: #8d6e63;  //Bronze terni
+$text-white: #fff8e1;  //Blanc cassé antique
+
+
+//Couleurs d'état - Thème gladiateur
+$success: #4a7c59;  //Vert laurier de victoire
+$warning: #d4af37;  //Or d'avertissement
+$error: #8b0000;  //Rouge sang de l'arène
+$info: #6b5b95;  //Pourpre impérial
+
+
+//Couleurs de combat - Arène de gladiateurs
+$damage-normal: #cd5c5c;  //Rouge fer de lance
+$damage-special: #b8860b;  //Bronze sombre
+$damage-power: #ff4500;  //Rouge feux des dieux
+$damage-critical: #ffd700;  //Or pur des dieux
+$heal-color: #228b22;  //Vert herbes médicinales
+
+
+//Couleurs de badges - Métaux antiques
+$badge-bronze: linear-gradient(135deg, #cd7f32, #8b4513);
+$badge-silver: linear-gradient(135deg, #c0c0c0, #708090);
+$badge-gold: linear-gradient(135deg, #ffd700, #daa520);
+
+
+//======== ESPACEMENTS ========
+
+$spacing-sx: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-2xl: 40px;
+$spacing-3xl: 60px;
+
+
+//======== BORDURES ========
+
+$border-radius-sm: 8px;
+$border-radius-md: 12px;
+$border-radius-lg: 16px;
+$border-radius-xl: 20px;
+$border-radius-round: 50%;
+
+
+//======== OMBRES ANTIQUES ========
+
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+$shadow-glow: 0 0 20px rgba(212, 175, 55, 0.6);  //Lueur dorée
+
+
+//======== TYPOGRAPHIE ROMAINE ========
+
+$font-family-primary: 'Cinzel',
+'Trajan Pro',
+'Times New Roman',
+serif;
+
+$font-family-secondary: 'Cinzel Decorative',
+'Optima',
+'Times New Roman',
+serif;
+
+$font-family-mono: 'Courier New',
+monospace;
+
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 2rem;
+$font-size-4xl: 2.5rem;
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+$font-weight-black: 900;
+
+
+//======== BREAKPOINTS ========
+
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1400px;
+
+
+//======== TRANSITIONS ========
+
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+$transition-bounce: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+//======== Z-INDEX ========
+
+$z-dropdown: 100;
+$z-modal: 1000;
+$z-tooltip: 1100;
+$z-notification: 1200;
+
+
+//======== MAPS FOR EASIER ACCESS =========
+
+//Spacings map
+$spacings: (
+    xs: $spacing-xs,
+    sm: $spacing-sm,
+    md: $spacing-md,
+    lg: $spacing-lg
+    xl: $spacing-xl,
+    2xl: $spacing-2xl,
+    3xl: $spacing-3xl
+);
+
+//Font sizes map
+$font-sizes: (
+    xs: $font-size-xs,
+    sm: $font-size-sm,
+    base: $font-size-base,
+    lg: $font-size-lg,
+    xl: $font-size-xl,
+    2xl: $font-size-2xl,
+    3xl: $font-size-3xl,
+    4xl: $font-size-4xl,
+    5xl: 3rem
+);
+
+//Font weights map
+$font-weights: (
+    normal: $font-weight-normal,
+    medium: $font-weight-medium,
+    semibold: $font-weight-semibold,
+    bold: $font-weight-bold,
+    extrabold: $font-weight-extrabold,
+    black: $font-weight-black
+);
+
+//Border radius map
+$border-radius: (
+    sm: $border-radius-sm,
+    md: $border-radius-md,
+    lg: $border-radius-lg,
+    xl: $border-radius-xl,
+    2xl: 24px,
+    round: $border-radius-round
+);
+
+//Shadows map
+$shadows : (
+    sm: $shadow-sm,
+    md: $shadow-md,
+    lg: $shadow-lg,
+    xl: 0 25px 50px rgba(0, 0, 0, 0.5),
+    glow: $shadow-glow
+);
+
+//Transitions map
+$transitions: (
+    fast: $transition-fast,
+    normal: $transition-normal,
+    slow: $transition-slow,
+    bounce: $transition-bounce
+);
+
+//Z-indexes map
+$z-indexes: (
+    dropdown: $z-dropdown,
+    modal: $z-modal,
+    tooltip: $z-tooltip,
+    notification: $z-notification
+);
+
+//Breakpoints map
+$breakpoints: (
+    mobile: $breakpoint-mobile,
+    tablet: $breakpoint-tablet,
+    desktop: $breakpoint-desktop,
+    wide: $breakpoint-wide
+);
+
+//Additional variables used in components
+$secondary-blue: $info;
+
+//Badge colors for animations
+$silver-primary: #c0c0c0;
+$gold-primary: #ffd700;
+$gold-secondary: #ff1493;
+
+//Badge colors map
+$badge-colors: (
+    bronze: $badge-bronze,
+    silver: $badge-silver,
+    gold: $badge-gold
+);
