@@ -1,0 +1,244 @@
+// ========== COMPOSANTS FORMS ==========
+
+.content {
+    @include glass-effect(0.4);
+    border-radius: get($border-radius, xl);
+    padding: get($spacings, 2xl);
+    border: 1px solid $bg-glass;
+    box-shadow: get($shadows, xl);
+    min-height: 600px;
+}
+
+@include mobile {
+    padding: get($spacings, lg);
+}
+
+.section {
+    display: none;
+}
+
+&.active {
+    display: block;
+    animation: fadeInUp 0.6s cubic bezier(0.4, 0, 0.2, 1);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: get($spacings, xl);
+}
+
+h2 {
+    font-size: get($font-sizes, 2xl);
+    font-weight: get($font-weight, bold);
+    color: $text-primary;
+    margin-bottom: get($spacings, sm);
+}
+
+p {
+    color: $text-secondary;
+    font-size: get($font-sizes, lg);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: get($spacings, 2xl);
+    margin-bottom: get($spacings, xl);
+
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+}
+
+.form-group {
+    margin-bottom: get($spacings, lg);
+}
+
+label {
+    display: block;
+    margin-bottom: get($spacings, sm);
+    font-weight: get($font-weights, semibold);
+    color: $text-primary;
+    font-size: get($font-sizes, sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-input {
+    width: 100%;
+    padding: get($spacings, md) get($spacings, lg);
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(10px);
+    border: 2px solid $bg-glass;
+    border-radius: get($border-radius, md);
+    color: $text-primary;
+    font-size: get($font-sizes, base);
+    transition: all get($transitions, normal);
+
+    &:focus {
+        outline: none;
+        border-color: #ff6b9d;
+        box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.2);
+    }
+}
+
+// Avatar Catalog
+.avatar-catalog {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: get($border-radius, lg);
+    padding: get($spacings, lg);
+    border: 1px solid $bg-glass;
+    margin-top: get($spacings, md);
+}
+
+.catalog-tabs {
+    display: flex;
+    gap: get($spacings, sm);
+    margin-bottom: get($spacings, lg);
+    flex-wrap: wrap;
+}
+
+.catalog-tab {
+    padding: get($spacings, sm) get($spacings, md);
+    background: $bg-glass;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: get($border-radius, sm);
+    color: $text-secondary;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    font-size: get($font-sizes, sm);
+    font-weight: get($font-weights, medium);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: $text-primary;
+    }
+
+    &.active {
+        @include gradient-primary;
+        color: white;
+        border-color: transparent;
+    }
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: get($spacings, sm);
+    max-height: 300px;
+    overflow-y: auto;
+    padding: get($spacings, sm);
+    @include custom-scrollbar;
+}
+
+.avatar-option {
+    aspect-ratio: 1;
+    background: rgba(15, 23, 42, 0.6);
+    border: 2px solid $bg-glass;
+    border-radius: get($border-radius, md);
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    @include flex-center;
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
+
+    &.selected {
+        border-color: #ff6b9d;
+        box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.3);
+        transform: scale(1.05);
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: get($border-radius, sm);
+    }
+}
+
+// Create hero title
+.create-hero-title {
+    font-size: get($font-sizes, 4xl);
+    font-weight: get($font-weights, bold);
+    margin-bottom: get($spacings, 2xl);
+    color: $text-primary;
+    font-family: $font-family-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+
+    @include mobile {
+        font-size: get($font-sizes, 3xl);
+        margin-bottom: get($spacings, xl);
+    }
+}
+
+// Form actions container
+.form-actions {
+    display: flex;
+    gap: get($spacings, lg);
+    margin-top: get($spacings, 2xl);
+
+    @include mobile {
+        flex-direction: column;
+        grid-auto-flow: get($spacings, md);
+    }
+}
+
+// App loading status
+.app-loading-status {
+    margin-top: get($spacings, sm);
+    font-size: get($font-sizes, sm);
+    opacity: 0.8;
+    color: $info;
+    text-align: center;
+}
+
+// Hidden file input
+.hidden-file-input {
+    display: none;
+}
+
+// Bouton de création de héros stabilisés
+.form-actions .btn,
+.btn[onclick*="createHeroFromForm"],
+.btn[onclick*="randomStats"] {
+
+    // SUpprimer les transformations problématiques
+    &:hover {
+        transform: none !important;
+        // Conserver seulement les effets visuels stables
+        background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+        border-color: $primary-gold;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 248, 225, 0.6);
+    }
+
+    &:active {
+        transform: none !important;
+        background: linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    // Désactiver l'effet de brillance qui peut causer des problèmes
+
+    &::before {
+        display: none;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
