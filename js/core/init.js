@@ -29,7 +29,7 @@ export async function initHeroesArena() {
             showSection(sectionName) {
                 return this.ui.showSection(sectionName);
             },
-            
+
             showAvatarCategory(category) {
                 return this.ui.showAvatarCategory(category);
             },
@@ -218,7 +218,7 @@ export async function initHeroesArena() {
                     this.ui.showError('Impossible de renommer le héros');
                 }
             },
-            
+
             showHeroDetails(index) {
                 const hero = AppState.heroes[index];
                 if (!hero) return;
@@ -230,7 +230,7 @@ export async function initHeroesArena() {
                 const healthPercent = (hero.pv / hero.pvMax) * 100;
                 const healthColor = healthPercent > 75 ? '#10b981' :
                     healthPercent > 50 ? '#f59e0b' :
-                    healthPercent > 25 ? '#f97316' : '#ef4444';
+                        healthPercent > 25 ? '#f97316' : '#ef4444';
 
                 modal.innerHTML = `
                 <div class="modal-content hero-details-content">
@@ -409,7 +409,7 @@ export async function initHeroesArena() {
                                 case 'delete':
                                     const heroId = actionBtn.dataset.heroId;
                                     const heroName = actionBtn.dataset.heroName;
-                                    
+
                                     // Confirmation avec meilleure UX
                                     const confirmMessage = `⚠️ ATTENTION - SUPPRESSION DÉFINITIVE\n\n` +
                                         `Voulez-vous vraiment supprimer ${heroName} ?\n\n` +
@@ -465,7 +465,7 @@ export async function initHeroesArena() {
                     if (fightBtn) {
                         fightBtn.disabled = true;
                     }
-                    
+
                     // Nettoyer le log de combat
                     this.ui.clearCombatLog();
 
@@ -670,7 +670,7 @@ export async function initHeroesArena() {
         window.app = app; // Pour debug
 
         // Créer des fonctions globales simples pour les actions des héros
-        window.showHeroDetailsNow = function(index) {
+        window.showHeroDetailsNow = function (index) {
             console.log('🔍 showHeroDetailsNow appelé avec index:', index);
             console.log('🔍 app disponible:', !!app);
             console.log('🔍 app.showHeroDetails disponible:', !!(app && app.showHeroDetails));
@@ -691,7 +691,7 @@ export async function initHeroesArena() {
             }
         };
 
-        window.deleteHeroNow = function(heroIdOrIndex) {
+        window.deleteHeroNow = function (heroIdOrIndex) {
             console.log('🗑️ deleteHeroNow appelé avec:', heroIdOrIndex);
 
             // Trouver le héros pour afficher son nom
@@ -785,7 +785,7 @@ export async function initHeroesArena() {
             `;
 
             // Fermer en cliquant à l'extérieur
-            modal.onclick = function(e) {
+            modal.onclick = function (e) {
                 if (e.target === modal) {
                     modal.remove();
                 }

@@ -51,10 +51,10 @@ $size in $breakpoints {
 .heroes-grid {
     @include responsive-grid(1, 2, 3);
     gap: get($spacings, lg);
-    
+
     @include mobile {
-    gap: get($spacings, md);
-}
+        gap: get($spacings, md);
+    }
 }
 
 .stats-grid {
@@ -90,7 +90,8 @@ $size in $breakpoints {
         gap: get($spacings, lg);
     }
 
-    .hero-modal-left, .hero-avatar-large {
+    .hero-modal-left,
+    .hero-avatar-large {
         width: 120px;
         height: 120px;
     }

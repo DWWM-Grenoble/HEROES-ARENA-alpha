@@ -58,7 +58,7 @@ p {
 label {
     display: block;
     margin-bottom: get($spacings, sm);
-    font-weight: get($font-weights , semibold);
+    font-weight: get($font-weights, semibold);
     color: $text-primary;
     font-size: get($font-sizes, sm);
     text-transform: uppercase;
@@ -84,7 +84,7 @@ label {
 }
 
 // Avatar Catalog
-.avatar-catalog{
+.avatar-catalog {
     background: rgba(15, 23, 42, 0.4);
     border-radius: get($border-radius, lg);
     padding: get($spacings, lg);
@@ -110,16 +110,16 @@ label {
     font-size: get($font-sizes, sm);
     font-weight: get($font-weights, medium);
 
-&:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: $text-primary;
-}
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: $text-primary;
+    }
 
-&.active {
-    @include gradient-primary;
-    color: white;
-    border-color: transparent;
-}
+    &.active {
+        @include gradient-primary;
+        color: white;
+        border-color: transparent;
+    }
 }
 
 .avatar-grid {
@@ -141,23 +141,23 @@ label {
     transition: all get($transitions, normal);
     @include flex-center;
 
-&:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+    }
 
-&.selected {
-    border-color: #ff6b9d;
-    box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.3);
-    transform: scale(1.05);
-}
+    &.selected {
+        border-color: #ff6b9d;
+        box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.3);
+        transform: scale(1.05);
+    }
 
-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: get($border-radius, sm);
-}
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: get($border-radius, sm);
+    }
 }
 
 // Create hero title
@@ -171,10 +171,10 @@ img {
     letter-spacing: 0.1em;
     text-align: center;
 
-@include mobile {
-    font-size: get($font-sizes, 3xl);
-    margin-bottom: get($spacings, xl);
-}
+    @include mobile {
+        font-size: get($font-sizes, 3xl);
+        margin-bottom: get($spacings, xl);
+    }
 }
 
 // Form actions container
@@ -183,10 +183,10 @@ img {
     gap: get($spacings, lg);
     margin-top: get($spacings, 2xl);
 
-@include mobile {
-    flex-direction: column;
-    grid-auto-flow: get($spacings, md);
-}
+    @include mobile {
+        flex-direction: column;
+        grid-auto-flow: get($spacings, md);
+    }
 }
 
 // App loading status
@@ -204,28 +204,31 @@ img {
 }
 
 // Bouton de création de héros stabilisés
-.form-actions .btn, .btn[onclick*="createHeroFromForm"], .btn[onclick*="randomStats"] {
+.form-actions .btn,
+.btn[onclick*="createHeroFromForm"],
+.btn[onclick*="randomStats"] {
+
     // SUpprimer les transformations problématiques
     &:hover {
         transform: none !important;
         // Conserver seulement les effets visuels stables
-        background:
-        linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+        background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
         border-color: $primary-gold;
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 248, 225, 0.6);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 248, 225, 0.6);
     }
 
-&:active {
-    transform: none !important;
-    background: linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+    &:active {
+        transform: none !important;
+        background: linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-// Désactiver l'effet de brillance qui peut causer des problèmes
+    // Désactiver l'effet de brillance qui peut causer des problèmes
 
-&::before {
-    display: none;
-}
+    &::before {
+        display: none;
+    }
 }
 
 @keyframes fadeInUp {
@@ -233,7 +236,8 @@ img {
         opacity: 0;
         transform: translateY(30px);
     }
-    to{
+
+    to {
         opacity: 1;
         transform: translateY(0);
     }

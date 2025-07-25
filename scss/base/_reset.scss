@@ -1,7 +1,6 @@
 // Import des polices Google Fonts pour le thème romain
 
-@import
-url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500.600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500.600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&display=swap');
 
 * {
     margin: 0;
@@ -17,9 +16,9 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
     // Texture papyrus subtile
-    background-image: 
-    radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.1) 0%, transparent 70%),
-    radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.1) 0%, transparent 70%);
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.1) 0%, transparent 70%),
+        radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.1) 0%, transparent 70%);
 }
 
 // Scrollbar globale avec style romain
