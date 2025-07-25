@@ -23,5 +23,252 @@
     insert 0 -1px 0 rgba(0, 0, 0, 0.3);
 
     //Texture de pierre gravée
-    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+        radial-gradient(circle at 20% 30%, rgba (0, 0, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 20% 30%, rgba (0, 0, 0, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: translateY(-3px) rotateX(5deg);
+        border-color: $primary-gold;
+        box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(212, 175, 55, 0.4);
+    }
+
+    //Variants de badges - Médaillons romains
+    &.bronze-badge {
+        border-color: #cd7f32;
+        &::after {
+            content: '⚔️';
+            position: absolute;
+            top: get($spacings, sm);
+            right: get($spacings, sm);
+            font-size: get($font-sizes, lg);
+            color: #cd7f32;
+        }
+    }
+
+    &.silver-badge {
+        border-color: #c0c0c0;
+        &::after {
+            content: '🛡️';
+            position: absolute;
+            top: get($spacings, sm);
+            right: get($spacings, sm);
+            font-size: get($font-sizes, lg);
+            color: #c0c0c0;
+        }
+    }
+
+    &.gold-badge {
+        border-color: $primary-gold;
+        box-shadow:
+        get($shadows, lg),
+        0 0 30px rgba(212, 175, 55, 0.4);
+        &::after {
+            content: '👑';
+            position: absolute;
+            top: get($spacings, sm);
+            right: get($spacings, sm);
+            font-size: get($font-sizes, lg);
+            color: $primary-gold;
+        }
+    }
+
+    //Version cliquable
+    &.clickable {
+        @include card-clickable;
+    }
+
+    //Effet de survol général - correction du doublon
+    &:hover::after {
+        opacity: 1;
+    }
+
+    &::after {
+        content:'';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($primary-gold, 0.1), rgba($primary-bronze, 0.1));
+        opacity: 0;
+        transition: opacity get($transitions, normal);
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+.hero-header {
+    @include flex-between;
+    gap: get($spacings, md);
+    margin-bottom: get($spacings, lg);
+    position: relative;
+    z-index: 1;
+}
+
+.hero-avatar-container {
+    @include flex-column;
+    align-items: center;
+    margin-bottom: get($spacings, md);
+}
+
+.hero-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: get($border-radius, md);
+    background: $bg-glass;
+    @include flex-center;
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    position:relative;
+    overflow: hidden;
+    margin-bottom: get($spacings, sm);
+    box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        border-radius: calc(#{get($border-radius, md)} - 2px);
+    }
+
+    .avatar-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $primary-gradient;
+        border-radius: calc(#{get($border-radius, md)} - 2px);
+        @include flex-center;
+        color: #1a0e0a;
+        font-weight: get($font-weights, bold);
+        font-size: get($font-sizes, lg);
+        letter-spacing: 1px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.hero-info {
+    h3 {
+        font-size: get($font-sizes, 2xl);
+        font-weight: get($font-weights, bold);
+        color: $text-primary;
+        margin-bottom: 4px;
+    }
+}
+
+.hero-class {
+    background: $primary-gradient;
+    color: $text-white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: get($font-sizes, sm);
+    font-weight: get($font-weights, semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: get($spacings, md);
+    position: relative;
+    z-index: 1;
+    margin-bottom: get($spacings, md);
+}
+
+.hero-stat {
+    @include flex-between;
+    padding: get($spacings, sm) get($spacings, md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: get($border-radius, sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &-label {
+        font-size: get($font-sizes, sm);
+        color: $text-secondary;
+        font-weight: get($font-weights, medium);
+    }
+
+    &-value {
+        font-weight: ($font-weights, bold);
+        color: $text-primary;
+    }
+}
+
+.hero-level-badge {
+    background: linear-gradient(135deg, rgba($warning, 0.8), $warning);
+    color: #1f2937;
+    padding: 4px 12px;
+    border-radius: get($border-radius, md);
+    font-size: get($font-sizes, xs);
+    font-weight: get($font-weights, bold);
+    text-shadow: none;
+    box-shadow: 0 2px 8px rgba($warning, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge-indicator {
+    position: absolute;
+    top: get($spacings, sm);
+    right: get($spacings, sm);
+    padding: 4px get($spacings, sm);
+    border-radius: 6px;
+    font-size: get($font-sizes, xs);
+    font-weight: get($font-weights, bold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 2;
+
+    &.badge-bronze {
+        background: get($badge-colors, bronze);
+        color: $text-white;
+    }
+
+    &.badge-silver {
+        background: get($badge-colors, silver);
+        color: #1a1625;
+    }
+
+    &.badge-gold {
+        background: get($badge-colors, gold);
+        color: $text-white;
+        @include glow-effect($gold-primary);
+    }
+}
+
+.delete-btn {
+    position: absolute;
+    top: get($spacings, md);
+    right: get($spacings, md);
+    background: rgba($error, 0.2);
+    border: 1px solid rgba($error, 0.3);
+    color: $error;
+    width: 32px;
+    height: 32px;
+    border-radius: get($border-radius, sm);
+    @include flex-center;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    z-index: 2;
+
+    &:hover {
+        background: rgba($error, 0.3);
+        transform: scale(1.1);
+    }
 }
