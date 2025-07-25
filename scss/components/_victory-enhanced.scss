@@ -1,7 +1,8 @@
 // Enhanced Victory Modal Styles
 
 // Victory Effects
-.victory-effects, .draw-effects {
+.victory-effects,
+.draw-effects {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,16 +31,14 @@
     width: 200%;
     height: 200%;
     transform: translate(-50%, -50%);
-    background: conic-gradient(
-        from 0deg,
-        transparent,
-        rgba(255, 215, 0, 0.1),
-        transparent,
-        rgba(255, 215, 0, 0.1),
-        transparent,
-        rgba(255, 215, 0, 0.1),
-        transparent
-    );
+    background: conic-gradient(from 0deg,
+            transparent,
+            rgba(255, 215, 0, 0.1),
+            transparent,
+            rgba(255, 215, 0, 0.1),
+            transparent,
+            rgba(255, 215, 0, 0.1),
+            transparent);
     animation: victory-rays-rotate 8s linear infinite;
 }
 
@@ -50,10 +49,10 @@
     right: 0;
     height: 100%;
     background:
-    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.8) 2px, transparent 2px),
-    radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.8) 2px, transparent 2px),
-    radial-gradient(circle at 60% 80%, rgba(16, 185, 129, 0.8) 2px, transparent 2px),
-    radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.8) 2px, transparent 2px);
+        radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.8) 2px, transparent 2px),
+        radial-gradient(circle at 80% 20%, rgba(220, 38, 38, 0.8) 2px, transparent 2px),
+        radial-gradient(circle at 60% 80%, rgba(16, 185, 129, 0.8) 2px, transparent 2px),
+        radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.8) 2px, transparent 2px);
     background-size: 100px 100px;
     animation: confetti-fall 3s ease-in-out infinite;
 }
@@ -65,8 +64,8 @@
     right: 0;
     bottom: 0;
     background:
-    radial-gradient(circle at 25% 25% rgba(255, 215, 0, 0.6) 1px, transparent 1px),
-    radial-gradient(circle at 75% 75% rgba(255, 215, 0, 0.4) 1px, transparent 1px);
+        radial-gradient(circle at 25% 25% rgba(255, 215, 0, 0.6) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75% rgba(255, 215, 0, 0.4) 1px, transparent 1px);
     background-size: 50px 50px;
     animation: sparkle-twinkle 2s ease-in-out infinite alternate;
 }
@@ -78,29 +77,31 @@
     right: 0;
     bottom: 0;
     background:
-    radial-gradient(circle at 40% 40% rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-    radial-gradient(circle at 60% 60% rgba(212, 175, 55, 0.6) 1px, transparent 1px);
+        radial-gradient(circle at 40% 40% rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+        radial-gradient(circle at 60% 60% rgba(212, 175, 55, 0.6) 1px, transparent 1px);
     background-size: 80px 80px;
     animation: particles-dance 3s ease-in-out infinite;
 }
 
 // Enhanced Modal Content
-.victory-result, .draw-result {
+.victory-result,
+.draw-result {
     position: relative;
     background:
-    linear-gradient(135des, rgba(15, 23, 42,0.95), rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+        linear-gradient(135des, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
     border: 3px solid;
     border-image: linear-gradient(135deg, #ffd700, #d4af37, #b8860b) 1;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 215, 0, 0.2), 0 0 50px rgba(255, 215, 0, 0.3);
 }
 
 //Victory Header Enhanced
-.combat-result-header.victory.enhanced, .combat-result-header.draw.enhanced {
+.combat-result-header.victory.enhanced,
+.combat-result-header.draw.enhanced {
     position: relative;
     text-align: center;
     padding: 2rem;
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rga(212, 175, 55, 0.1));
-    border-bottom: 2px solid rgba(255, 215,0, 0.3);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
     z-index: 2;
 }
 
@@ -116,7 +117,7 @@
     left: -10px;
     right: -10px;
     bottom: -10px;
-    background: radial-gradient(circle, rgba(255, 215,0, 0.4) transparent);
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.4) transparent);
     border-radius: 50%;
     animation: crown-pulse 2s ease-in-out infinite;
 }
@@ -191,11 +192,13 @@
     padding: 2rem;
 }
 
-.winner-section.enhanced, .loser-section.enhanced {
+.winner-section.enhanced,
+.loser-section.enhanced {
     text-align: center;
 }
 
-.champion-banner, .honor-banner {
+.champion-banner,
+.honor-banner {
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -248,13 +251,14 @@
         bottom: -8px;
         border-radius: 50%;
         z-index: -1;
-        
+
         &.winner-glow {
             background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
             animation: gentle-glow-pulse 2s ease-in-out infinite;
         }
 
-        &.loser-glow, &.draw-glow {
+        &.loser-glow,
+        &.draw-glow {
             background: radial-gradient(circle, rgba(107, 114, 128, 0.4), transparent);
             animation: gentle-glow 3s ease-in-out infinite;
         }
@@ -267,16 +271,16 @@
         right: -15px;
         bottom: -15px;
         border-radius: 50%;
-        background: conic-gradient(
-            from 0deg,
-            rgba(255, 215, 0, 0.3), rgba(255, 255, 255, 0.2), rgba(255, 215, 0, 3)
-        );
+        background: conic-gradient(from 0deg,
+                rgba(255, 215, 0, 0.3), rgba(255, 255, 255, 0.2), rgba(255, 215, 0, 3));
         animation: aura-rotate 4s liner infinite;
         z-index: -2;
     }
 }
 
-.hero-winner-name, .hero-loser-name, .hero-draw-name {
+.hero-winner-name,
+.hero-loser-name,
+.hero-draw-name {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
@@ -287,11 +291,14 @@
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-.hero-loser-name, .hero-draw-name {
+.hero-loser-name,
+.hero-draw-name {
     color: #e2e8f0;
 }
 
-.winner-class, .loser-class, .hero-draw-class {
+.winner-class,
+.loser-class,
+.hero-draw-class {
     padding: 0.3rem 1rem;
     border-radius: 15px;
     font-size: 0.9rem;
@@ -306,13 +313,15 @@
     color: #000,
 }
 
-.loser-class, .hero-draw-class {
+.loser-class,
+.hero-draw-class {
     background: linear-gradient(135deg, #6b7280, #4b5563);
     color: #fff;
 }
 
 // Victory Stats
-.victory-stats, .defeat-stats {
+.victory-stats,
+.defeat-stats {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -324,22 +333,24 @@
         gap: 0.5rem;
         justify-content: center;
 
-    .stat-icon {
-        font-size: 1.2rem;
-    }
+        .stat-icon {
+            font-size: 1.2rem;
+        }
 
-    .stat-text {
-        font-size: 0.9rem;
-        font-weight: 600;
+        .stat-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
     }
 }
-}
 
-.victory-stats, .stat-text {
+.victory-stats,
+.stat-text {
     color: #ffd700;
 }
 
-.defeat-stats, .stat-text {
+.defeat-stats,
+.stat-text {
     color: #9ca3af;
 }
 
@@ -411,7 +422,8 @@
 }
 
 // Victory Messages
-.victory-message, .draw-message {
+.victory-message,
+.draw-message {
     text-align: center;
     padding: 1.5rem;
     background: rgba(255, 215, 0, 0.1);
@@ -420,8 +432,11 @@
     margin-bottom: 2rem;
 }
 
-.victory-proclamation, .honor-text {
-    .main-victory, .main-honor {
+.victory-proclamation,
+.honor-text {
+
+    .main-victory,
+    .main-honor {
         font-size: 1.4rem;
         font-weight: bold;
         color: #ffd700;
@@ -429,7 +444,8 @@
         text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
 
-    .sub-victory, .sub-honor {
+    .sub-victory,
+    .sub-honor {
         font-size: 1rem;
         color: #e2e8f0;
         font-style: italic;
@@ -471,96 +487,193 @@
 
 // Animations
 @keyframes crown-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale (1.1); opacity: 1; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale (1.1);
+        opacity: 1;
+    }
 }
 
 @keyframes crown-bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-10px);
+    }
 }
 
 @keyframes crown-sway {
-    0% { transform: rotate(-5deg); }
-    100% { transform: rotate(-5deg); }
+    0% {
+        transform: rotate(-5deg);
+    }
+
+    100% {
+        transform: rotate(-5deg);
+    }
 }
 
 @keyframes title-glow {
-    0% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
-    100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.8); }
+    0% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    100% {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.8);
+    }
 }
 
 @keyframes victory-rays-rotate {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 @keyframes sparkle-float {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px);}
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-20px);
+    }
 }
 
 @keyframes confetti-fall {
-    0% { transform: translateY(-100%); opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
+    0% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
 }
 
 @keyframes sparkle-twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 0.8; }
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
 }
 
 @keyframes particles-dance {
-    0%, 100% { transform: translate(0, 0); }
-    33% { transform: translate(10px, -10px); }
-    66% { transform: translate(-10px, 10px); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    33% {
+        transform: translate(10px, -10px);
+    }
+
+    66% {
+        transform: translate(-10px, 10px);
+    }
 }
 
 @keyframes winner-glow-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.2); opacity: 1;}
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
 }
 
 @keyframes gentle-glow {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 @keyframes aura-rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }    
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes vs-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 @keyframes emblem-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes champion-button-glow {
-    0% { box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3) !important; }
-    100% { box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6) !important; }
+    0% {
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3) !important;
+    }
+
+    100% {
+        box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6) !important;
+    }
 }
 
 // Responsive Design
 @media (max-width: 768px) {
-    .battle-showcase, .draw-heroes-display {
+
+    .battle-showcase,
+    .draw-heroes-display {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
         gap: 1rem;
 
-    .vs-divider.enhanced, .draw-vs-symbol {
-        order: 2;
-        margin: 1rem 0;
-    }
+        .vs-divider.enhanced,
+        .draw-vs-symbol {
+            order: 2;
+            margin: 1rem 0;
+        }
 
-    .loser-section.enhanced {
-        order: 3;
-    }
+        .loser-section.enhanced {
+            order: 3;
+        }
     }
 
     .victory-title.animated {
