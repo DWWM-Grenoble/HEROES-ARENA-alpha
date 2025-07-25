@@ -1,0 +1,264 @@
+//================ ANIMATIONS : base/_animations.scss ===============
+
+//Animations de combat
+
+@keyframes defendshake {
+
+    0%,
+    100%{
+        transform: translateX(0);
+    }
+
+    25%{
+        transform: translateX(-5px);
+    }
+
+    75%{
+        transform: translateX(5px);
+    }
+}
+
+@keyframes victoryDance {
+
+    0%,
+    100%{
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    25%{
+        transform: translateY(-10px) rotate(5deg);
+    }
+
+    50%{
+        transform: translateY(-5px) rotate(-3deg);
+    }
+
+    75%{
+        transform: translateY(-8px) rotate(2deg);
+    }
+}
+
+@keyframes defeatFade {
+    0%{
+        opacity: 1;
+        transform: scale(1);
+        filter: grayscale(0);
+    }
+
+    100%{
+        opacity: 0.3;
+        transform: scale(0.95);
+        filter: grayscale(1);
+    }
+}
+
+@keyframes healthGlint {
+    0%{
+        left: -100%;
+    }
+
+    100%{
+        left: 100%;
+    }
+}
+
+//Animations de badge
+
+@keyframes silverPulse{
+
+    0%,
+    100%{
+        box-shadow: 0 0 25px rgba($silver-primary, 0.4);
+    }
+
+    50%{
+        box-shadow: 0 0 35px rgba($silver-primary, 0.6);
+    }
+}
+
+@keyframes goldShimmer{
+    0%{
+        box-shadow: 0 0 30px rgba($gold-primary, 0.5);
+    }
+
+    50%{
+        box-shadow: 0 0 40px rgba($gold-primary, 0.7), 0 0 60px rgba(gold-secondary, 0.3);
+    }
+
+    100%{
+        box-shadow: 0 0 30px rgba($gold-primary, 0.5);
+    }
+}
+
+@keyframes goldRotate {
+    0%{
+        transform: rotate(0deg);
+    }
+
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
+//Animations de dégâts
+
+@keyframes damageFloat{
+    0%{
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+
+    50%{
+        opacity: 1;
+        transform: translateY(-30px) scale(1.2);
+    }
+
+    100%{
+        opacity: 0;
+        transform: translateY(-60px) scale(0.8);
+    }
+}
+
+@keyframes healFloat{
+    0%{
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+        color: #7dd88f
+    }
+
+    50%{
+        opacity: 1;
+        transform: translateY(-25px) scale(1.1);
+        color: $heal-color;
+    }
+
+    100%{
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+        color: #5db069;
+    }
+}
+
+//Animations générales
+
+@keyframes fadeInUp{
+    from{
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalSlideIn{
+    from{
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+
+    to{
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes fadeIn{
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
+
+@keyframes slideIn{
+    from{
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+
+    to{
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+//Classes d'animation et effets de combat
+
+.fade-in{
+    @include fade-in;
+}
+
+.fighter-display{
+    transition: all get($transition, normal);
+    position: relative;
+
+    &.attacking{
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba($error, 0.6);
+    }
+
+    &.defending{
+        animation: defendShake 0.4s ease-in-out;
+    }
+
+    &.victory{
+        animation: victoryDance 2s ease-in-out;
+    }
+
+    &.defeat{
+        animation: defeatFade 1.5s ease-out forwards;
+    }
+}
+
+//Canvas effets
+
+#combatEffectsCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.damage-number{
+    position: absolute;
+    font-weight: get($font-weights, bold);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 200;
+    user-select: none;
+
+    &.damage-normal{
+        color: $damage-normal;
+        font-size: get($font-sizes, 2xl);
+        animation: damageFloat 1.5s ease-out forwards;
+    }
+
+    &.damage-special{
+        color: $damage-special;
+        font-size: get($font-sizes, 2xl);
+        animation: damageFloat 1.8s ease-out forwards;
+    }
+
+    &.damage-power{
+        color: $damage-power;
+        font-size: get($font-sizes, 3xl);
+        animation: damageFloat 2s ease-out forwards;
+        text-shadow: 0 0 10px currentColor;
+    }
+
+    &.damage-critical{
+        color: $damage-critical;
+        font-size: get($font-sizes, 4xl);
+        animation: damageFloat 2.2s ease-out forwards;
+        text-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+    }
+
+    &.damage-heal{
+        color: $heal-color;
+        font-size: get($font-sizes, 2xl);
+        animation: healFloat 1.8s ease-out forwards;
+    }
+}
