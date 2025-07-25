@@ -1,0 +1,194 @@
+//scss/components/_buttons.scss
+
+//=========================COMPOSANT BOUTONS ROMAINS : components/_buttons.scss========================
+
+.btn {
+    // Style bouton romain sculpté
+    background:
+        linear-gradient(135deg, $primary-gold 0%, $primary-bronze 50%, $primary-gold 100%);
+    padding: get($spacing, md) get($spacing, xl);
+    border-radius: get($border-radius, sm);
+    border: 2px solid #a0522d;
+    font-family: $font-family-primary;
+    font-size: get($font-size, base);
+    font-weight: get($font-weights, bold);
+    color: #1a0e0a;
+    cursor: pointer;
+    transition: all get($transitions-normal);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+    box-shadow:
+
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 248, 255, 0.4),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: translateY(-50%);
+        transition: left 0.6s ease;
+    }
+
+    &:hover {
+        border-color: $primary-gold;
+        box-shadow:
+            0 6px 16px rgba(0, 0, 0, 0.4),
+            0 0 20ppx rgba(212, 175, 55, 0.3),
+            inset 0 1px 0 rgba(255, 248, 255, 0.5);
+        background:
+            linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    &:active {
+        box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.4),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        background:
+            linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+    }
+
+    &:disabled {
+        background: linear-gradient(135deg, #8d6e63, #5d4037);
+        color: rgba(244, 228, 188, 0.5);
+        border-color: #5d4037;
+        cursor: not-allowed;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        opacity: 0.7;
+
+    }
+}
+
+.btn-secondary {
+    background: $bg-glass;
+    color: $text-primary;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+}
+
+//File Management 
+.file-management-section {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid $bg-glass;
+    border-radius: get($border-radius, md);
+    padding: get($spacings, lg);
+    margin: get($spacings, lg) 0;
+
+
+    h3 {
+        margin: 0 0 15px 0;
+        color: white;
+        font-size: get($font-size, lg);
+    }
+}
+
+.file-buttons {
+    display: flex;
+    gap: get($spacings, sm);
+    flex-wrap: wrap;
+}
+
+.file-button {
+    background: linear-gradient(135deg, $info, #1d4ed8);
+    color: white;
+    border: none;
+    padding: get($spacings, sm) get($spacings, md);
+    border-radius: get($border-radius, sm);
+    cursor: pointer;
+    font-weight: get($font-weight, semibold);
+    transition: all 0.2s ease;
+    font-size: get($font-sizes, sm);
+
+    &:hover {
+        box-shadow: 0 5px 15px rgba($info, 0.4);
+        filter: brightness(1.1);
+    }
+
+    &.save {
+        background: linear-gradient(135deg, $success, #059669);
+    }
+
+    &.load {
+        background: linear-gradient(135deg, $warning, #d97706);
+    }
+
+    &.export {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    &.danger {
+        background: linear-gradient(135deg, $error, #dc2626);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: none;
+    }
+}
+
+//Règles spéciales pour stabiliser les boutons de fonctionnalité importante
+// Ces boutons ne doivent jamais avoir d'effets de transformation qui perturbent le clic
+.btn.stable-btn,
+button[id*="fightBtn"],
+button[id*="createBtn"],
+button[onclik*="resetArena"],
+button[onclik*="stopCombat"],
+button[onclik*="randomStats"],
+button[onclick*="createHeroFromForm"],
+button[onclick*="startCombat"] {
+
+    &:hover {
+
+        //Supprimer complètement les transformations
+        transform: none !important;
+        //Conserver uniquement les effets visuels sûrs
+        background:
+            linear-gradient((135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%));
+        border-color: $primary-gold;
+        box-shadow:
+            0 0 20px rgba(212, 175, 55, 0.6),
+            0 4px 12px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 248, 225, 0.7);
+        filter: brightness(1.05);
+    }
+
+    &:active {
+        transform: none !important;
+
+        background:
+            linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.5),
+            inset 0 3px 6px rgba(0, 0, 0, 0.3);
+        filter: brightness(0.95)
+    }
+
+    &:focus {
+        transform: none !important;
+        outline: none;
+        box-shadow:
+            0 0 0 3px rgba(212, 175, 55, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    //Désactiver l'animation de brillance qui peut interférer
+    &::before {
+        display: none !important;
+    }
+}
