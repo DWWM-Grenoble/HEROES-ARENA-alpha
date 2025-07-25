@@ -1,0 +1,18 @@
+/* Error: expected ")".
+ *     ,
+ * 136 |     xl: $spacing-xl,
+ *     |       ^
+ *     '
+ *   scss\abstracts\_variables.scss 136:7  @import
+ *   scss\main.scss 5:9                    root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: expected ")".\a     \2577 \a 136 \2502      xl: $spacing-xl,\d\a     \2502        ^\a     \2575 \a   scss\\abstracts\\_variables.scss 136:7  @import\a   scss\\main.scss 5:9                    root stylesheet';
+}

@@ -7,20 +7,11 @@
   background:
     // texture de pierre antique
     radial-gradient(
-      ellipse at 30% 40%,
-      rgba(139, 69, 19, 0.4) 0%,
-      transparent 60%
-    ),
+      ellipse at 30% 40%, rgba(139, 69, 19, 0.4) 0%, transparent 60%),
     radial-gradient(
-      ellipse at 70% 20%,
-      rgba(205, 127, 50, 0.3) 0%,
-      transparent 50%
-    ),
+      ellipse at 70% 20%,rgba(205, 127, 50, 0.3) 0%, transparent 50%),
     radial-gradient(
-      ellipse at 30% 40%,
-      rgba(160, 82, 45, 0.3) 0%,
-      transparent 40%
-    ),
+      ellipse at 30% 40%,rgba(160, 82, 45, 0.3) 0%,transparent 40%),
     // dégradés terre et pierre
     linear-gradient(135deg, bg-primary 0%, bg-tertiary 50%, bg-secondary 100%),
     // texture de marbre subtile
