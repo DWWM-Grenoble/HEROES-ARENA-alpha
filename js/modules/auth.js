@@ -1059,6 +1059,83 @@ class AuthSystem {
         
         return false;
     }
+    
+    /**
+     * Mettre à jour le profil de l'utilisateur connecté
+     */
+    updateUserProfile(updatedUserData) {
+        if (!this.currentUser) {
+            return { success: false, error: 'Utilisateur non connecté' };
+        }
+        
+        // Validation des données
+        if (!updatedUserData.username || !updatedUserData.email) {
+            return { success: false, error: 'Nom d\'utilisateur et email requis' };
+        }
+        
+        // Vérifier que le nom d'utilisateur n'est pas déjà pris par un autre utilisateur
+        const existingUser = this.users.find(u => 
+            u.username.toLowerCase() === updatedUserData.username.toLowerCase() && 
+            u.id !== this.currentUser.id
+        );
+        
+        if (existingUser) {
+            return { success: false, error: 'Ce nom d\'utilisateur est déjà pris' };
+        }
+        
+        // Vérifier que l'email n'est pas déjà pris par un autre utilisateur
+        const existingEmail = this.users.find(u => 
+            u.email.toLowerCase() === updatedUserData.email.toLowerCase() && 
+            u.id !== this.currentUser.id
+        );
+        
+        if (existingEmail) {
+            return { success: false, error: 'Cet email est déjà utilisé' };
+        }
+        
+        try {
+            // Trouver l'utilisateur dans la liste
+            const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
+            if (userIndex === -1) {
+                return { success: false, error: 'Utilisateur non trouvé' };
+            }
+            
+            // Mettre à jour les données utilisateur
+            const updatedUser = {
+                ...this.users[userIndex],
+                username: updatedUserData.username,
+                email: updatedUserData.email,
+                displayName: updatedUserData.displayName || updatedUserData.username,
+                bio: updatedUserData.bio || '',
+                avatar: updatedUserData.avatar || this.users[userIndex].avatar,
+                lastModified: new Date().toISOString()
+            };
+            
+            // Sauvegarder dans la liste des utilisateurs
+            this.users[userIndex] = updatedUser;
+            
+            // Mettre à jour l'utilisateur actuel
+            this.currentUser = updatedUser;
+            
+            // Sauvegarder les modifications
+            if (this.saveUsers()) {
+                // Sauvegarder l'utilisateur actuel
+                localStorage.setItem('heroesArena_currentUser', JSON.stringify(this.currentUser));
+                
+                // Mettre à jour l'interface
+                this.updateUserCard();
+                
+                console.log('✅ Profil utilisateur mis à jour avec succès');
+                return { success: true, user: this.currentUser };
+            } else {
+                return { success: false, error: 'Erreur lors de la sauvegarde' };
+            }
+            
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour du profil:', error);
+            return { success: false, error: 'Erreur interne lors de la mise à jour' };
+        }
+    }
 }
 
 // Créer l'instance globale du système d'authentification
@@ -1081,6 +1158,7 @@ window.HeroesAuth = {
     getCurrentUser: () => authSystem.getCurrentUser(),
     getUserHeroes: () => authSystem.getUserHeroes(),
     saveUserHeroes: (heroes) => authSystem.saveUserHeroes(heroes),
+    updateUserProfile: (userData) => authSystem.updateUserProfile(userData),
     updateUserCard: () => authSystem.updateUserCard(),
     refreshUserStats: () => authSystem.refreshUserStats()
 };

@@ -167,10 +167,14 @@ window.toggleUserMenu = function() {
 };
 
 /**
- * Afficher le profil utilisateur (fonctionnalité à venir)
+ * Afficher le profil utilisateur
  */
 window.showUserProfile = function() {
-    alert('Fonctionnalité de profil à venir !');
+    if (window.HeroesArena && window.HeroesArena.ui && window.HeroesArena.ui.showUserProfileModal) {
+        window.HeroesArena.ui.showUserProfileModal();
+    } else {
+        console.error('Interface utilisateur non disponible');
+    }
 };
 
 /**

@@ -747,6 +747,311 @@ export class UIManager {
         this.updateFighterSelectors();
         this.updateFighterDisplay();
     }
+    
+    /**
+     * Afficher la modal d'édition de profil utilisateur
+     */
+    showUserProfileModal() {
+        const currentUser = HeroesAuth.getCurrentUser();
+        if (!currentUser) {
+            this.showError('Utilisateur non connecté');
+            return;
+        }
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay user-profile-modal';
+        modal.innerHTML = `
+            <div class="modal-content user-profile-content">
+                <div class="modal-header">
+                    <h2>✏️ Éditer le Profil</h2>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="profile-edit-form">
+                        <!-- Section Avatar -->
+                        <div class="profile-section">
+                            <h3>👤 Avatar</h3>
+                            <div class="current-avatar-display">
+                                <div class="user-avatar-large" id="profileCurrentAvatar">
+                                    ${currentUser.avatar ? 
+                                        `<img src="assets/avatars/${currentUser.avatar}" alt="Avatar actuel">` :
+                                        `<span class="user-initials">${currentUser.username.charAt(0).toUpperCase()}</span>`
+                                    }
+                                </div>
+                                <button class="btn btn-secondary" onclick="window.HeroesArena.ui.showAvatarSelector()">
+                                    Changer d'Avatar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Informations personnelles -->
+                        <div class="profile-section">
+                            <h3>📝 Informations Personnelles</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="profileUsername">Nom d'utilisateur</label>
+                                    <input type="text" id="profileUsername" class="form-input" 
+                                           value="${currentUser.username}" maxlength="20">
+                                    <small class="form-help">3-20 caractères, lettres, chiffres, _ et - seulement</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="profileEmail">Email</label>
+                                    <input type="email" id="profileEmail" class="form-input" 
+                                           value="${currentUser.email}">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="profileDisplayName">Nom d'affichage</label>
+                                    <input type="text" id="profileDisplayName" class="form-input" 
+                                           value="${currentUser.displayName || currentUser.username}" maxlength="30">
+                                    <small class="form-help">Nom qui apparaîtra dans le jeu</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="profileBio">Bio / Description</label>
+                                    <textarea id="profileBio" class="form-input" rows="3" maxlength="200"
+                                              placeholder="Parlez-nous de vous...">${currentUser.bio || ''}</textarea>
+                                    <small class="form-help">Maximum 200 caractères</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section Statistiques (lecture seule) -->
+                        <div class="profile-section">
+                            <h3>📊 Statistiques</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-icon">📅</span>
+                                    <span class="stat-label">Membre depuis</span>
+                                    <span class="stat-value">${new Date(currentUser.joinDate).toLocaleDateString('fr-FR')}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">🦸</span>
+                                    <span class="stat-label">Héros créés</span>
+                                    <span class="stat-value">${currentUser.heroCount || 0}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">🏆</span>
+                                    <span class="stat-label">Victoires totales</span>
+                                    <span class="stat-value">${currentUser.totalWins || 0}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">⚔️</span>
+                                    <span class="stat-label">Combats totaux</span>
+                                    <span class="stat-value">${(currentUser.totalWins || 0) + (currentUser.totalLosses || 0)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">
+                        Annuler
+                    </button>
+                    <button class="btn btn-primary" onclick="window.HeroesArena.ui.saveUserProfile()">
+                        💾 Sauvegarder
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Fermeture avec Échap
+        const closeOnEscape = (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', closeOnEscape);
+            }
+        };
+        document.addEventListener('keydown', closeOnEscape);
+    }
+    
+    /**
+     * Afficher le sélecteur d'avatar pour le profil utilisateur
+     */
+    showAvatarSelector() {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay avatar-selector-modal';
+        modal.innerHTML = `
+            <div class="modal-content avatar-selector-content">
+                <div class="modal-header">
+                    <h2>🎭 Choisir un Avatar</h2>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="avatar-categories">
+                        <button class="catalog-tab active" onclick="window.HeroesArena.ui.showProfileAvatarCategory('guerriers')">Guerriers</button>
+                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('mages')">Mages</button>
+                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('archers')">Archers</button>
+                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('paladins')">Paladins</button>
+                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('assassins')">Assassins</button>
+                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('druides')">Druides</button>
+                    </div>
+                    
+                    <div class="avatar-grid" id="profileAvatarGrid">
+                        <!-- Les avatars seront générés ici -->
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="this.closest('.modal-overlay').remove()">
+                        Annuler
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Initialiser avec la première catégorie
+        this.showProfileAvatarCategory('guerriers');
+    }
+    
+    /**
+     * Afficher une catégorie d'avatars pour le profil
+     */
+    showProfileAvatarCategory(category) {
+        const avatarGrid = document.getElementById('profileAvatarGrid');
+        if (!avatarGrid) return;
+        
+        // Mettre à jour les onglets
+        document.querySelectorAll('.catalog-tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelector(`[onclick*="${category}"]`)?.classList.add('active');
+        
+        // Importer la config des avatars
+        import('../core/config.js').then(({ avatarCatalog }) => {
+            if (!avatarCatalog[category]) return;
+            
+            avatarGrid.innerHTML = avatarCatalog[category].map(avatar => `
+                <div class="avatar-option" onclick="window.HeroesArena.ui.selectProfileAvatar('${avatar}')">
+                    <img src="assets/avatars/${avatar}" alt="${avatar}" loading="lazy">
+                </div>
+            `).join('');
+        });
+    }
+    
+    /**
+     * Sélectionner un avatar pour le profil
+     */
+    selectProfileAvatar(avatarPath) {
+        // Mettre à jour l'affichage de l'avatar dans la modal de profil
+        const currentAvatarDisplay = document.getElementById('profileCurrentAvatar');
+        if (currentAvatarDisplay) {
+            currentAvatarDisplay.innerHTML = `<img src="assets/avatars/${avatarPath}" alt="Avatar sélectionné">`;
+            currentAvatarDisplay.dataset.selectedAvatar = avatarPath;
+        }
+        
+        // Fermer le sélecteur d'avatar
+        document.querySelector('.avatar-selector-modal')?.remove();
+    }
+    
+    /**
+     * Sauvegarder le profil utilisateur
+     */
+    saveUserProfile() {
+        const currentUser = HeroesAuth.getCurrentUser();
+        if (!currentUser) {
+            this.showError('Utilisateur non connecté');
+            return;
+        }
+        
+        // Récupérer les valeurs des champs
+        const username = document.getElementById('profileUsername')?.value.trim();
+        const email = document.getElementById('profileEmail')?.value.trim();
+        const displayName = document.getElementById('profileDisplayName')?.value.trim();
+        const bio = document.getElementById('profileBio')?.value.trim();
+        const selectedAvatar = document.getElementById('profileCurrentAvatar')?.dataset.selectedAvatar;
+        
+        // Validation
+        if (!username || username.length < 3 || username.length > 20) {
+            this.showError('Le nom d\'utilisateur doit contenir entre 3 et 20 caractères');
+            return;
+        }
+        
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            this.showError('Email invalide');
+            return;
+        }
+        
+        if (displayName && displayName.length > 30) {
+            this.showError('Le nom d\'affichage ne peut pas dépasser 30 caractères');
+            return;
+        }
+        
+        if (bio && bio.length > 200) {
+            this.showError('La bio ne peut pas dépasser 200 caractères');
+            return;
+        }
+        
+        // Sauvegarder les modifications
+        const updatedUser = {
+            ...currentUser,
+            username,
+            email,
+            displayName: displayName || username,
+            bio,
+            avatar: selectedAvatar || currentUser.avatar,
+            lastModified: new Date().toISOString()
+        };
+        
+        // Mettre à jour via le système d'authentification
+        if (HeroesAuth.updateUserProfile) {
+            const result = HeroesAuth.updateUserProfile(updatedUser);
+            if (result.success) {
+                this.showSuccess('Profil mis à jour avec succès !');
+                document.querySelector('.user-profile-modal')?.remove();
+                
+                // Mettre à jour l'affichage de la carte utilisateur
+                this.updateUserCardDisplay();
+            } else {
+                this.showError(result.error || 'Erreur lors de la sauvegarde');
+            }
+        } else {
+            this.showError('Fonction de mise à jour non disponible');
+        }
+    }
+    
+    /**
+     * Mettre à jour l'affichage de la carte utilisateur
+     */
+    updateUserCardDisplay() {
+        const currentUser = HeroesAuth.getCurrentUser();
+        if (!currentUser) return;
+        
+        // Mettre à jour le nom
+        const usernameElement = document.getElementById('currentUsername');
+        if (usernameElement) {
+            usernameElement.textContent = currentUser.displayName || currentUser.username;
+        }
+        
+        // Mettre à jour l'avatar
+        const userInitials = document.getElementById('userInitials');
+        if (userInitials) {
+            if (currentUser.avatar) {
+                userInitials.style.display = 'none';
+                userInitials.parentElement.style.backgroundImage = `url('assets/avatars/${currentUser.avatar}')`;
+                userInitials.parentElement.style.backgroundSize = 'cover';
+                userInitials.parentElement.style.backgroundPosition = 'center';
+            } else {
+                userInitials.textContent = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+                userInitials.style.display = 'flex';
+                userInitials.parentElement.style.backgroundImage = 'none';
+            }
+        }
+        
+        // Mettre à jour l'email
+        const emailElement = document.getElementById('userEmail');
+        if (emailElement) {
+            emailElement.textContent = currentUser.email;
+        }
+    }
 }
 
 export const uiManager = new UIManager();

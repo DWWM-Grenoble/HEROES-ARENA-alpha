@@ -1120,3 +1120,297 @@
         min-height: 120px;
     }
 }
+
+// ========== MODAL D'ÉDITION DE PROFIL UTILISATEUR ==========
+
+.user-profile-modal {
+    .modal-content {
+        max-width: 700px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+.user-profile-content {
+    .modal-header {
+        background: linear-gradient(135deg, rgba(26, 22, 18, 0.9) 0%, rgba(15, 13, 10, 0.95) 100%);
+        border-bottom: 2px solid $primary-gold;
+        
+        h2 {
+            color: $primary-gold;
+            font-family: $font-family-secondary;
+            text-align: center;
+            margin: 0;
+            padding: get($spacings, md) 0;
+        }
+    }
+}
+
+.profile-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: get($spacings, xl);
+    padding: get($spacings, lg);
+}
+
+.profile-section {
+    background: rgba(15, 15, 15, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: get($border-radius, md);
+    padding: get($spacings, lg);
+    
+    h3 {
+        color: $primary-gold;
+        font-family: $font-family-secondary;
+        margin-bottom: get($spacings, md);
+        padding-bottom: get($spacings, sm);
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        display: flex;
+        align-items: center;
+        gap: get($spacings, sm);
+    }
+}
+
+.current-avatar-display {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, lg);
+    margin-bottom: get($spacings, md);
+    
+    @include mobile {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.user-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid $primary-gold;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
+    box-shadow: 
+        0 0 20px rgba(212, 175, 55, 0.3),
+        inset 0 2px 0 rgba(212, 175, 55, 0.2);
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .user-initials {
+        font-size: get($font-sizes, xl);
+        font-weight: get($font-weights, bold);
+        color: $primary-gold;
+        text-transform: uppercase;
+    }
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: get($spacings, lg);
+    
+    @include mobile {
+        grid-template-columns: 1fr;
+        gap: get($spacings, md);
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: get($spacings, sm);
+    
+    label {
+        color: $text-secondary;
+        font-weight: get($font-weights, semibold);
+        font-size: get($font-sizes, sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .form-input {
+        padding: get($spacings, md);
+        background: rgba(10, 10, 10, 0.6);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: get($border-radius, sm);
+        color: $text-primary;
+        font-family: $font-family-primary;
+        transition: all get($transitions, normal);
+        
+        &:focus {
+            outline: none;
+            border-color: $primary-gold;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        &::placeholder {
+            color: $text-muted;
+        }
+    }
+    
+    textarea.form-input {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .form-help {
+        color: $text-muted;
+        font-size: get($font-sizes, xs);
+        font-style: italic;
+    }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: get($spacings, md);
+    
+    @include mobile {
+        grid-template-columns: repeat(2, 1fr);
+        gap: get($spacings, sm);
+    }
+    
+    @include xs {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, sm);
+    padding: get($spacings, md);
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: get($border-radius, sm);
+    
+    .stat-icon {
+        font-size: get($font-sizes, lg);
+        flex-shrink: 0;
+    }
+    
+    .stat-label {
+        color: $text-muted;
+        font-size: get($font-sizes, sm);
+        flex: 1;
+    }
+    
+    .stat-value {
+        color: $primary-gold;
+        font-weight: get($font-weights, bold);
+        font-size: get($font-sizes, base);
+    }
+}
+
+// ========== MODAL DE SÉLECTION D'AVATAR ==========
+
+.avatar-selector-modal {
+    .modal-content {
+        max-width: 600px;
+        max-height: 80vh;
+    }
+}
+
+.avatar-selector-content {
+    .modal-header {
+        text-align: center;
+        
+        h2 {
+            color: $primary-gold;
+            font-family: $font-family-secondary;
+        }
+    }
+}
+
+.avatar-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: get($spacings, xs);
+    margin-bottom: get($spacings, lg);
+    justify-content: center;
+    
+    .catalog-tab {
+        padding: get($spacings, sm) get($spacings, md);
+        background: rgba(78, 52, 46, 0.6);
+        border: 1px solid rgba(205, 127, 50, 0.3);
+        border-radius: get($border-radius, sm);
+        color: $text-muted;
+        cursor: pointer;
+        transition: all get($transitions, normal);
+        font-family: $font-family-primary;
+        font-size: get($font-sizes, sm);
+        font-weight: get($font-weights, medium);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        
+        &:hover {
+            background: rgba(212, 175, 55, 0.2);
+            color: $text-secondary;
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+        
+        &.active {
+            background: $primary-gradient;
+            color: #1a0e0a;
+            border-color: $primary-gold;
+            font-weight: get($font-weights, bold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        @include mobile {
+            padding: get($spacings, xs) get($spacings, sm);
+            font-size: get($font-sizes, xs);
+        }
+    }
+}
+
+#profileAvatarGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: get($spacings, md);
+    max-height: 400px;
+    overflow-y: auto;
+    padding: get($spacings, sm);
+    background: rgba(10, 10, 10, 0.3);
+    border-radius: get($border-radius, sm);
+    
+    .avatar-option {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 2px solid rgba(212, 175, 55, 0.3);
+        overflow: hidden;
+        cursor: pointer;
+        transition: all get($transitions, normal);
+        background: rgba(15, 15, 15, 0.5);
+        
+        &:hover {
+            border-color: $primary-gold;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            transform: scale(1.05);
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    
+    @include mobile {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: get($spacings, sm);
+        
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+        }
+    }
+}
