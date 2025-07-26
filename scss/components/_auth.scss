@@ -714,8 +714,11 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-image: url("../../assets/background/home-bg1.png");
+    background-image: url("../assets/background/home-bg1.png");
+    background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     // background: linear-gradient(135deg, $bg-primary, $bg-secondary);
     @include flex-center;
     z-index: get($z-indexes, modal);
