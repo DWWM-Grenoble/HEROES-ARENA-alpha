@@ -31,20 +31,24 @@ export class UIManager {
     }
     
     showSection(sectionName) {
+        // Désactiver toutes les sections
         document.querySelectorAll('.section').forEach(section => {
             section.classList.remove('active');
         });
         
+        // Désactiver tous les onglets de navigation
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.classList.remove('active');
         });
         
+        // Activer la section cible
         const targetSection = document.getElementById(sectionName);
         if (targetSection) {
             targetSection.classList.add('active');
         }
         
-        const correspondingTab = document.querySelector(`[onclick*="${sectionName}"]`);
+        // Activer l'onglet correspondant en utilisant data-section
+        const correspondingTab = document.querySelector(`.nav-tab[data-section="${sectionName}"]`);
         if (correspondingTab) {
             correspondingTab.classList.add('active');
         }

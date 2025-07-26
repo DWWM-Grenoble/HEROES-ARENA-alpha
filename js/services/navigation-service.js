@@ -41,6 +41,16 @@ export class NavigationService {
      * Mettre à jour l'état de la navigation
      */
     updateNavigationState(activeSection) {
+        // Chercher les onglets avec .nav-tab (cohérent avec l'HTML)
+        const navTabs = document.querySelectorAll('.nav-tab');
+        navTabs.forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.dataset.section === activeSection) {
+                tab.classList.add('active');
+            }
+        });
+        
+        // Support pour les anciens boutons .nav-btn s'ils existent
         const navButtons = document.querySelectorAll('.nav-btn');
         navButtons.forEach(btn => {
             btn.classList.remove('active');
