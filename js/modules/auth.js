@@ -22,6 +22,11 @@ class AuthSystem {
         if (savedUser) {
             try {
                 this.currentUser = JSON.parse(savedUser);
+                console.log('🔄 Utilisateur chargé au démarrage:', {
+                    username: this.currentUser.username,
+                    avatar: this.currentUser.avatar,
+                    hasAvatar: !!this.currentUser.avatar
+                });
                 this.showMainApp();
             } catch (error) {
                 console.error('Erreur lors du chargement de l\'utilisateur:', error);
@@ -477,15 +482,26 @@ class AuthSystem {
             usernameElement.textContent = this.currentUser.username;
         }
         
-        // Initiales de l'avatar
+        // Avatar et initiales
         const userInitials = document.getElementById('userInitials');
         if (userInitials) {
-            const initials = this.currentUser.username
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase())
-                .join('')
-                .substring(0, 2);
-            userInitials.textContent = initials;
+            if (this.currentUser.avatar) {
+                // Si un avatar est défini, l'afficher en arrière-plan et cacher les initiales
+                userInitials.style.display = 'none';
+                userInitials.parentElement.style.backgroundImage = `url('assets/avatars/${this.currentUser.avatar}')`;
+                userInitials.parentElement.style.backgroundSize = 'cover';
+                userInitials.parentElement.style.backgroundPosition = 'center';
+            } else {
+                // Sinon, afficher les initiales
+                const initials = (this.currentUser.displayName || this.currentUser.username)
+                    .split(' ')
+                    .map(word => word.charAt(0).toUpperCase())
+                    .join('')
+                    .substring(0, 2);
+                userInitials.textContent = initials;
+                userInitials.style.display = 'flex';
+                userInitials.parentElement.style.backgroundImage = 'none';
+            }
         }
         
         // Email
