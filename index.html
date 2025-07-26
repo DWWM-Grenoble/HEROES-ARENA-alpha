@@ -275,34 +275,137 @@
 
                         <div class="form-group">
                             <label for="heroClass">Spécialisation</label>
-                            <select id="heroClass" class="form-input" onchange="HeroesArena.updateClassInfo()">
-                                <option value="Guerrier">Guerrier - Maître de la Rage</option>
-                                <option value="Mage">Mage - Seigneur des Boucliers</option>
-                                <option value="Archer">Archer - Tireur Mortel</option>
-                                <option value="Paladin">Paladin - Gardien Lumineux</option>
-                                <option value="Assassin">Assassin - Maître de l'Ombre</option>
-                                <option value="Druide">Druide - Gardien de la Nature</option>
-                            </select>
+                            
+                            <!-- Interface moderne de sélection de classe -->
+                            <div class="class-selector-modern" id="classSelector">
+                                <div class="class-cards-grid">
+                                    <div class="class-card" data-class="Guerrier" onclick="selectHeroClass('Guerrier')">
+                                        <div class="class-icon">⚔️</div>
+                                        <div class="class-info">
+                                            <h4>Guerrier</h4>
+                                            <p>Maître de la Rage</p>
+                                            <div class="class-bonus">+20% Force</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Mage" onclick="selectHeroClass('Mage')">
+                                        <div class="class-icon">🔮</div>
+                                        <div class="class-info">
+                                            <h4>Mage</h4>
+                                            <p>Seigneur des Boucliers</p>
+                                            <div class="class-bonus">+20% Magie</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Archer" onclick="selectHeroClass('Archer')">
+                                        <div class="class-icon">🏹</div>
+                                        <div class="class-info">
+                                            <h4>Archer</h4>
+                                            <p>Tireur Mortel</p>
+                                            <div class="class-bonus">+20% Agilité</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Paladin" onclick="selectHeroClass('Paladin')">
+                                        <div class="class-icon">✨</div>
+                                        <div class="class-info">
+                                            <h4>Paladin</h4>
+                                            <p>Gardien Lumineux</p>
+                                            <div class="class-bonus">+20% Défense</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Assassin" onclick="selectHeroClass('Assassin')">
+                                        <div class="class-icon">🗡️</div>
+                                        <div class="class-info">
+                                            <h4>Assassin</h4>
+                                            <p>Maître de l'Ombre</p>
+                                            <div class="class-bonus">+20% Agilité</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Druide" onclick="selectHeroClass('Druide')">
+                                        <div class="class-icon">🌿</div>
+                                        <div class="class-info">
+                                            <h4>Druide</h4>
+                                            <p>Gardien de la Nature</p>
+                                            <div class="class-bonus">+10% Magie/Défense</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Élément caché pour maintenir la compatibilité avec les scripts -->
+                            <input type="hidden" id="heroClass" value="Guerrier">
                         </div>
 
                         <div class="form-group">
                             <label>Catalogue d'Avatars</label>
                             <div class="avatar-catalog">
-                                <!-- Sélecteur de spécialisation unique -->
-                                <div class="catalog-selector">
-                                    <label for="avatarCategorySelect" class="selector-label">
-                                        ⚔️ Choisir une spécialisation
-                                    </label>
-                                    <select id="avatarCategorySelect" class="specialty-select" onchange="HeroesArena.handleMobileAvatarCategory(this.value)">
-                                        <option value="guerriers">🛡️ Guerriers - Maîtres de la Guerre</option>
-                                        <option value="mages">🔮 Mages - Seigneurs de la Magie</option>
-                                        <option value="archers">🏹 Archers - Tireurs d'Élite</option>
-                                        <option value="paladins">✨ Paladins - Gardiens de Lumière</option>
-                                        <option value="assassins">🗡️ Assassins - Maîtres de l'Ombre</option>
-                                        <option value="druides">🌿 Druides - Gardiens de la Nature</option>
-                                        <option value="generiques">⭐ Génériques - Héros Universels</option>
-                                    </select>
+                                <!-- Interface moderne de sélection de spécialisation -->
+                                <div class="specialty-selector-modern">
+                                    <h4 class="specialty-title">🎭 Choisir une Spécialisation d'Avatar</h4>
+                                    <div class="specialty-cards-grid">
+                                        <div class="specialty-card active" data-category="guerriers" onclick="selectAvatarSpecialty('guerriers')">
+                                            <div class="specialty-icon">⚔️</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Guerriers</div>
+                                                <div class="specialty-desc">Maîtres de la Guerre</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="mages" onclick="selectAvatarSpecialty('mages')">
+                                            <div class="specialty-icon">🔮</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Mages</div>
+                                                <div class="specialty-desc">Seigneurs de la Magie</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="archers" onclick="selectAvatarSpecialty('archers')">
+                                            <div class="specialty-icon">🏹</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Archers</div>
+                                                <div class="specialty-desc">Tireurs d'Élite</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="paladins" onclick="selectAvatarSpecialty('paladins')">
+                                            <div class="specialty-icon">✨</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Paladins</div>
+                                                <div class="specialty-desc">Gardiens de Lumière</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="assassins" onclick="selectAvatarSpecialty('assassins')">
+                                            <div class="specialty-icon">🗡️</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Assassins</div>
+                                                <div class="specialty-desc">Maîtres de l'Ombre</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="druides" onclick="selectAvatarSpecialty('druides')">
+                                            <div class="specialty-icon">🌿</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Druides</div>
+                                                <div class="specialty-desc">Gardiens de la Nature</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="generiques" onclick="selectAvatarSpecialty('generiques')">
+                                            <div class="specialty-icon">⭐</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Génériques</div>
+                                                <div class="specialty-desc">Héros Universels</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                <!-- Élément caché pour maintenir la compatibilité avec les scripts -->
+                                <input type="hidden" id="avatarCategorySelect" value="guerriers">
                                 
                                 <div class="avatar-grid" id="avatarGrid">
                                     <!-- Les avatars seront générés par JavaScript -->

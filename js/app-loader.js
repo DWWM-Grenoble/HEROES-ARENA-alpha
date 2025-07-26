@@ -185,6 +185,62 @@ window.showUserSettings = function() {
     alert('Fonctionnalité de paramètres à venir !');
 };
 
+// ============= FONCTIONS POUR LA CRÉATION DE HÉROS =============
+
+/**
+ * Sélectionner une classe de héros avec l'interface moderne
+ */
+window.selectHeroClass = function(className) {
+    // Mettre à jour l'input caché pour la compatibilité
+    const heroClassInput = document.getElementById('heroClass');
+    if (heroClassInput) {
+        heroClassInput.value = className;
+    }
+    
+    // Mettre à jour l'état visuel des cartes
+    const classCards = document.querySelectorAll('.class-card');
+    classCards.forEach(card => {
+        card.classList.remove('selected');
+        if (card.dataset.class === className) {
+            card.classList.add('selected');
+        }
+    });
+    
+    // Mettre à jour les informations de classe
+    if (window.HeroesArena && window.HeroesArena.updateClassInfo) {
+        window.HeroesArena.updateClassInfo();
+    }
+    
+    console.log(`Classe sélectionnée: ${className}`);
+};
+
+/**
+ * Sélectionner une spécialisation d'avatar avec l'interface moderne
+ */
+window.selectAvatarSpecialty = function(category) {
+    // Mettre à jour l'input caché pour la compatibilité
+    const avatarCategoryInput = document.getElementById('avatarCategorySelect');
+    if (avatarCategoryInput) {
+        avatarCategoryInput.value = category;
+    }
+    
+    // Mettre à jour l'état visuel des cartes
+    const specialtyCards = document.querySelectorAll('.specialty-card');
+    specialtyCards.forEach(card => {
+        card.classList.remove('active');
+        if (card.dataset.category === category) {
+            card.classList.add('active');
+        }
+    });
+    
+    // Déclencher la fonction de changement d'avatar
+    if (window.HeroesArena && window.HeroesArena.handleMobileAvatarCategory) {
+        window.HeroesArena.handleMobileAvatarCategory(category);
+    }
+    
+    console.log(`Spécialisation d'avatar sélectionnée: ${category}`);
+};
+
 // ============= INITIALISATION =============
 
 // Fermer le menu utilisateur en cliquant ailleurs
