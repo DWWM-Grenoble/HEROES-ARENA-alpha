@@ -1,5 +1,5 @@
-@use '../abstracts/variables' as *;
-@use '../abstracts/mixins' as *;
+@use '../abstracts/variables'as *;
+@use '../abstracts/mixins'as *;
 
 // ========== COMPOSANT MODAL : components/_modal.scss ==========
 
@@ -34,16 +34,14 @@
 
 .modal-content {
     background: linear-gradient(135deg, rgba(26, 22, 18, 0.98), $bg-primary),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 30px,
-                    rgba(212, 175, 55, 0.03) 30px,
-                    rgba(212, 175, 55, 0.03) 32px
-                );
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 30px,
+            rgba(212, 175, 55, 0.03) 30px,
+            rgba(212, 175, 55, 0.03) 32px);
     border-radius: get($border-radius, lg);
     border: 4px solid $gold-bronze;
-    box-shadow: 
+    box-shadow:
         get($shadows, xl),
         get($shadows, gold),
         0 0 30px rgba(212, 175, 55, 0.3),
@@ -55,7 +53,7 @@
     transform: translateY(get($spacings, lg));
     animation: modalSlideIn 0.3s ease forwards;
     position: relative;
-    
+
     &::before {
         content: '';
         position: absolute;
@@ -455,6 +453,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -465,6 +464,7 @@
         transform: translateY(get($spacings, lg));
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -472,8 +472,15 @@
 }
 
 @keyframes xp-shimmer {
-    0%, 100% { background-position: 200% 0; }
-    50% { background-position: -200% 0; }
+
+    0%,
+    100% {
+        background-position: 200% 0;
+    }
+
+    50% {
+        background-position: -200% 0;
+    }
 }
 
 // Hero Detail Modal
@@ -493,7 +500,7 @@
     background: linear-gradient(135deg, rgba(26, 22, 37, 0.95), rgba(15, 10, 26, 0.98));
     border: 3px solid $primary-crimson;
     border-radius: get($border-radius, lg);
-    box-shadow: 
+    box-shadow:
         get($shadows, xl),
         get($shadows, crimson),
         0 0 30px rgba(199, 166, 21, 0.3);
@@ -503,7 +510,7 @@
     max-height: 85vh;
     overflow-y: auto;
     position: relative;
-    
+
     &::before {
         content: '';
         position: absolute;
@@ -646,7 +653,7 @@
         overflow: hidden;
         flex-shrink: 0;
         flex-grow: 0;
-        box-shadow: 
+        box-shadow:
             0 8px 16px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba($primary-gold, 0.3);
 
@@ -858,16 +865,16 @@
     .modal-overlay {
         padding: get($spacings, sm);
     }
-    
+
     .modal-content {
         margin: get($spacings, lg) auto;
         max-width: none;
     }
-    
+
     .modal-header {
         padding: get($spacings, md) 40px get($spacings, md) get($spacings, md);
     }
-    
+
     .modal-close {
         top: get($spacings, sm);
         right: get($spacings, sm);
@@ -875,12 +882,12 @@
         height: 28px;
         font-size: 16px;
     }
-    
+
     .action-buttons {
         grid-template-columns: 1fr;
         gap: get($spacings, sm);
     }
-    
+
     .action-btn {
         padding: get($spacings, sm);
 
@@ -922,7 +929,7 @@
         text-align: center;
         padding: get($spacings, lg);
         border-bottom: 1px solid rgba($primary-bronze, 0.3);
-        
+
         h2 {
             margin: 0;
             font-size: get($font-sizes, 2xl);
@@ -931,7 +938,7 @@
             text-shadow: 0 0 15px rgba($primary-gold, 0.5);
             margin-bottom: get($spacings, sm);
         }
-        
+
         p {
             color: $text-primary;
             font-size: get($font-sizes, lg);
@@ -939,14 +946,14 @@
             margin: 0;
         }
     }
-    
+
     .combat-result-body {
         padding: get($spacings, lg);
-        
+
         .winner-section {
             display: flex;
             justify-content: center;
-            
+
             .result-hero-card {
                 @include flex-column;
                 align-items: center;
@@ -956,7 +963,7 @@
                 border: 2px solid $primary-gold;
                 border-radius: get($border-radius, lg);
                 box-shadow: 0 8px 24px rgba($primary-gold, 0.3);
-                
+
                 .hero-avatar-result {
                     width: 80px !important;
                     height: 80px !important;
@@ -971,10 +978,10 @@
                     position: relative;
                     flex-shrink: 0;
                     flex-grow: 0;
-                    box-shadow: 
+                    box-shadow:
                         0 4px 12px rgba(0, 0, 0, 0.4),
                         inset 0 1px 0 rgba($primary-gold, 0.3);
-                    
+
                     img {
                         position: absolute;
                         top: 0;
@@ -986,17 +993,17 @@
                         border-radius: calc(#{get($border-radius, md)} - 2px);
                     }
                 }
-                
+
                 .hero-info {
                     text-align: center;
-                    
+
                     .hero-name {
                         font-size: get($font-sizes, lg);
                         font-weight: get($font-weights, bold);
                         color: $text-primary;
                         margin-bottom: get($spacings, xs);
                     }
-                    
+
                     .hero-level {
                         color: $primary-gold;
                         font-weight: get($font-weights, semibold);
@@ -1042,7 +1049,7 @@
     background: rgba(26, 22, 18, 0.8);
     border-radius: get($border-radius, lg);
     border: 3px solid $primary-gold;
-    box-shadow: 
+    box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
         0 0 40px rgba(212, 175, 55, 0.3),
         inset 0 1px 0 rgba(212, 175, 55, 0.2);
@@ -1070,7 +1077,7 @@
     font-weight: bold;
     cursor: pointer;
     @include flex-center;
-    box-shadow: 
+    box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.3),
         0 0 20px rgba(239, 68, 68, 0.4);
     transition: all get($transitions, fast);
@@ -1079,7 +1086,7 @@
     &:hover {
         transform: scale(1.1);
         background: darken($error, 10%);
-        box-shadow: 
+        box-shadow:
             0 6px 16px rgba(0, 0, 0, 0.4),
             0 0 30px rgba(239, 68, 68, 0.6);
     }
@@ -1098,23 +1105,23 @@
 }
 
 .avatar-preview-image {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 80%;
+    max-height: 80%;
     object-fit: contain;
     border-radius: get($border-radius, md);
-    box-shadow: 
+    box-shadow:
         0 10px 30px rgba(0, 0, 0, 0.3),
         0 0 20px rgba(212, 175, 55, 0.2);
-    
+
     // Taille minimum pour assurer une bonne visibilité
     min-width: 200px;
     min-height: 200px;
-    
+
     @include mobile {
         min-width: 150px;
         min-height: 150px;
     }
-    
+
     @include xs {
         min-width: 120px;
         min-height: 120px;
@@ -1135,7 +1142,7 @@
     .modal-header {
         background: linear-gradient(135deg, rgba(26, 22, 18, 0.9) 0%, rgba(15, 13, 10, 0.95) 100%);
         border-bottom: 2px solid $primary-gold;
-        
+
         h2 {
             color: $primary-gold;
             font-family: $font-family-secondary;
@@ -1158,7 +1165,7 @@
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: get($border-radius, md);
     padding: get($spacings, lg);
-    
+
     h3 {
         color: $primary-gold;
         font-family: $font-family-secondary;
@@ -1176,7 +1183,7 @@
     align-items: center;
     gap: get($spacings, lg);
     margin-bottom: get($spacings, md);
-    
+
     @include mobile {
         flex-direction: column;
         text-align: center;
@@ -1193,16 +1200,16 @@
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
-    box-shadow: 
+    box-shadow:
         0 0 20px rgba(212, 175, 55, 0.3),
         inset 0 2px 0 rgba(212, 175, 55, 0.2);
-    
+
     img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-    
+
     .user-initials {
         font-size: get($font-sizes, xl);
         font-weight: get($font-weights, bold);
@@ -1215,7 +1222,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: get($spacings, lg);
-    
+
     @include mobile {
         grid-template-columns: 1fr;
         gap: get($spacings, md);
@@ -1226,7 +1233,7 @@
     display: flex;
     flex-direction: column;
     gap: get($spacings, sm);
-    
+
     label {
         color: $text-secondary;
         font-weight: get($font-weights, semibold);
@@ -1234,7 +1241,7 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
-    
+
     .form-input {
         padding: get($spacings, md);
         background: rgba(10, 10, 10, 0.6);
@@ -1243,23 +1250,23 @@
         color: $text-primary;
         font-family: $font-family-primary;
         transition: all get($transitions, normal);
-        
+
         &:focus {
             outline: none;
             border-color: $primary-gold;
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
-        
+
         &::placeholder {
             color: $text-muted;
         }
     }
-    
+
     textarea.form-input {
         resize: vertical;
         min-height: 80px;
     }
-    
+
     .form-help {
         color: $text-muted;
         font-size: get($font-sizes, xs);
@@ -1271,12 +1278,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: get($spacings, md);
-    
+
     @include mobile {
         grid-template-columns: repeat(2, 1fr);
         gap: get($spacings, sm);
     }
-    
+
     @include xs {
         grid-template-columns: 1fr;
     }
@@ -1290,18 +1297,18 @@
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid rgba(212, 175, 55, 0.2);
     border-radius: get($border-radius, sm);
-    
+
     .stat-icon {
         font-size: get($font-sizes, lg);
         flex-shrink: 0;
     }
-    
+
     .stat-label {
         color: $text-muted;
         font-size: get($font-sizes, sm);
         flex: 1;
     }
-    
+
     .stat-value {
         color: $primary-gold;
         font-weight: get($font-weights, bold);
@@ -1321,7 +1328,7 @@
 .avatar-selector-content {
     .modal-header {
         text-align: center;
-        
+
         h2 {
             color: $primary-gold;
             font-family: $font-family-secondary;
@@ -1335,7 +1342,7 @@
     gap: get($spacings, xs);
     margin-bottom: get($spacings, lg);
     justify-content: center;
-    
+
     .catalog-tab {
         padding: get($spacings, sm) get($spacings, md);
         background: rgba(78, 52, 46, 0.6);
@@ -1349,13 +1356,13 @@
         font-weight: get($font-weights, medium);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        
+
         &:hover {
             background: rgba(212, 175, 55, 0.2);
             color: $text-secondary;
             border-color: rgba(212, 175, 55, 0.5);
         }
-        
+
         &.active {
             background: $primary-gradient;
             color: #1a0e0a;
@@ -1363,7 +1370,7 @@
             font-weight: get($font-weights, bold);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
         }
-        
+
         @include mobile {
             padding: get($spacings, xs) get($spacings, sm);
             font-size: get($font-sizes, xs);
@@ -1380,7 +1387,7 @@
     padding: get($spacings, sm);
     background: rgba(10, 10, 10, 0.3);
     border-radius: get($border-radius, sm);
-    
+
     .avatar-option {
         width: 80px;
         height: 80px;
@@ -1390,24 +1397,24 @@
         cursor: pointer;
         transition: all get($transitions, normal);
         background: rgba(15, 15, 15, 0.5);
-        
+
         &:hover {
             border-color: $primary-gold;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
             transform: scale(1.05);
         }
-        
+
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
     }
-    
+
     @include mobile {
         grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
         gap: get($spacings, sm);
-        
+
         .avatar-option {
             width: 60px;
             height: 60px;

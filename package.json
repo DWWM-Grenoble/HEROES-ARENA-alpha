@@ -6,15 +6,17 @@
     "type": "module",
     "scripts":{
         "dev": "python -m http.server 8000",
-        "build": "npm run sass:build",
-        "build:deploy": "npm run sass:build && npm run copy:assets",
+        "build": "npm run sass:build && npm run sass:minify",
+        "build:deploy": "npm run build && npm run copy:assets",
         "copy:assets": "mkdir -p dist && cp index.html dist/ && cp -r assets dist/ && cp -r css dist/ && cp -r js dist/ && [ -f LICENSE ] && cp LICENSE dist/ || true && [ -f README.md ] && cp README.md dist/ || true",
         "test": "node js/test-simple.js",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d .",
-        "sass:watch": "sass --watch scss/main.scss:css/style.css --style expanded",
-        "sass:build":"sass scss/main.scss:css/style.css --style compressed",
-        "sass:dev":"sass --watch scss/main.scss:css/style.css --style expanded --source-map"
+        "sass:watch": "sass --watch scss/main.scss:css/style.css --style expanded --source-map",
+        "sass:build": "sass scss/main.scss:css/style.css --style expanded --source-map",
+        "sass:minify": "sass scss/main.scss:css/style.min.css --style compressed --no-source-map",
+        "sass:dev": "sass --watch scss/main.scss:css/style.css --style expanded --source-map",
+        "watch": "npm run sass:watch"
     },
     "dependencies": {},
     "devDependencies": {
