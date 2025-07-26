@@ -76,7 +76,8 @@ export class UIManager {
         
         avatarGrid.innerHTML = avatarCatalog[category].map(avatar => `
             <div class="avatar-option ${avatar === this.selectedAvatar ? 'selected' : ''}" 
-                 onclick="window.HeroesArena.ui.selectAvatar('${avatar}')">
+                 onclick="window.HeroesArena.ui.selectAvatar('${avatar}')"
+                 ondblclick="window.HeroesArena.ui.previewAvatar('${avatar}')">
                 <img src="assets/avatars/${avatar}" alt="${avatar}" loading="lazy">
             </div>
         `).join('');
@@ -94,6 +95,32 @@ export class UIManager {
         if (selectedOption) {
             selectedOption.classList.add('selected');
         }
+    }
+    
+    previewAvatar(avatarPath) {
+        // Créer la modal de prévisualisation
+        const modal = document.createElement('div');
+        modal.className = 'avatar-preview-modal';
+        modal.innerHTML = `
+            <div class="avatar-preview-backdrop" onclick="this.parentElement.remove()">
+                <div class="avatar-preview-content" onclick="event.stopPropagation()">
+                    <button class="avatar-preview-close" onclick="this.closest('.avatar-preview-modal').remove()">✕</button>
+                    <img src="assets/avatars/${avatarPath}" alt="Prévisualisation" class="avatar-preview-image">
+                </div>
+            </div>
+        `;
+        
+        // Ajouter la modal au DOM
+        document.body.appendChild(modal);
+        
+        // Fermeture avec la touche Échap
+        const closeOnEscape = (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', closeOnEscape);
+            }
+        };
+        document.addEventListener('keydown', closeOnEscape);
     }
     
     initializeStats() {

@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm run sass:build:*)",
       "Bash(npm install:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npm run build-css:*)",
+      "Bash(npm run:*)"
     ],
     "deny": []
   }
