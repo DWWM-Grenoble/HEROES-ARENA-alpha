@@ -29,12 +29,14 @@ Heroes Arena est un jeu de combat de héros web interactif où vous créez des p
 - **Synchronisation** en temps réel entre appareils
 - **Mode hors ligne** avec sauvegarde locale
 
-### 🎨 **Interface Moderne**
+### 🎨 **Interface Moderne & UX Optimisée**
 - **Design glassmorphism** avec thème sombre immersif
 - **Architecture SCSS modulaire** avec variables et mixins
 - **Interface responsive** optimisée mobile et desktop
+- **Modal utilisateur amélioré** avec mise en forme en colonne pour une meilleure lisibilité
 - **Animations CSS** fluides et micro-interactions
 - **Raccourcis clavier** pour navigation rapide
+- **Persistance d'avatar utilisateur** après rechargement de page
 
 ### ⚙️ **Architecture Technique**
 - **ES6+ Modules** avec imports/exports natifs
@@ -89,7 +91,7 @@ heroes-arena/
 │   │   ├── components/      # Composants UI réutilisables
 │   │   │   ├── _auth.scss       # Modal d'authentification
 │   │   │   ├── _buttons.scss    # Système de boutons
-│   │   │   ├── _modal.scss      # Modales (héros, combat, résultats)
+│   │   │   ├── _modal.scss      # Modales (héros, combat, profil utilisateur optimisé)
 │   │   │   ├── _hero-card.scss  # Cartes de héros
 │   │   │   ├── _arena.scss      # Interface de combat
 │   │   │   ├── _forms.scss      # Formulaires de création
@@ -196,7 +198,7 @@ heroes-arena/
 
 ```bash
 # 1. Cloner le repository
-git clone https://github.com/your-username/heroes-arena.git
+git clone https://github.com/DWWM-Grenoble/HEROES-ARENA-alpha.git
 cd heroes-arena
 
 # 2. Installer les dépendances
@@ -212,7 +214,7 @@ npm run dev
 npm run sass:dev
 ```
 
-L'application sera accessible sur **`http://localhost:8888`**
+L'application sera accessible sur **`http://localhost:8000`**
 
 ### 🧪 **Commandes de Développement**
 
@@ -616,21 +618,29 @@ export function calculateDamage(attackStat, defenseStat, options = {}) {
 }
 ```
 
+## 📝 Dernières Améliorations (2025)
+
+### ✅ **Améliorations d'Interface Récentes**
+- **Modal utilisateur optimisé** : Affichage en colonne pour email et "membre depuis" (améliore la lisibilité sur mobile)
+- **Architecture CSS améliorée** : Optimisation des grilles `.stats-grid` et `.form-grid` pour un meilleur rendu responsive
+- **Persistance d'avatar** : Correction des bugs de sauvegarde d'avatar utilisateur après rechargement
+- **Debug et logs** : Amélioration du système de debug pour le profil utilisateur
+
 ## 📈 Roadmap Technique
 
-### 🎯 **Version 2.0** (Q3 2024)
+### 🎯 **Version 2.0** (Q3 2025)
 - [ ] **TypeScript** migration complète
 - [ ] **Web Components** pour réutilisabilité
 - [ ] **PWA** avec Service Worker
 - [ ] **Tests E2E** avec Playwright
 
-### 🎯 **Version 2.5** (Q4 2024)
+### 🎯 **Version 2.5** (Q4 2025)
 - [ ] **WebSockets** pour multijoueur temps réel
 - [ ] **IndexedDB** pour cache avancé
 - [ ] **Web Workers** pour calculs lourds
 - [ ] **CSS Container Queries** responsive
 
-### 🎯 **Version 3.0** (2025)
+### 🎯 **Version 3.0** (2026)
 - [ ] **React/Vue** migration (optionnelle)
 - [ ] **GraphQL API** pour performance
 - [ ] **Micro-frontends** architecture

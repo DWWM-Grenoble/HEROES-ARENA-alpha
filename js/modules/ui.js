@@ -59,6 +59,7 @@ export class UIManager {
         if (sectionName === 'heroes') {
             this.displayHeroes();
         } else if (sectionName === 'arena') {
+            console.log('🏟️ Affichage section arène, héros disponibles:', AppState.heroes.length);
             this.updateFighterSelectors();
         }
     }
@@ -306,6 +307,7 @@ export class UIManager {
     }
     
     updateFighterSelectors() {
+        // Mettre à jour les anciens sélecteurs pour compatibilité
         const selectors = [
             document.getElementById('fighter1Select'),
             document.getElementById('fighter2Select')
@@ -326,7 +328,74 @@ export class UIManager {
             }
         });
         
+        // Mettre à jour les nouveaux sélecteurs modernes
+        this.updateModernHeroSelectors();
         this.updateFighters();
+    }
+    
+    /**
+     * Mettre à jour les sélecteurs de héros modernes
+     */
+    updateModernHeroSelectors() {
+        console.log('Mise à jour des sélecteurs modernes, héros disponibles:', AppState.heroes.length);
+        
+        ['fighter1', 'fighter2'].forEach(fighterId => {
+            const optionsContainer = document.getElementById(`${fighterId}Options`);
+            if (!optionsContainer) {
+                console.log(`Container ${fighterId}Options non trouvé`);
+                return;
+            }
+            
+            if (AppState.heroes.length === 0) {
+                optionsContainer.innerHTML = `
+                    <div class="hero-option-card" style="text-align: center; padding: 20px;">
+                        <div style="color: #888;">Aucun héros disponible</div>
+                        <div style="color: #666; font-size: 12px;">Créez un héros pour commencer</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            console.log(`Génération des options pour ${fighterId}`);
+            
+            optionsContainer.innerHTML = AppState.heroes.map((hero, index) => {
+                const healthPercent = (hero.pv / hero.pvMax) * 100;
+                const healthClass = healthPercent > 75 ? 'healthy' : 
+                                  healthPercent > 50 ? 'wounded' : 'critical';
+                
+                // Vérifier si ce héros est déjà sélectionné par l'autre combattant
+                const otherFighterId = fighterId === 'fighter1' ? 'fighter2' : 'fighter1';
+                const otherFighterSelect = document.getElementById(`${otherFighterId}Select`);
+                const isDisabled = otherFighterSelect && otherFighterSelect.value === index.toString();
+                
+                return `
+                    <div class="hero-option-card ${isDisabled ? 'disabled' : ''}" 
+                         onclick="${isDisabled ? '' : `selectModernHeroSecure('${fighterId}', ${index}, '${hero.nom.replace(/'/g, '\\\'')}')`}">
+                        <div class="hero-option-avatar">
+                            <img src="assets/avatars/${hero.avatar}" alt="${hero.nom}" loading="lazy" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="avatar-fallback" style="display: none; background: #666; width: 100%; height: 100%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                ${hero.nom.charAt(0)}
+                            </div>
+                        </div>
+                        <div class="hero-option-info">
+                            <div class="hero-option-name">${hero.nom}</div>
+                            <div class="hero-option-details">
+                                <div class="hero-option-class">${hero.classe}</div>
+                                <div class="hero-option-level">Niv. ${hero.niveau}</div>
+                                <div class="hero-option-health">
+                                    <div class="health-indicator ${healthClass}"></div>
+                                    ${hero.pv}/${hero.pvMax}
+                                </div>
+                            </div>
+                        </div>
+                        ${isDisabled ? '<div style="color: #ff6b6b; font-size: 10px;">Déjà sélectionné</div>' : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            console.log(`Options générées pour ${fighterId}:`, optionsContainer.children.length);
+        });
     }
     
     updateFighters() {
@@ -358,6 +427,18 @@ export class UIManager {
         AppState.fighter1 = null;
         AppState.fighter2 = null;
         AppState.combatEnCours = false;
+        
+        // Réinitialiser les sélecteurs anciens
+        const fighter1Select = document.getElementById('fighter1Select');
+        const fighter2Select = document.getElementById('fighter2Select');
+        if (fighter1Select) fighter1Select.value = '';
+        if (fighter2Select) fighter2Select.value = '';
+        
+        // Réinitialiser les sélecteurs modernes
+        if (typeof clearModernHeroSelection === 'function') {
+            clearModernHeroSelection('fighter1');
+            clearModernHeroSelection('fighter2');
+        }
         
         // Mettre à jour l'affichage des combattants
         this.updateFighterDisplay();

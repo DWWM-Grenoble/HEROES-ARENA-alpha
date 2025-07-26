@@ -450,7 +450,25 @@
                     <div class="fighter-selection">
                         <div class="fighter-select">
                             <h4>Combattant 1</h4>
-                            <select class="hero-selector" id="fighter1Select" onchange="HeroesArena.updateFighters()">
+                            <div class="hero-selector-modern" id="fighter1Selector">
+                                <div class="selected-hero-display" id="fighter1Selected" onclick="console.log('Click fighter1!'); toggleHeroSelector('fighter1')">
+                                    <div class="hero-preview-avatar">
+                                        <span class="preview-placeholder">?</span>
+                                    </div>
+                                    <div class="hero-preview-info">
+                                        <div class="hero-preview-name">Sélectionnez un héros</div>
+                                        <div class="hero-preview-class">Aucun héros sélectionné</div>
+                                    </div>
+                                    <div class="selector-arrow">▼</div>
+                                </div>
+                                <div class="hero-options-dropdown" id="fighter1Options" style="display: none;">
+                                    <div style="padding: 10px; text-align: center; color: #888;">
+                                        Chargement des héros...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fallback pour compatibility -->
+                            <select class="hero-selector hidden" id="fighter1Select" onchange="HeroesArena.updateFighters()">
                                 <option value="">Sélectionnez un héros</option>
                             </select>
                         </div>
@@ -459,7 +477,25 @@
 
                         <div class="fighter-select">
                             <h4>Combattant 2</h4>
-                            <select class="hero-selector" id="fighter2Select" onchange="HeroesArena.updateFighters()">
+                            <div class="hero-selector-modern" id="fighter2Selector">
+                                <div class="selected-hero-display" id="fighter2Selected" onclick="console.log('Click fighter2!'); toggleHeroSelector('fighter2')">
+                                    <div class="hero-preview-avatar">
+                                        <span class="preview-placeholder">?</span>
+                                    </div>
+                                    <div class="hero-preview-info">
+                                        <div class="hero-preview-name">Sélectionnez un héros</div>
+                                        <div class="hero-preview-class">Aucun héros sélectionné</div>
+                                    </div>
+                                    <div class="selector-arrow">▼</div>
+                                </div>
+                                <div class="hero-options-dropdown" id="fighter2Options" style="display: none;">
+                                    <div style="padding: 10px; text-align: center; color: #888;">
+                                        Chargement des héros...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fallback pour compatibility -->
+                            <select class="hero-selector hidden" id="fighter2Select" onchange="HeroesArena.updateFighters()">
                                 <option value="">Sélectionnez un héros</option>
                             </select>
                         </div>
@@ -497,6 +533,7 @@
                         <button class="btn fight-btn" onclick="HeroesArena.startCombat()" id="fightBtn" disabled>Commencer le Combat</button>
                         <button class="btn btn-secondary" onclick="HeroesArena.resetArena()">Réinitialiser</button>
                         <button class="btn btn-secondary" onclick="HeroesArena.stopCombat()">Arrêter Combat</button>
+                        <button class="btn btn-secondary" onclick="console.log('Debug:', {AppState: !!window.AppState, heroes: window.AppState?.heroes?.length, HeroesArena: !!window.HeroesArena, getState: !!window.HeroesArena?.getState}); window.HeroesArena?.ui?.updateModernHeroSelectors?.()">🔧 Test Debug</button>
                     </div>
 
                     <div class="combat-log" id="combatLog">
@@ -512,6 +549,259 @@
     <script>
         // Variable pour éviter les exécutions automatiques
         let isManualNavigation = false;
+        
+        // ========== FONCTIONS POUR L'INTERFACE DE SÉLECTION MODERNE ==========
+        
+        /**
+         * Basculer l'affichage du sélecteur de héros moderne
+         */
+        window.toggleHeroSelector = function(fighterId) {
+            console.log('Toggle selector pour:', fighterId);
+            
+            const dropdown = document.getElementById(`${fighterId}Options`);
+            const display = document.getElementById(`${fighterId}Selected`);
+            
+            if (!dropdown || !display) {
+                console.error('Éléments non trouvés:', { dropdown: !!dropdown, display: !!display });
+                return;
+            }
+            
+            const allDropdowns = document.querySelectorAll('.hero-options-dropdown');
+            const allDisplays = document.querySelectorAll('.selected-hero-display');
+            
+            // Fermer tous les autres dropdowns
+            allDropdowns.forEach(d => {
+                if (d.id !== `${fighterId}Options`) {
+                    d.style.display = 'none';
+                }
+            });
+            
+            // Retirer la classe active de tous les displays
+            allDisplays.forEach(d => {
+                if (d.id !== `${fighterId}Selected`) {
+                    d.classList.remove('active');
+                    const arrow = d.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                }
+            });
+            
+            // Basculer le dropdown actuel
+            const isVisible = dropdown.style.display === 'block';
+            console.log('Dropdown actuellement visible:', isVisible);
+            
+            dropdown.style.display = isVisible ? 'none' : 'block';
+            display.classList.toggle('active', !isVisible);
+            
+            // Mettre à jour la flèche
+            const arrow = display.querySelector('.selector-arrow');
+            if (arrow) {
+                arrow.textContent = isVisible ? '▼' : '▲';
+            }
+            
+            // Mettre à jour les options disponibles quand on ouvre
+            if (!isVisible && window.HeroesArena && window.HeroesArena.ui) {
+                window.HeroesArena.ui.updateModernHeroSelectors();
+            }
+        }
+        
+        /**
+         * Sélectionner un héros de manière sécurisée (nouvelle version)
+         */
+        window.selectModernHeroSecure = function(fighterId, heroIndex, heroName) {
+            console.log('Sélection sécurisée:', fighterId, heroIndex, heroName);
+            
+            // Méthode simple : utiliser l'ancien système qui fonctionne
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect && oldSelect.options[heroIndex + 1]) { // +1 car la première option est "Sélectionnez"
+                oldSelect.value = heroIndex.toString();
+                oldSelect.dispatchEvent(new Event('change'));
+                
+                // Mettre à jour l'affichage moderne aussi
+                const display = document.getElementById(`${fighterId}Selected`);
+                if (display) {
+                    const avatar = display.querySelector('.hero-preview-avatar');
+                    const name = display.querySelector('.hero-preview-name');
+                    const heroClass = display.querySelector('.hero-preview-class');
+                    
+                    if (name) name.textContent = heroName;
+                    if (heroClass) heroClass.textContent = oldSelect.options[heroIndex + 1].textContent.split(' (')[1]?.replace(')', '') || 'Héros';
+                    
+                    // Essayer de trouver l'avatar via AppState si possible
+                    if (window.AppState && window.AppState.heroes && window.AppState.heroes[heroIndex]) {
+                        const hero = window.AppState.heroes[heroIndex];
+                        if (avatar && hero.avatar) {
+                            avatar.innerHTML = `<img src="assets/avatars/${hero.avatar}" alt="${hero.nom}" loading="lazy">`;
+                        }
+                    }
+                }
+                
+                // Fermer le dropdown
+                const dropdown = document.getElementById(`${fighterId}Options`);
+                if (dropdown) dropdown.style.display = 'none';
+                
+                const displayElement = document.getElementById(`${fighterId}Selected`);
+                if (displayElement) {
+                    displayElement.classList.remove('active');
+                    const arrow = displayElement.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                }
+                
+                console.log('Sélection réussie pour:', heroName);
+                return;
+            }
+            
+            console.error('Impossible de sélectionner le héros');
+        }
+        
+        /**
+         * Sélectionner un héros dans l'interface moderne
+         */
+        window.selectModernHero = function(fighterId, heroIndex) {
+            console.log('Sélection moderne hero:', fighterId, heroIndex);
+            
+            // Accéder aux héros directement via AppState
+            let heroes = [];
+            try {
+                if (window.AppState && window.AppState.heroes) {
+                    heroes = window.AppState.heroes;
+                    console.log('Héros trouvés via AppState:', heroes.length);
+                } else if (window.HeroesArena && window.HeroesArena.getState) {
+                    heroes = window.HeroesArena.getState().heroes || [];
+                    console.log('Héros trouvés via HeroesArena.getState:', heroes.length);
+                } else {
+                    console.error('Impossible d\'accéder aux héros - AppState:', !!window.AppState, 'HeroesArena:', !!window.HeroesArena);
+                    // Essayer une approche de fallback
+                    const heroesFromUI = document.getElementById('fighter1Select')?.options;
+                    if (heroesFromUI && heroesFromUI.length > 1) {
+                        console.log('Fallback: utilisation du select classique');
+                        // Simuler la sélection via l'ancien système
+                        const oldSelect = document.getElementById(`${fighterId}Select`);
+                        if (oldSelect) {
+                            oldSelect.value = heroIndex.toString();
+                            oldSelect.dispatchEvent(new Event('change'));
+                        }
+                        return;
+                    }
+                    return;
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'accès aux héros:', error);
+                return;
+            }
+            
+            const hero = heroes[heroIndex];
+            if (!hero) {
+                console.error('Héros non trouvé à l\'index:', heroIndex);
+                return;
+            }
+            
+            console.log('Héros sélectionné:', hero.nom);
+            
+            // Mettre à jour l'ancien sélecteur pour compatibilité
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect) {
+                oldSelect.value = heroIndex.toString();
+                // Déclencher l'événement change pour assurer la compatibilité
+                oldSelect.dispatchEvent(new Event('change'));
+            }
+            
+            // Mettre à jour l'affichage moderne
+            updateModernHeroDisplay(fighterId, hero);
+            
+            // Fermer le dropdown
+            const dropdown = document.getElementById(`${fighterId}Options`);
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (dropdown) dropdown.style.display = 'none';
+            if (display) {
+                display.classList.remove('active');
+                const arrow = display.querySelector('.selector-arrow');
+                if (arrow) arrow.textContent = '▼';
+            }
+            
+            // Déclencher la mise à jour des combattants
+            if (window.HeroesArena) {
+                if (window.HeroesArena.updateFighters) {
+                    window.HeroesArena.updateFighters();
+                } else if (window.HeroesArena.ui && window.HeroesArena.ui.updateFighters) {
+                    window.HeroesArena.ui.updateFighters();
+                    window.HeroesArena.ui.updateModernHeroSelectors(); // Actualiser les options disponibles
+                }
+            }
+        }
+        
+        /**
+         * Mettre à jour l'affichage d'un héros sélectionné
+         */
+        window.updateModernHeroDisplay = function(fighterId, hero) {
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (!display) return;
+            
+            const avatar = display.querySelector('.hero-preview-avatar');
+            const name = display.querySelector('.hero-preview-name');
+            const heroClass = display.querySelector('.hero-preview-class');
+            
+            if (avatar) {
+                avatar.innerHTML = `<img src="assets/avatars/${hero.avatar}" alt="${hero.nom}" loading="lazy">`;
+            }
+            
+            if (name) {
+                name.textContent = hero.nom;
+            }
+            
+            if (heroClass) {
+                heroClass.textContent = `${hero.classe} - Niv. ${hero.niveau}`;
+            }
+        }
+        
+        /**
+         * Fermer tous les dropdowns quand on clique ailleurs
+         */
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.hero-selector-modern')) {
+                const allDropdowns = document.querySelectorAll('.hero-options-dropdown');
+                const allDisplays = document.querySelectorAll('.selected-hero-display');
+                
+                allDropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+                
+                allDisplays.forEach(display => {
+                    display.classList.remove('active');
+                    const arrow = display.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                });
+            }
+        });
+        
+        /**
+         * Réinitialiser la sélection d'un combattant
+         */
+        window.clearModernHeroSelection = function(fighterId) {
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (!display) return;
+            
+            const avatar = display.querySelector('.hero-preview-avatar');
+            const name = display.querySelector('.hero-preview-name');
+            const heroClass = display.querySelector('.hero-preview-class');
+            
+            if (avatar) {
+                avatar.innerHTML = '<span class="preview-placeholder">?</span>';
+            }
+            
+            if (name) {
+                name.textContent = 'Sélectionnez un héros';
+            }
+            
+            if (heroClass) {
+                heroClass.textContent = 'Aucun héros sélectionné';
+            }
+            
+            // Mettre à jour l'ancien sélecteur
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect) {
+                oldSelect.value = '';
+            }
+        }
         
         function enterApplication() {
             console.log('Navigation vers la page de connexion');

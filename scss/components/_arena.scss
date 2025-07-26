@@ -519,10 +519,355 @@
     }
 }
 
+// ========== INTERFACE DE SÉLECTION DE HÉROS MODERNE ==========
+
+.hero-selector-modern {
+    position: relative;
+    width: 100%;
+}
+
+.selected-hero-display {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, md);
+    padding: get($spacings, md);
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.9) 0%, rgba(25, 25, 25, 0.8) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: get($border-radius, lg);
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    min-height: 70px;
+    position: relative;
+    overflow: hidden;
+    
+    @include mobile {
+        padding: get($spacings, sm);
+        min-height: 60px;
+        gap: get($spacings, sm);
+    }
+    
+    &:hover {
+        border-color: $primary-gold;
+        background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(30, 30, 30, 0.8) 100%);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+    
+    &.active {
+        border-color: $primary-gold;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+        transition: left 0.6s ease;
+    }
+    
+    &:hover::before {
+        left: 100%;
+    }
+}
+
+.hero-preview-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(180, 140, 40, 0.1) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    
+    @include mobile {
+        width: 40px;
+        height: 40px;
+    }
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .preview-placeholder {
+        color: $primary-gold;
+        font-size: get($font-sizes, xl);
+        font-weight: get($font-weights, bold);
+        
+        @include mobile {
+            font-size: get($font-sizes, lg);
+        }
+    }
+}
+
+.hero-preview-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: get($spacings, xs);
+}
+
+.hero-preview-name {
+    color: $text-primary;
+    font-weight: get($font-weights, semibold);
+    font-size: get($font-sizes, base);
+    
+    @include mobile {
+        font-size: get($font-sizes, sm);
+    }
+}
+
+.hero-preview-class {
+    color: $text-secondary;
+    font-size: get($font-sizes, sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    @include mobile {
+        font-size: get($font-sizes, xs);
+    }
+}
+
+.hero-preview-stats {
+    display: flex;
+    gap: get($spacings, sm);
+    font-size: get($font-sizes, xs);
+    color: $text-muted;
+    
+    .stat-mini {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        
+        .stat-icon {
+            font-size: 10px;
+        }
+    }
+}
+
+.selector-arrow {
+    color: $primary-gold;
+    font-size: get($font-sizes, sm);
+    transition: transform get($transitions, normal);
+    flex-shrink: 0;
+    
+    .active & {
+        transform: rotate(180deg);
+    }
+}
+
+.hero-options-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.98) 0%, rgba(20, 20, 20, 0.95) 100%);
+    border: 2px solid $primary-gold;
+    border-top: none;
+    border-radius: 0 0 get($border-radius, lg) get($border-radius, lg);
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(212, 175, 55, 0.2);
+    backdrop-filter: blur(20px);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    animation: dropdownSlideIn 0.3s ease;
+    
+    @include mobile {
+        max-height: 250px;
+    }
+    
+    // Scrollbar personnalisée
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: rgba(212, 175, 55, 0.6);
+        border-radius: 3px;
+        
+        &:hover {
+            background: rgba(212, 175, 55, 0.8);
+        }
+    }
+}
+
+.hero-option-card {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, md);
+    padding: get($spacings, md);
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
+    @include mobile {
+        padding: get($spacings, sm);
+        gap: get($spacings, sm);
+    }
+    
+    &:last-child {
+        border-bottom: none;
+        border-radius: 0 0 get($border-radius, lg) get($border-radius, lg);
+    }
+    
+    &:hover {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(180, 140, 40, 0.05) 100%);
+        
+        .hero-option-avatar {
+            border-color: $primary-gold;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+        
+        .hero-option-name {
+            color: $primary-gold;
+        }
+    }
+    
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: rgba(200, 0, 0, 0.1);
+        
+        &:hover {
+            background: rgba(200, 0, 0, 0.1);
+            
+            .hero-option-avatar {
+                border-color: rgba(255, 255, 255, 0.2);
+                box-shadow: none;
+            }
+            
+            .hero-option-name {
+                color: $text-muted;
+            }
+        }
+    }
+}
+
+.hero-option-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    flex-shrink: 0;
+    
+    @include mobile {
+        width: 35px;
+        height: 35px;
+    }
+    
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.hero-option-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: get($spacings, xs);
+}
+
+.hero-option-name {
+    color: $text-primary;
+    font-weight: get($font-weights, semibold);
+    font-size: get($font-sizes, sm);
+    
+    @include mobile {
+        font-size: get($font-sizes, xs);
+    }
+}
+
+.hero-option-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: get($spacings, sm);
+}
+
+.hero-option-class {
+    color: $text-secondary;
+    font-size: get($font-sizes, xs);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    
+    @include mobile {
+        font-size: 10px;
+    }
+}
+
+.hero-option-level {
+    color: $primary-gold;
+    font-size: get($font-sizes, xs);
+    font-weight: get($font-weights, semibold);
+    background: rgba(212, 175, 55, 0.1);
+    padding: 2px 6px;
+    border-radius: get($border-radius, sm);
+    
+    @include mobile {
+        font-size: 10px;
+        padding: 1px 4px;
+    }
+}
+
+.hero-option-health {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, xs);
+    font-size: get($font-sizes, xs);
+    color: $text-muted;
+    
+    @include mobile {
+        font-size: 10px;
+    }
+    
+    .health-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        
+        &.healthy { background: $success; }
+        &.wounded { background: $warning; }
+        &.critical { background: $error; }
+    }
+}
+
+// Fallback - cacher l'ancien sélecteur
+.hero-selector.hidden {
+    display: none;
+}
+
 // Corrections spécifiques pour les sélecteurs de héros
 .hero-selector {
     &:focus {
         transform: none;
+    }
+}
+
+// Animation pour l'ouverture du dropdown
+@keyframes dropdownSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 

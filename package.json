@@ -1,38 +1,38 @@
 {
-    "name":"heroes-arena",
-    "version": "1.0.0",
-    "description": "Jeu de combat de héros avec système de sauvegarde cloud",
-    "main": "index.html",
-    "type": "module",
-    "scripts":{
-        "dev": "python -m http.server 8000",
-        "build": "npm run sass:build && npm run sass:minify",
-        "build:deploy": "npm run build && npm run copy:assets",
-        "copy:assets": "mkdir -p dist && cp index.html dist/ && cp -r assets dist/ && cp -r css dist/ && cp -r js dist/ && [ -f LICENSE ] && cp LICENSE dist/ || true && [ -f README.md ] && cp README.md dist/ || true",
-        "test": "node js/test-simple.js",
-        "predeploy": "npm run build",
-        "deploy": "gh-pages -d .",
-        "sass:watch": "sass --watch scss/main.scss:css/style.css --style expanded --source-map",
-        "sass:build": "sass scss/main.scss:css/style.css --style expanded --source-map",
-        "sass:minify": "sass scss/main.scss:css/style.min.css --style compressed --no-source-map",
-        "sass:dev": "sass --watch scss/main.scss:css/style.css --style expanded --source-map",
-        "watch": "npm run sass:watch"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "gh-pages": "^6.1.1",
-        "sass": "^1.70.0"
-    },
-    "keywords": [
-        "game",
-        "heroes",
-        "combat",
-        "javascript",
-        "netlify"
-    ],
-    "author": "Heroes Arena Team",
-    "license":"MIT",
-    "engines": {
-        "node":">= 18.0.0"
-    }
+  "name": "heroes-arena",
+  "version": "1.0.0",
+  "description": "Jeu de combat de héros avec système de sauvegarde cloud",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "npm run sass:build && npm run sass:minify",
+    "build:deploy": "npm run build && npm run copy:assets",
+    "copy:assets": "mkdir -p dist && cp index.html dist/ && cp -r assets dist/ && cp -r css dist/ && cp -r js dist/ && [ -f LICENSE ] && cp LICENSE dist/ || true && [ -f README.md ] && cp README.md dist/ || true",
+    "test": "node js/test-simple.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d .",
+    "sass:watch": "sass --watch scss/main.scss:css/style.min.css --style expanded --source-map",
+    "sass:build": "sass scss/main.scss:css/style.css --style expanded --source-map",
+    "sass:minify": "sass scss/main.scss:css/style.min.css --style compressed --no-source-map",
+    "sass:dev": "sass --watch scss/main.scss:css/style.css --style expanded --source-map",
+    "watch": "npm run sass:watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gh-pages": "^6.1.1",
+    "sass": "^1.70.0"
+  },
+  "keywords": [
+    "game",
+    "heroes",
+    "combat",
+    "javascript",
+    "netlify"
+  ],
+  "author": "Heroes Arena Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 18.0.0"
+  }
 }

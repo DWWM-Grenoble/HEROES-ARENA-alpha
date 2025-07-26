@@ -1224,7 +1224,7 @@
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
     gap: get($spacings, lg);
 
     @include mobile {
@@ -1280,11 +1280,11 @@
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr;
     gap: get($spacings, md);
 
     @include mobile {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
         gap: get($spacings, sm);
     }
 

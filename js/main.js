@@ -376,6 +376,7 @@ class HeroesArena {
         return {
             isInitialized: this.isInitialized,
             heroCount: AppState.heroes.length,
+            heroes: AppState.heroes,
             currentSection: this.ui.currentSection,
             currentCombat: this.combat.getCurrentCombat(),
             fighters: {
@@ -397,6 +398,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Remplacer l'objet temporaire par l'application réelle
         window.HeroesArena = heroesArena;
         window.uiManager = heroesArena.ui;
+        
+        // Rendre AppState accessible globalement
+        window.AppState = AppState;
+        
+        // Ajouter une méthode pour accéder aux héros
+        window.HeroesArena.getState = function() {
+            return {
+                heroes: AppState.heroes,
+                fighter1: AppState.fighter1,
+                fighter2: AppState.fighter2
+            };
+        };
         
         // Marquer comme initialisé
         window.HeroesArena.isInitialized = heroesArena.isInitialized;
