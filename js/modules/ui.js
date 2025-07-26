@@ -773,7 +773,7 @@ export class UIManager {
                         <div class="profile-section">
                             <h3>👤 Avatar</h3>
                             <div class="current-avatar-display">
-                                <div class="user-avatar-large" id="profileCurrentAvatar">
+                                <div class="user-avatar-large" id="profileCurrentAvatar" data-selected-avatar="${currentUser.avatar || ''}">
                                     ${currentUser.avatar ? 
                                         `<img src="assets/avatars/${currentUser.avatar}" alt="Avatar actuel">` :
                                         `<span class="user-initials">${currentUser.username.charAt(0).toUpperCase()}</span>`
@@ -941,11 +941,20 @@ export class UIManager {
      * Sélectionner un avatar pour le profil
      */
     selectProfileAvatar(avatarPath) {
+        console.log('🎭 Sélection avatar profil:', avatarPath);
+        
         // Mettre à jour l'affichage de l'avatar dans la modal de profil
         const currentAvatarDisplay = document.getElementById('profileCurrentAvatar');
         if (currentAvatarDisplay) {
             currentAvatarDisplay.innerHTML = `<img src="assets/avatars/${avatarPath}" alt="Avatar sélectionné">`;
             currentAvatarDisplay.dataset.selectedAvatar = avatarPath;
+            
+            console.log('✅ Avatar mis à jour dans la modal:', {
+                newAvatar: avatarPath,
+                datasetUpdated: currentAvatarDisplay.dataset.selectedAvatar
+            });
+        } else {
+            console.error('❌ Élément profileCurrentAvatar non trouvé');
         }
         
         // Fermer le sélecteur d'avatar
@@ -968,6 +977,14 @@ export class UIManager {
         const displayName = document.getElementById('profileDisplayName')?.value.trim();
         const bio = document.getElementById('profileBio')?.value.trim();
         const selectedAvatar = document.getElementById('profileCurrentAvatar')?.dataset.selectedAvatar;
+        
+        // Debug pour vérifier l'avatar sélectionné
+        console.log('🔍 Debug sauvegarde profil:', {
+            currentAvatar: currentUser.avatar,
+            selectedAvatar: selectedAvatar,
+            hasDataset: !!document.getElementById('profileCurrentAvatar')?.dataset,
+            datasetValue: document.getElementById('profileCurrentAvatar')?.dataset?.selectedAvatar
+        });
         
         // Validation
         if (!username || username.length < 3 || username.length > 20) {
