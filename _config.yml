@@ -1,0 +1,31 @@
+# Configuration GitHub Pages pour Heroes Arena
+title: "Heroes Arena - Ultimate Edition"
+description: "Un jeu de combat de héros web moderne avec système d'authentification local"
+url: "https://dwwm-grenoble.github.io"
+baseurl: "/HEROES-ARENA-alpha"
+
+# Paramètres du site
+theme: null
+plugins: []
+
+# Fichiers à inclure/exclure
+include:
+  - assets
+  - css
+  - js
+  - index.html
+
+exclude:
+  - node_modules
+  - scss
+  - package.json
+  - package-lock.json
+  - .github
+  - .gitignore
+  - README.md
+  - LICENSE
+  - HTML
+
+# Configuration Jekyll
+markdown: kramdown
+highlighter: rouge

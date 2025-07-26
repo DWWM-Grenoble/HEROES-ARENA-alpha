@@ -2,8 +2,10 @@
 
 > **Un jeu de combat de héros web moderne avec système d'authentification local et architecture SCSS modulaire**
 
+## 🌐 **[▶️ JOUER MAINTENANT](https://dwwm-grenoble.github.io/HEROES-ARENA-alpha/)**
+
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-success.svg)](#)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-success.svg)](https://dwwm-grenoble.github.io/HEROES-ARENA-alpha/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![SCSS](https://img.shields.io/badge/SCSS-Modular-ff69b4.svg)](https://sass-lang.com/)
 
