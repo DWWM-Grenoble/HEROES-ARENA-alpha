@@ -7,6 +7,8 @@
     "scripts":{
         "dev": "python -m http.server 8000",
         "build": "npm run sass:build",
+        "build:deploy": "npm run sass:build && npm run copy:assets",
+        "copy:assets": "mkdir -p dist && cp index.html dist/ && cp -r assets dist/ && cp -r css dist/ && cp -r js dist/ && [ -f LICENSE ] && cp LICENSE dist/ || true && [ -f README.md ] && cp README.md dist/ || true",
         "test": "node js/test-simple.js",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d .",

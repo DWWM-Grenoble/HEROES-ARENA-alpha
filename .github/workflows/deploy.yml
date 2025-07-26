@@ -20,7 +20,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        # Récupérer l'historique complet pour éviter les erreurs git
         fetch-depth: 0
     
     - name: Setup Node.js
@@ -32,16 +31,14 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Build SCSS
-      run: npm run sass:build
+    - name: Build and prepare deployment
+      run: npm run build:deploy
     
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        exclude_assets: 'node_modules,netlify,netlify.toml,.github,.git'
-        # Ajouter la configuration utilisateur git pour éviter les erreurs 128
+        publish_dir: ./dist
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
