@@ -422,11 +422,13 @@
                 <!-- Filtres -->
                 <div class="filter-section">
                     <div class="filters">
-                        <button class="filter-btn active" onclick="HeroesArena.filterHeroes('all')">Tous</button>
-                        <button class="filter-btn" onclick="HeroesArena.filterHeroes('Guerrier')">Guerriers</button>
-                        <button class="filter-btn" onclick="HeroesArena.filterHeroes('Mage')">Mages</button>
-                        <button class="filter-btn" onclick="HeroesArena.filterHeroes('Archer')">Archers</button>
-                        <button class="filter-btn" onclick="HeroesArena.filterHeroes('Paladin')">Paladins</button>
+                        <button class="filter-btn active" data-filter="all" onclick="HeroesArena.filterHeroes('all')">Tous</button>
+                        <button class="filter-btn" data-filter="Guerrier" onclick="HeroesArena.filterHeroes('Guerrier')">Guerriers</button>
+                        <button class="filter-btn" data-filter="Mage" onclick="HeroesArena.filterHeroes('Mage')">Mages</button>
+                        <button class="filter-btn" data-filter="Archer" onclick="HeroesArena.filterHeroes('Archer')">Archers</button>
+                        <button class="filter-btn" data-filter="Paladin" onclick="HeroesArena.filterHeroes('Paladin')">Paladins</button>
+                        <button class="filter-btn" data-filter="Assassin" onclick="HeroesArena.filterHeroes('Assassin')">Assassins</button>
+                        <button class="filter-btn" data-filter="Druide" onclick="HeroesArena.filterHeroes('Druide')">Druides</button>
                     </div>
                 </div>
 

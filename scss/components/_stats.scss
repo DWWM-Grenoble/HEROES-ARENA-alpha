@@ -236,6 +236,19 @@
         font-weight: get($font-weights, bold);
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
+
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, md);
+        font-size: get($font-sizes, xs);
+        letter-spacing: 0.03em;
+    }
+
+    @include xs {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        letter-spacing: 0.02em;
+        min-width: 70px; // Assurer une taille minimum pour la lisibilité
+    }
 }
 
 @keyframes statShimmer {

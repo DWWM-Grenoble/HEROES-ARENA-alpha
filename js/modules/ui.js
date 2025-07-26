@@ -418,15 +418,18 @@ export class UIManager {
     filterHeroes(filter) {
         AppState.currentFilter = filter;
         
+        // Désactiver tous les boutons de filtre
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active');
         });
         
-        const activeBtn = document.querySelector(`[onclick*="${filter}"]`);
+        // Activer le bouton correspondant au filtre sélectionné
+        const activeBtn = document.querySelector(`.filter-btn[data-filter="${filter}"]`);
         if (activeBtn) {
             activeBtn.classList.add('active');
         }
         
+        // Mettre à jour l'affichage des héros
         this.displayHeroes();
     }
     
