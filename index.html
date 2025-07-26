@@ -1,148 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heroes Arena - Ultimate Edition</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
     <div class="background"></div>
-    <!-- Ecran d'authentification -->
-     <div id="authScreen" class="auth-screen">
+
+    <!-- Page d'accueil -->
+    <div id="homeScreen" class="home-screen">
+        <div class="home-container">
+            <h1 class="home-title">Heroes Arena</h1>
+            <p class="home-slogan">Créez vos héros légendaires et dominez l'arène</p>
+            <button class="home-btn" onclick="enterApplication()">
+                Commencer l'aventure
+            </button>
+        </div>
+    </div>
+
+    <!-- Écran d'authentification -->
+    <div id="authScreen" class="auth-screen" style="display: none;">
         <div class="auth-container">
             <div class="auth-header">
                 <h1>HEROES ARENA</h1>
                 <p>Connectez-vous pour créer vos héros légendaires</p>
             </div>
+
             <!-- Formulaire de Connexion -->
-             <div id="loginForm" class="auth-form active">
+            <div id="loginForm" class="auth-form active">
                 <h2>Connexion</h2>
                 <form onsubmit="return HeroesAuth.handleLogin(event)">
                     <div class="form-group">
                         <label for="loginEmail">Email</label>
-                        <input type="email" id="loginEmail" class="form-input" placeholder="Votre adresse email" required>
+                        <input type="email" id="loginEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
                         <div class="error-message" id="loginEmailError"></div>
                     </div>
+
                     <div class="form-group">
                         <label for="loginPassword">Mot de passe</label>
-                        <input type="password" id="loginPassword" class="form-input" placeholder="Votre mot de passe" required>
+                        <input type="password" id="loginPassword" class="form-input" 
+                               placeholder="Votre mot de passe" required>
                         <div class="error-message" id="loginPasswordError"></div>
                     </div>
-                    <button type="submit" class="btn-auth">Se connecter</button>
+
+                    <button type="submit" class="btn auth-btn">Se connecter</button>
                 </form>
+
                 <div class="auth-switch">
-                    <p>Pas encore de compte ?
+                    <p>Pas encore de compte ? 
                         <a href="#" onclick="HeroesAuth.showRegister()">Créer un compte</a>
                     </p>
-                    <p style="margin-top: 10px;">
+                    <p class="forgot-link">
                         <a href="#" onclick="HeroesAuth.showForgotPassword()">Mot de passe oublié ?</a>
                     </p>
                 </div>
-             </div>
-             <!-- Formulaire d'inscription -->
-              <div id="registerForm" class="auth-form">
+            </div>
+
+            <!-- Formulaire d'Inscription -->
+            <div id="registerForm" class="auth-form">
                 <h2>Créer un compte</h2>
                 <form onsubmit="return HeroesAuth.handleRegister(event)">
                     <div class="form-group">
                         <label for="registerUsername">Nom d'utilisateur</label>
-                        <input type="text" id="registerUsername" class="form-input" placeholder="Votre nom d'utilisateur" required>
+                        <input type="text" id="registerUsername" class="form-input" 
+                               placeholder="Votre nom d'utilisateur" required>
                         <div class="error-message" id="registerUsernameError"></div>
                     </div>
+
                     <div class="form-group">
                         <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" class="form-input" placeholder="Votre adresse mail" required>
+                        <input type="email" id="registerEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
                         <div class="error-message" id="registerEmailError"></div>
                     </div>
+
                     <div class="form-group">
                         <label for="registerPassword">Mot de passe</label>
-                        <input type="password" id="registerPassword" class="form-input" placeholder="Choissisez un mot de passe" required>
+                        <input type="password" id="registerPassword" class="form-input" 
+                               placeholder="Choisissez un mot de passe" required>
                         <div class="error-message" id="registerPasswordError"></div>
                         <div class="password-requirements">
-                            <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre</small>
+                            <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="confirmPassword">Confirmer le mot de passe</label>
-                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirmer votre mot de passe" required>
+                        <input type="password" id="confirmPassword" class="form-input" 
+                               placeholder="Confirmez votre mot de passe" required>
                         <div class="error-message" id="confirmPasswordError"></div>
                     </div>
-                    <button type="submit" class="btn-auth">Créer mon compte</button>
+
+                    <button type="submit" class="btn auth-btn">Créer mon compte</button>
                 </form>
+
                 <div class="auth-switch">
-                    <p>Déjà un compte ?
+                    <p>Déjà un compte ? 
                         <a href="#" onclick="HeroesAuth.showLogin()">Se connecter</a>
                     </p>
                 </div>
-              </div>
-              <!-- Formulaire de récupération de mot de passe -->
-               <div id="forgotPasswordForm" class="auth-form">
+            </div>
+
+            <!-- Formulaire de récupération de mot de passe -->
+            <div id="forgotPasswordForm" class="auth-form">
                 <h2>Récupération de mot de passe</h2>
-                <p class="forgot-description">Entrez votre adresse email pour reçevoir un code de récupération</p>
+                <p class="forgot-description">Entrez votre adresse email pour recevoir un code de récupération</p>
+                
                 <form onsubmit="return HeroesAuth.handleForgotPassword(event)">
                     <div class="form-group">
                         <label for="forgotEmail">Email</label>
-                        <input type="email" id="forgotEmail" class="form-input" placeholder="Votre adresse email" required>
+                        <input type="email" id="forgotEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
                         <div class="error-message" id="forgotEmailError"></div>
                     </div>
-                    <button type="submit" class="btn-auth">Envoyer le code</button>
+
+                    <button type="submit" class="btn auth-btn">Envoyer le code</button>
                 </form>
+
                 <div class="auth-switch">
-                    <p>Vous vous souvenez de votre mot de passe ?
+                    <p>Vous vous souvenez de votre mot de passe ? 
                         <a href="#" onclick="HeroesAuth.showLogin()">Se connecter</a>
                     </p>
                 </div>
-               </div>
-               <!-- Formulaire de vérification du code -->
-                <div id="verityCodeForm" class="auth-form">
-                    <h2>Vérification du code</h2>
-                    <p class="verify-description">Un code de récupération a été généré. Notez-le bien</p>
-                    <div class="recovery-code-display" id="recoveryCodeDisplay">
-                        <!-- Le code sera affiché ici -->
-                    </div>
-                    <form onsubmit="return HeroesAuth.handleVerifyCode(event)">
-                        <div class="form-group">
-                            <label for="verificationCode">Code de récupération</label>
-                            <input type="text" id="verificationCode" class="form-input" placeholder="Entrez le code à 6 chiffres" required maxlength="6">
-                            <div class="error-message" id="verificationCodeError"></div>
-                        </div>
-                        <button type="submit" class="btn-auth">Vérifier le code</button>
-                    </form>
-                    <div class="auth-switch">
-                        <p>
-                            <a href="#" onclick="HeroesAuth.showLogin()">Retour à la connexion</a>
-                        </p>
-                    </div>
+            </div>
+
+            <!-- Formulaire de vérification du code -->
+            <div id="verifyCodeForm" class="auth-form">
+                <h2>Vérification du code</h2>
+                <p class="verify-description">Un code de récupération a été généré. Notez-le bien !</p>
+                
+                <div class="recovery-code-display" id="recoveryCodeDisplay">
+                    <!-- Le code sera affiché ici -->
                 </div>
-                <!-- Formulaire de nouveau mot de passe -->
-                 <div id="resetPasswordForm" class="auth-form">
-                    <h2>Nouveau mot de passe</h2>
-                    <p class="reset-description">Choisissez un nouveau mot de passe sécurisé</p>
-                    <form onsubmit="return HeroesAuth.handleResetPassword(event)">
-                        <div class="form-group">
-                            <label for="newPassword">Nouveau mot de passe</label>
-                            <input type="password" id="newPassword" class="form-input" placeholder="Choisissez un nouveau mot de passe" required>
-                            <div class="error-message" id="newPasswordError"></div>
-                            <div class="password-requirements">
-                                <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre</small>
-                            </div>
+
+                <form onsubmit="return HeroesAuth.handleVerifyCode(event)">
+                    <div class="form-group">
+                        <label for="verificationCode">Code de récupération</label>
+                        <input type="text" id="verificationCode" class="form-input" 
+                               placeholder="Entrez le code à 6 chiffres" required maxlength="6">
+                        <div class="error-message" id="verificationCodeError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Vérifier le code</button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>
+                        <a href="#" onclick="HeroesAuth.showLogin()">Retour à la connexion</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulaire de nouveau mot de passe -->
+            <div id="resetPasswordForm" class="auth-form">
+                <h2>Nouveau mot de passe</h2>
+                <p class="reset-description">Choisissez un nouveau mot de passe sécurisé</p>
+                
+                <form onsubmit="return HeroesAuth.handleResetPassword(event)">
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" id="newPassword" class="form-input" 
+                               placeholder="Choisissez un nouveau mot de passe" required>
+                        <div class="error-message" id="newPasswordError"></div>
+                        <div class="password-requirements">
+                            <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
                         </div>
-                        <div class="form-group">
-                            <label for="confirmNewPassword">Confirmer le nouveau mot de passe</label>
-                            <input type="password" id="confirmNewPassword" class="form-input" placeholder="Confirmez votre nouveau mot de passe" required>
-                            <div class="error-message" id="confirmNewPassword"></div>
-                        </div>
-                        <button type="submit" class="btn-auth">Changer le mot de passe</button>
-                    </form>
-                 </div>
-                 <!-- Message d'erreur généraux -->
-                  <div id="authMessages" class="auth-messages"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirmer le nouveau mot de passe</label>
+                        <input type="password" id="confirmNewPassword" class="form-input" 
+                               placeholder="Confirmez votre nouveau mot de passe" required>
+                        <div class="error-message" id="confirmNewPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Changer le mot de passe</button>
+                </form>
+            </div>
+
+            <!-- Messages d'erreur généraux -->
+            <div id="authMessages" class="auth-messages"></div>
         </div>
-     </div>
-     <div class="container" id="mainApp" style="display:none">
+    </div>
+
+    <div class="container" id="mainApp" style="display: none;">
         <!-- Carte utilisateur en haut à droite -->
-         <div class="user-card" id="userCard">
+        <div class="user-card" id="userCard">
             <div class="user-card-header" onclick="toggleUserMenu()">
                 <div class="user-avatar">
                     <span id="userInitials">U</span>
@@ -157,67 +204,75 @@
                     </svg>
                 </div>
             </div>
+            
             <div class="user-menu" id="userMenu">
                 <div class="user-details">
                     <div class="user-detail-item">
-                        <span class="detail-icon"></span>
+                        <span class="detail-icon">📧</span>
                         <span class="detail-label">Email</span>
                         <span class="detail-value" id="userEmail">email@example.com</span>
                     </div>
                     <div class="user-detail-item">
-                        <span class="detail-icon"></span>
+                        <span class="detail-icon">📅</span>
                         <span class="detail-label">Membre depuis</span>
                         <span class="detail-value" id="userJoinDate">01/01/2024</span>
                     </div>
                     <div class="user-detail-item">
-                        <span class="detail-icon"></span>
-                        <span class="detail-label">Héros crées</span>
+                        <span class="detail-icon">🦸</span>
+                        <span class="detail-label">Héros créés</span>
                         <span class="detail-value" id="userHeroCount">0</span>
                     </div>
                     <div class="user-detail-item">
-                        <span class="detail-icon"></span>
+                        <span class="detail-icon">🏆</span>
                         <span class="detail-label">Victoires totales</span>
                         <span class="detail-value" id="userTotalWins">0</span>
                     </div>
                 </div>
+                
                 <div class="user-actions">
                     <button class="user-action-btn" onclick="showUserProfile()">
-                        <span class="action-icon"></span>
+                        <span class="action-icon">👤</span>
                         Profil
                     </button>
                     <button class="user-action-btn" onclick="showUserSettings()">
-                        <span class="action-icon"></span>
+                        <span class="action-icon">⚙️</span>
                         Paramètres
                     </button>
                     <button class="user-action-btn logout-btn" onclick="HeroesAuth.logout()">
-                        <span class="action-icon"></span>
+                        <span class="action-icon">🚪</span>
                         Déconnexion
                     </button>
                 </div>
             </div>
-         </div>
-         <div class="header">
+        </div>
+
+        <div class="header">
             <h1>HEROES ARENA</h1>
             <p>Créez vos héros avec des pouvoirs uniques et regardez-les gravir les échelons</p>
-            <div id="appStatus" style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8; color: #3b82f6;">
+            <div id="appStatus" class="app-loading-status">
                 Chargement de l'application...
             </div>
-         </div>
-         <div class="nav">
+        </div>
+
+        <div class="nav">
             <button class="nav-tab active" onclick="HeroesArena.showSection('create')">Créer un Héros</button>
             <button class="nav-tab" onclick="HeroesArena.showSection('heroes')">Mes Héros</button>
             <button class="nav-tab" onclick="HeroesArena.showSection('arena')">Arène</button>
-         </div>
-         <div class="content">
-            <!-- Section création -->
-             <div class="section active" id="create">
-                <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 30px; color: #e2e8f0;">Créer un nouveau Héros</h2>
+        </div>
+
+        <div class="content">
+            <!-- Section Création -->
+            <div class="section active" id="create">
+                <h2 class="create-hero-title">Créer un Nouveau Héros</h2>
+
                 <div class="form-grid">
                     <div>
                         <div class="form-group">
                             <label for="heroName">Nom du Héros</label>
-                            <input type="text" id="heroName" class="form-input" placeholder="Entrez le nom de votre héros" maxlength="20">
+                            <input type="text" id="heroName" class="form-input"
+                                placeholder="Entrez le nom de votre héros" maxlength="20">
                         </div>
+
                         <div class="form-group">
                             <label for="heroClass">Spécialisation</label>
                             <select id="heroClass" class="form-input" onchange="HeroesArena.updateClassInfo()">
@@ -229,106 +284,143 @@
                                 <option value="Druide">Druide - Gardien de la Nature</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label>Catalogue d'Avatars</label>
                             <div class="avatar-catalog">
                                 <div class="catalog-tabs">
-                                    <button class="catalog-tab active" onclick="HeroesArena.showAvatarCategory('guerriers')">Guerriers</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('mages')">Mages</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('archers')">Archers</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('paladins')">Paladins</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('assassins')">Assassins</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('druides')">Druides</button>
-                                    <button class="catalog-tab" onclick="HeroesArena.showAvatarCategory('generiques')">Génériques</button>
+                                    <button class="catalog-tab active"
+                                        onclick="HeroesArena.showAvatarCategory('guerriers')">Guerriers</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('mages')">Mages</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('archers')">Archers</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('paladins')">Paladins</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('assassins')">Assassins</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('druides')">Druides</button>
+                                    <button class="catalog-tab"
+                                        onclick="HeroesArena.showAvatarCategory('generiques')">Génériques</button>
                                 </div>
                                 <div class="avatar-grid" id="avatarGrid">
                                     <!-- Les avatars seront générés par JavaScript -->
                                 </div>
                             </div>
                         </div>
+
                         <div id="classInfo" class="class-info">
                             <h4>Guerrier - Maître de la Rage</h4>
-                            <p>Bonus de +20% en Force. Spécialiste du combat rapproché avec une attaque spéciale "Charge Brutale" qui inflige des dégâts massifs</p>
+                            <p>Bonus de +20% en Force. Spécialiste du combat rapproché avec une attaque spéciale "Charge
+                                Brutale" qui inflige des dégâts massifs.</p>
                             <div class="power-preview">
                                 <h5>Pouvoir : Rage Berserker</h5>
-                                <p>Augmente les dégâts de 50% pendant 3 tours, mais réduit la défense de 30%. Se déclenche automatiquement quand les PV tombent sous 40%</p>
+                                <p>Augmente les dégâts de 50% pendant 3 tours, mais réduit la défense de 30%. Se
+                                    déclenche automatiquement quand les PV tombent sous 40%.</p>
                             </div>
                         </div>
                     </div>
+
                     <div>
                         <div class="stats-container">
-                            <h3 style="color: #e2e8f0; margin-bottom: 24px; font-weight: 700;">Caractéristiques</h3>
+                            <h3>Caractéristiques</h3>
+
                             <div class="stat-group">
                                 <div class="stat-header">
                                     <span class="stat-label">Force</span>
                                     <span class="stat-value" id="forceValue">20</span>
                                 </div>
-                                <input type="range" id="force" class="stat-slider" min="10" max="40" value="20" oninput="HeroesArena.updateStats()">
+                                <input type="range" id="force" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
                                 <div class="stat-bar">
-                                    <div class="stat-fill force" style="width: 50;"></div>
+                                    <div class="stat-fill force" style="width: 50%"></div>
                                 </div>
                             </div>
+
                             <div class="stat-group">
                                 <div class="stat-header">
                                     <span class="stat-label">Agilité</span>
                                     <span class="stat-value" id="agilityValue">20</span>
                                 </div>
-                                <input type="range" id="agility" class="stat-slider" min="10" max="40" value="20" oninput="HeroesArena.updateStats()">
+                                <input type="range" id="agility" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
                                 <div class="stat-bar">
-                                    <div class="stat-fill agility" style="width: 50%;"></div>
+                                    <div class="stat-fill agility" style="width: 50%"></div>
                                 </div>
                             </div>
+
                             <div class="stat-group">
                                 <div class="stat-header">
                                     <span class="stat-label">Magie</span>
                                     <span class="stat-value" id="magicValue">20</span>
                                 </div>
-                                <input type="range" id="magic" class="stat-slider" min="10" max="40" value="20" oninput="HeroesArena.updateStats()">
+                                <input type="range" id="magic" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
                                 <div class="stat-bar">
-                                    <div class="stat-fill magic" style="width: 50%;"></div>
+                                    <div class="stat-fill magic" style="width: 50%"></div>
                                 </div>
                             </div>
+
                             <div class="stat-group">
                                 <div class="stat-header">
                                     <span class="stat-label">Défense</span>
                                     <span class="stat-value" id="defenseValue">20</span>
                                 </div>
-                                <input type="range" id="defense" class="stat-slider" min="10" max="40" value="20" oninput="HeroesArena.updateStats()">
+                                <input type="range" id="defense" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
                                 <div class="stat-bar">
-                                    <div class="stat-fill defense" style="width: 50%;"></div>
+                                    <div class="stat-fill defense" style="width: 50%"></div>
                                 </div>
                             </div>
+
                             <div class="total-points valid" id="totalPoints">
                                 Total: 80/100 points
                             </div>
                         </div>
-                        <div style="display: flex; gap: 16px; margin-top: 30px;">
-                            <button class="btn" onclick="HeroesArena.createHeroFromForm()" id="createBtn">Créer le Héros</button>
-                            <button class="btn btn-secondary" onclick="HeroesArena.randomStats()">Stats Aléatoires</button>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="HeroesArena.createHeroFromForm()" id="createBtn">Créer le
+                                Héros</button>
+                            <button class="btn btn-secondary" onclick="HeroesArena.randomStats()">Stats
+                                Aléatoires</button>
                         </div>
                     </div>
                 </div>
-             </div>
-             <!-- Section Héros -->
-              <div id="heroes" class="section">
+            </div>
+
+            <!-- Section Héros -->
+            <div id="heroes" class="section">
                 <div class="section-header">
                     <h2>Mes Héros</h2>
                     <p>Cliquez sur un héros pour voir ses détails complets</p>
                 </div>
+
                 <!-- Gestion des fichiers -->
-                 <div class="file-management-section">
-                    <h3>Gestion des sauvegardes</h3>
+                <div class="file-management-section">
+                    <h3>💾 Gestion des Sauvegardes</h3>
                     <div class="file-buttons">
-                        <button class="file-button save" onclick="HeroesArena.exportData()">Exporter vers Fichier</button>
-                        <button class="file-button load" onclick="document.getElementById('importFile').click()">Importer depuis Fichier</button>
-                        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleFileImport(this)">
-                        <button class="file-button load" onclick="HeroesArena.loadData()">Recharger Données</button>
-                        <button class="file-button danger" onclick="HeroesArena.clearAllData()">Supprimer Tous</button>
-                        <button class="file-button" onclick="HeroesArena.createDemoHeroes()">Héros de Démo</button>
+                        <button class="file-button save" onclick="HeroesArena.exportData()">
+                            📁 Exporter vers Fichier
+                        </button>
+                        <button class="file-button load" onclick="document.getElementById('importFile').click()">
+                            📂 Importer depuis Fichier
+                        </button>
+                        <input type="file" id="importFile" accept=".json" class="hidden-file-input" onchange="handleFileImport(this)">
+                        <button class="file-button load" onclick="HeroesArena.loadData()">
+                            💾 Recharger Données
+                        </button>
+                        <button class="file-button danger" onclick="HeroesArena.clearAllData()">
+                            🗑️ Supprimer Tous
+                        </button>
+                        <button class="file-button" onclick="HeroesArena.createDemoHeroes()">
+                            🎭 Héros de Démo
+                        </button>
                     </div>
-                 </div>
-                 <!-- Filtres -->
-                  <div class="filter-section">
+                </div>
+
+                <!-- Filtres -->
+                <div class="filter-section">
                     <div class="filters">
                         <button class="filter-btn active" onclick="HeroesArena.filterHeroes('all')">Tous</button>
                         <button class="filter-btn" onclick="HeroesArena.filterHeroes('Guerrier')">Guerriers</button>
@@ -336,19 +428,23 @@
                         <button class="filter-btn" onclick="HeroesArena.filterHeroes('Archer')">Archers</button>
                         <button class="filter-btn" onclick="HeroesArena.filterHeroes('Paladin')">Paladins</button>
                     </div>
-                  </div>
-                  <!-- Liste des Héros -->
-                   <div id="heroesList" class="heroes-grid">
+                </div>
+
+                <!-- Liste des héros -->
+                <div id="heroesList" class="heroes-grid">
                     <!-- Les héros seront affichés ici -->
-                   </div>
-              </div>
-              <!-- Section Arène -->
-               <div class="section" id="arena">
+                </div>
+            </div>
+
+            <!-- Section Arène -->
+            <div class="section" id="arena">
                 <div class="arena">
                     <div class="arena-header">
-                        <h3>ARENE DE COMBAT</h3>
-                        <p style="color: #94a3b8; font-size: 1.1rem;">Sélectionnez deux héros et regardez-les s'affronter pour la gloire</p>
+                        <h3>ARÈNE DE COMBAT</h3>
+                        <p class="arena-subtitle">Sélectionnez deux héros et regardez-les
+                            s'affronter pour la gloire</p>
                     </div>
+
                     <div class="fighter-selection">
                         <div class="fighter-select">
                             <h4>Combattant 1</h4>
@@ -356,7 +452,9 @@
                                 <option value="">Sélectionnez un héros</option>
                             </select>
                         </div>
+
                         <div class="vs-divider">VS</div>
+
                         <div class="fighter-select">
                             <h4>Combattant 2</h4>
                             <select class="hero-selector" id="fighter2Select" onchange="HeroesArena.updateFighters()">
@@ -364,44 +462,91 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="fighters-display">
                         <div class="fighter-display" id="fighter1Display">
                             <div class="fighter-avatar-large">
-                                <span style="color: #64748b; font-size: 2rem;">?</span>
+                                <span class="fighter-placeholder">?</span>
                             </div>
                             <div class="fighter-name">En attente...</div>
-                            <div class="hero-class" style="background: rgba(255, 255, 255, 0.1);">Non sélectionné</div>
+                            <div class="hero-class hero-class-empty">Non sélectionné</div>
                             <div class="health-bar">
-                                <div class="health-fill" style="width: 0%;"></div>
+                                <div class="health-fill" style="width: 0%"></div>
                                 <div class="health-text">0/0</div>
                             </div>
                         </div>
-                        <div class="vs-divider"></div>
+
+                        <div class="vs-divider">⚔</div>
+
                         <div class="fighter-display" id="fighter2Display">
                             <div class="fighter-avatar-large">
-                                <span style="color: #64748b; font-size: 2rem;">?</span>
+                                <span class="fighter-placeholder">?</span>
                             </div>
                             <div class="fighter-name">En attente...</div>
-                            <div class="hero-class" style="background: rgba(255, 255, 255, 0.1);">Non sélectionné</div>
+                            <div class="hero-class hero-class-empty">Non sélectionné</div>
                             <div class="health-bar">
-                                <div class="health-fill" style="width: 0%;"></div>
+                                <div class="health-fill" style="width: 0%"></div>
                                 <div class="health-text">0/0</div>
                             </div>
                         </div>
                     </div>
-                    <div style="margin: 30px 0;">
-                        <button class="btn" onclick="HeroesArena.startCombat()" id="fightBtn" disabled style="margin-right: 16px;">Commencer le Combat</button>
+
+                    <div class="arena-actions">
+                        <button class="btn fight-btn" onclick="HeroesArena.startCombat()" id="fightBtn" disabled>Commencer le Combat</button>
                         <button class="btn btn-secondary" onclick="HeroesArena.resetArena()">Réinitialiser</button>
                         <button class="btn btn-secondary" onclick="HeroesArena.stopCombat()">Arrêter Combat</button>
                     </div>
+
                     <div class="combat-log" id="combatLog">
-                        <div class="log-entry log-info">Bienvenue dans l'arène ! Sélectionnez deux héros de votre choix pour commencer le combat...</div>
+                        <div class="log-entry log-info">Bienvenue dans l'arène ! Sélectionnez deux héros pour commencer
+                            le combat...</div>
                     </div>
                 </div>
-               </div>
-         </div>
-     </div>
-     <!-- Chargeur d'application -->
-      <script type="module" src="js/app-loader.js"></script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation entre pages -->
+    <script>
+        // Variable pour éviter les exécutions automatiques
+        let isManualNavigation = false;
+        
+        function enterApplication() {
+            console.log('Navigation vers la page de connexion');
+            
+            // Utiliser le système d'authentification si disponible
+            if (window.HeroesAuth && window.HeroesAuth.showAuthScreen) {
+                window.HeroesAuth.showAuthScreen();
+            } else {
+                // Fallback manuel
+                const homeScreen = document.getElementById('homeScreen');
+                const authScreen = document.getElementById('authScreen');
+                
+                if (homeScreen && authScreen) {
+                    homeScreen.classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        homeScreen.style.display = 'none';
+                        authScreen.style.display = 'flex';
+                    }, 500);
+                }
+            }
+        }
+        
+        // S'assurer que la page d'accueil reste affichée au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeScreen = document.getElementById('homeScreen');
+            const authScreen = document.getElementById('authScreen');
+            
+            if (homeScreen && authScreen) {
+                homeScreen.style.display = 'flex';
+                authScreen.style.display = 'none';
+                isManualNavigation = false;
+            }
+        });
+    </script>
+
+    <!-- Chargeur d'application -->
+    <script type="module" src="./js/app-loader.js"></script>
 </body>
 </html>

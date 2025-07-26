@@ -1,0 +1,365 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== LUXURY PALATIAL BUTTONS : components/_buttons.scss ==========
+
+.btn {
+    // Luxury golden button with marble texture
+    background: 
+        // Marble texture pattern
+        repeating-linear-gradient(
+            45deg,
+            $gold-bronze 0px,
+            $gold-bronze 2px,
+            $bronze-shadow 2px,
+            $bronze-shadow 4px
+        ),
+        linear-gradient(135deg, $walnut-brown 0%, $gold-bronze 30%, $text-primary 70%, $bronze-shadow 100%);
+    padding: get($spacings, md) get($spacings, xl);
+    border-radius: get($border-radius, sm);
+    border: 3px solid $gold-bronze;
+    font-family: $font-family-primary;
+    font-size: get($font-sizes, base);
+    font-weight: get($font-weights, bold);
+    color: $text-white;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 
+        0 0 10px rgba(212, 175, 55, 0.8),
+        0 1px 0 rgba(139, 115, 85, 0.5);
+    box-shadow: 
+        0 4px 8px rgba(26, 22, 18, 0.6),
+        get($shadows, gold),
+        inset 0 1px 0 rgba(248, 245, 240, 0.2),
+        inset 0 -1px 0 rgba(60, 36, 20, 0.8);
+    position: relative;
+    min-height: 44px; // Touch-friendly minimum height
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    // Luxury accent symbol
+    &::after {
+        content: '◆';
+        position: absolute;
+        top: 4px;
+        right: 6px;
+        font-size: 10px;
+        color: rgba(212, 175, 55, 0.6);
+        opacity: 0.8;
+        text-shadow: 0 0 4px rgba(255, 140, 0, 0.4);
+        animation: luxuryGlow 4s ease-in-out infinite;
+    }
+
+    @include tablet {
+        padding: get($spacings, sm) get($spacings, lg);
+        font-size: get($font-sizes, sm);
+        letter-spacing: 0.08em;
+        min-height: 42px;
+    }
+
+    @include mobile {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, sm);
+        letter-spacing: 0.05em;
+        min-height: 48px; // Larger touch target on mobile
+        border-width: 2px;
+    }
+
+    @include xs {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        letter-spacing: 0.03em;
+        min-height: 44px;
+        border-width: 2px;
+        border-radius: get($border-radius, xs);
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(204, 102, 0, 0.2), transparent);
+        transform: translateY(-50%);
+        transition: left 0.8s ease;
+    }
+
+    &:hover {
+        border-color: $text-primary;
+        box-shadow: 
+            0 6px 16px rgba(26, 22, 18, 0.8),
+            get($shadows, gold),
+            get($shadows, fire),
+            inset 0 1px 0 rgba(248, 245, 240, 0.3);
+        background: 
+            linear-gradient(135deg, $text-primary 0%, $gold-bronze 30%, $text-fire 70%, $text-primary 100%);
+        color: $marble-white;
+        text-shadow: 0 0 8px rgba(212, 175, 55, 0.9);
+
+        &::before {
+            left: 100%;
+        }
+
+        @include mobile {
+            // Reduce hover intensity on mobile for better touch experience
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.9),
+                0 0 8px rgba(212, 98, 26, 0.3),
+                inset 0 1px 0 rgba(196, 196, 196, 0.2);
+        }
+    }
+
+    &:active {
+        box-shadow: 
+            0 2px 4px rgba(0, 0, 0, 1),
+            inset 0 2px 4px rgba(0, 0, 0, 1);
+        background: 
+            linear-gradient(135deg, $rust-red 0%, $blood-black 50%, $rust-red 100%);
+        color: $text-muted;
+
+        @include mobile {
+            // Enhanced active state for mobile touch feedback
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 1),
+                inset 0 3px 6px rgba(0, 0, 0, 0.95);
+            transform: translateY(1px);
+        }
+    }
+
+    &:disabled {
+        background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+        color: rgba(85, 85, 85, 0.6);
+        border-color: #1a1a1a;
+        cursor: not-allowed;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+        opacity: 0.4;
+        transform: none !important;
+
+        &:hover,
+        &:active {
+            transform: none !important;
+            background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+    }
+
+    // Focus state for accessibility
+    &:focus {
+        outline: none;
+        border-color: $text-secondary;
+        box-shadow: 
+            0 0 0 3px rgba(212, 98, 26, 0.4),
+            0 6px 16px rgba(0, 0, 0, 1),
+            get($shadows, glow);
+
+        @include mobile {
+            box-shadow: 
+                0 0 0 2px rgba(212, 98, 26, 0.5),
+                0 4px 12px rgba(0, 0, 0, 0.9);
+        }
+    }
+
+    // Touch-specific improvements
+    @media (hover: none) and (pointer: coarse) {
+        // For touch devices, enhance the active state
+        &:active {
+            background: 
+                linear-gradient(135deg, #0d0d0d 0%, #060606 50%, #0d0d0d 100%);
+            transform: translateY(2px);
+            box-shadow: 
+                0 1px 2px rgba(0, 0, 0, 1),
+                inset 0 3px 6px rgba(0, 0, 0, 0.95);
+        }
+    }
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(13, 13, 13, 0.9), rgba(5, 5, 5, 1));
+    color: $text-primary;
+    border: 2px solid rgba(26, 26, 26, 0.6);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(212, 98, 26, 0.05);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    @include mobile {
+        min-height: 48px;
+        padding: get($spacings, sm) get($spacings, md);
+    }
+
+    &:hover {
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(13, 13, 13, 1));
+        border-color: rgba(212, 98, 26, 0.4);
+        box-shadow: 
+            0 8px 24px rgba(0, 0, 0, 1),
+            0 0 10px rgba(212, 98, 26, 0.2);
+        color: $text-secondary;
+    }
+
+    &:active {
+        @include mobile {
+            transform: translateY(1px);
+        }
+    }
+}
+
+// File Management
+.file-management-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid $bg-glass;
+    border-radius: get($border-radius, md);
+    padding: get($spacings, lg);
+    margin: get($spacings, lg) 0;
+
+    h3 {
+        margin: 0 0 15px 0;
+        color: white;
+        font-size: get($font-sizes, lg);
+    }
+}
+
+.file-buttons {
+    display: flex;
+    gap: get($spacings, sm);
+    flex-wrap: wrap;
+
+    @include mobile {
+        flex-direction: column;
+        gap: get($spacings, md);
+    }
+
+    @include xs {
+        gap: get($spacings, sm);
+    }
+}
+
+.file-button {
+    background: linear-gradient(135deg, $info, #1d4ed8);
+    color: white;
+    border: none;
+    padding: get($spacings, sm) get($spacings, md);
+    border-radius: get($border-radius, sm);
+    cursor: pointer;
+    font-weight: get($font-weights, semibold);
+    transition: all 0.2s ease;
+    font-size: get($font-sizes, sm);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    @include mobile {
+        min-height: 48px;
+        padding: get($spacings, sm) get($spacings, lg);
+        font-size: get($font-sizes, base);
+    }
+
+    @include xs {
+        min-height: 44px;
+        padding: get($spacings, xs) get($spacings, md);
+        font-size: get($font-sizes, sm);
+    }
+
+    &:hover {
+        box-shadow: 0 5px 15px rgba($info, 0.4);
+        filter: brightness(1.1);
+    }
+
+    &:active {
+        @include mobile {
+            transform: translateY(1px);
+            filter: brightness(0.95);
+        }
+    }
+
+    &.save {
+        background: linear-gradient(135deg, $success, #059669);
+    }
+
+    &.load {
+        background: linear-gradient(135deg, $warning, #d97706);
+    }
+
+    &.export {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    &.danger {
+        background: linear-gradient(135deg, $error, #dc2626);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: none;
+    }
+}
+
+// Règles spéciales pour stabiliser les boutons de fonctionnalité importante
+// Ces boutons ne doivent jamais avoir d'effets de transformation qui perturbent le clic
+.btn.stable-btn,
+button[id*="fightBtn"],
+button[id*="createBtn"],
+button[onclick*="resetArena"],
+button[onclick*="stopCombat"],
+button[onclick*="randomStats"],
+button[onclick*="createHeroFromForm"],
+button[onclick*="startCombat"] {
+    
+    &:hover {
+        // Supprimer complètement les transformations
+        transform: none !important;
+        // Conserver uniquement les effets visuels sûrs
+        background: 
+            linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+        border-color: $primary-gold;
+        box-shadow: 
+            0 0 20px rgba(212, 175, 55, 0.6),
+            0 4px 12px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 248, 225, 0.7);
+        filter: brightness(1.05);
+    }
+
+    &:active {
+        transform: none !important;
+        background: 
+            linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+        box-shadow: 
+            0 2px 8px rgba(0, 0, 0, 0.5),
+            inset 0 3px 6px rgba(0, 0, 0, 0.3);
+        filter: brightness(0.95);
+    }
+
+    &:focus {
+        transform: none !important;
+        outline: none;
+        box-shadow: 
+            0 0 0 3px rgba(212, 175, 55, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    // Désactiver l'animation de brillance qui peut interférer
+    &::before {
+        display: none !important;
+    }
+}
+
+// Animations for luxury effects
+@keyframes luxuryGlow {
+    0%, 100% {
+        opacity: 0.6;
+        text-shadow: 0 0 4px rgba(212, 175, 55, 0.4);
+    }
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+    }
+}

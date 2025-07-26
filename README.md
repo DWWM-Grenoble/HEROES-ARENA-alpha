@@ -1,9 +1,9 @@
 # 🏟️ Heroes Arena - Ultimate Edition
 
-> **Un jeu de combat de héros web moderne avec système d'authentification cloud et architecture SCSS modulaire**
+> **Un jeu de combat de héros web moderne avec système d'authentification local et architecture SCSS modulaire**
 
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
-[![Netlify Status](https://img.shields.io/badge/netlify-deployed-success.svg)](https://heroes-arena.netlify.app)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-success.svg)](#)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![SCSS](https://img.shields.io/badge/SCSS-Modular-ff69b4.svg)](https://sass-lang.com/)
 
@@ -444,24 +444,36 @@ npm run sass:check
 
 ## 🚀 Déploiement en Production
 
-### Netlify (Recommandé)
+### GitHub Pages (Recommandé)
 
-1. **Connectez GitHub** à Netlify
-2. **Configuration automatique** via `netlify.toml`
-3. **Variables d'environnement** dans l'interface Netlify
-4. **Déploiement automatique** sur chaque push
+Le projet est optimisé pour GitHub Pages avec authentification locale :
+
+1. **Push vers votre repository GitHub**
+2. **Activation automatique** via GitHub Actions (`.github/workflows/deploy.yml`)
+3. **Compilation SCSS automatique** lors du déploiement
+4. **Déploiement automatique** sur chaque push vers `main`
 
 ```bash
-# Déploiement manuel
-npm run sass:build  # Compilation CSS finale
-npm run deploy     # Deploy vers Netlify
+# Développement local
+npm install
+npm run dev          # Serveur local Python
+npm run sass:dev     # Compilation SCSS avec watch
+
+# Build de production
+npm run build        # Compile SCSS pour production
 ```
+
+#### Configuration GitHub Pages
+
+1. Allez dans **Settings > Pages** de votre repository
+2. Sélectionnez **GitHub Actions** comme source
+3. Le workflow déploiera automatiquement vers `gh-pages`
 
 ### Autres Plateformes
 
-**Vercel** : Compatible avec adaptation mineure
-**GitHub Pages** : Nécessite compilation préalable (pas de Functions)
-**Firebase Hosting** : Support complet avec Firebase Functions
+**Vercel** : Compatible directement
+**Netlify** : Nécessite restauration des fonctions serverless
+**Firebase Hosting** : Support complet
 
 ## 📊 Monitoring et Analytics
 

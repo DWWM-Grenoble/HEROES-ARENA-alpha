@@ -1,0 +1,179 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== DARK MINIMAL BACKGROUND ==========
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    
+    // Dark Minimal Structured Background
+    background: 
+        // Subtle grid structure
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 40px,
+            rgba(255, 255, 255, 0.02) 40px,
+            rgba(255, 255, 255, 0.02) 41px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 40px,
+            rgba(255, 255, 255, 0.02) 40px,
+            rgba(255, 255, 255, 0.02) 41px
+        ),
+        // Minimal structural patterns
+        radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.01) 0%, transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(255, 255, 255, 0.01) 0%, transparent 30%),
+        // Pure void base
+        $bg-primary;
+    
+    // Minimal structural overlay
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.005) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.005) 0%, transparent 50%);
+        animation: minimalPulse 20s ease-in-out infinite;
+        pointer-events: none;
+    }
+}
+
+// Ultra dark container styling
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: get($spacings, xl);
+    
+    // Barely visible dark border
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid rgba(20, 20, 20, 0.05);
+        border-radius: get($border-radius, lg);
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    @include tablet {
+        padding: get($spacings, lg);
+    }
+    
+    @include mobile {
+        padding: get($spacings, md);
+    }
+}
+
+@keyframes minimalPulse {
+    0%, 100% {
+        opacity: 0.1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.05;
+        transform: scale(1.001);
+    }
+}
+
+// Minimal dark corner effects
+@keyframes darkCornerFlicker {
+    0%, 100% {
+        box-shadow: 
+            -10px -10px 30px rgba(15, 15, 15, 0.08),
+            10px 10px 30px rgba(12, 12, 12, 0.05);
+    }
+    50% {
+        box-shadow: 
+            -8px -8px 25px rgba(18, 18, 18, 0.06),
+            8px 8px 25px rgba(10, 10, 10, 0.04);
+    }
+}
+
+// Add minimal dark effects to body
+body {
+    &::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 5;
+        // Minimal corner darkness
+        box-shadow: 
+            -30px -30px 60px rgba(8, 8, 8, 0.03),
+            30px -30px 60px rgba(6, 6, 6, 0.02),
+            -30px 30px 60px rgba(5, 5, 5, 0.02),
+            30px 30px 60px rgba(7, 7, 7, 0.025);
+        animation: darkCornerFlicker 15s ease-in-out infinite;
+        border-radius: 50%;
+        transform: scale(2);
+        opacity: 0.3;
+    }
+}
+
+// Ultra dark sections
+.section {
+    position: relative;
+    background: 
+        linear-gradient(135deg, rgba(18, 18, 18, 0.98) 0%, rgba(10, 10, 10, 1) 100%);
+    border: 1px solid $carbon-grey;
+    border-radius: get($border-radius, sm);
+    padding: get($spacings, xl);
+    margin-bottom: get($spacings, xl);
+    box-shadow: 
+        get($shadows, lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.8);
+    
+    // Minimal structure border
+    &::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        background: linear-gradient(45deg, $carbon-grey, $steel-grey, $carbon-grey);
+        border-radius: get($border-radius, sm);
+        z-index: -1;
+        opacity: 0.3;
+    }
+    
+    // Minimal dark accent
+    &::after {
+        content: '⬥';
+        position: absolute;
+        top: get($spacings, sm);
+        right: get($spacings, sm);
+        color: rgba(40, 40, 40, 0.15);
+        font-size: get($font-sizes, sm);
+        font-family: $font-family-secondary;
+    }
+    
+    @include tablet {
+        padding: get($spacings, lg);
+    }
+    
+    @include mobile {
+        padding: get($spacings, md);
+    }
+}

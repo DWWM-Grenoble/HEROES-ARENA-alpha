@@ -1,42 +1,45 @@
-// ======== MAIN SCSS FILE ========
-//This file imports all Sass modules to compile into CSS
+// ========== MAIN SCSS FILE ==========
+// This file imports all Sass modules to compile into CSS
 
-//1.Abstracts (variables, mixins, functions)
-@import "abstracts/variables";
-@import "abstracts/mixins";
+// 1. Abstracts (variables, mixins, functions)
+@use 'abstracts/variables' as *;
+@use 'abstracts/mixins' as *;
 
-//2.Base (reset, typography, animations)
-@import "base/reset";
-@import "base/animations";
+// 2. Base (reset, typography, animations, background)
+@use 'base/reset';
+@use 'base/animations';
+@use 'base/background';
 
-//3.Layout (header, navigation, main structure)
-@import "layout/main";
-@import "layout/header";
-@import "layout/navigation";
+// 3. Layout (header, navigation, main structure)
+@use 'layout/main';
+@use 'layout/header';
+@use 'layout/navigation';
 
-//4.Components (reusable components)
-@import "components/auth";
-@import "components/hero-card";
-@import "components/arena";
-@import "components/combat-log";
-@import "components/modal";
-@import "components/forms";
-@import "components/buttons";
-@import "components/user-card";
-@import "components/stats";
-@import "components/roman-decorations";
-@import "components/hero-details-enhanced";
-@import "components/victory-enhanced";
+// 4. Components (reusable components)
+@use 'components/auth';
+@use 'components/hero-card';
+@use 'components/arena';
+@use 'components/combat-log';
+@use 'components/modal';
+@use 'components/forms';
+@use 'components/buttons';
+@use 'components/user-card';
+@use 'components/stats';
+@use 'components/roman-decorations';
+@use 'components/hero-details-enhanced';
+@use 'components/victory-enhanced';
+@use 'components/victory-spectacular';
+@use 'components/victory-simple';
 
-//5.Pages (pages-specific styles)
-//Add page-specific imports here if needed
+// 5. Pages (page-specific styles)
+@use 'pages/home';
 
-//6.Themes (theme-specific styles)
-//Add theme imports here if needed
+// 6. Themes (theme-specific styles)
+// Add theme imports here if needed
 
-//7.Utilities (helper classes, responsive)
-@import "utilities/helpers";
-@import "utilities/responsive";
+// 7. Utilities (helper classes, responsive)
+@use 'utilities/helpers';
+@use 'utilities/responsive';
 
-//8.Vendors (thrid-party styles)
-//Add vendor imports here if needed
+// 8. Vendors (third-party styles)
+// Add vendor imports here if needed

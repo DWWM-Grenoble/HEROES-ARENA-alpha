@@ -1,15 +1,18 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
 .hero-card {
-    //Style tablette romaine
-    background:
-    linear-gradient(135deg, rgba(160, 82, 45, 0.9) 0%, rgba(139, 69, 19, 0.8) 100%),
-    repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(213, 175, 55, 0.1) 2px,
-        rgba(212, 175, 55, 0.1) 3px
-    );
-    border: 2px solid $primary-bronze;
+    // Luxury marble & gold card
+    background: 
+        linear-gradient(135deg, rgba(26, 22, 18, 0.95) 0%, rgba(60, 36, 20, 0.9) 50%, rgba(26, 22, 18, 0.95) 100%),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(212, 175, 55, 0.05) 2px,
+            rgba(212, 175, 55, 0.05) 3px
+        );
+    border: 3px solid $gold-bronze;
     border-radius: get($border-radius, sm);
     padding: get($spacings, lg);
     min-height: 320px;
@@ -18,11 +21,12 @@
     overflow: hidden;
     transition: all get($transitions, normal);
     box-shadow: 
-    get($shadows, md),
-    insert 0 1px 0 rgba(212, 175, 55, 0.3),
-    insert 0 -1px 0 rgba(0, 0, 0, 0.3);
-
-    //Texture de pierre gravée
+        get($shadows, md),
+        inset 0 1px 0 rgba(248, 245, 240, 0.1),
+        inset 0 -1px 0 rgba(26, 22, 18, 0.8),
+        0 0 15px rgba(212, 175, 55, 0.2);
+    
+    // Marble texture overlay
     &::before {
         content: '';
         position: absolute;
@@ -31,72 +35,81 @@
         right: 0;
         bottom: 0;
         background: 
-        radial-gradient(circle at 20% 30%, rgba (0, 0, 0, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 20% 30%, rgba (0, 0, 0, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 20% 30%, rgba(248, 245, 240, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
         pointer-events: none;
     }
 
     &:hover {
         transform: translateY(-3px) rotateX(5deg);
-        border-color: $primary-gold;
+        border-color: $text-primary;
         box-shadow: 
-        0 8px 20px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(212, 175, 55, 0.3),
-        inset 0 1px 0 rgba(212, 175, 55, 0.4);
+            0 8px 20px rgba(26, 22, 18, 0.6),
+            0 0 25px rgba(212, 175, 55, 0.4),
+            inset 0 1px 0 rgba(248, 245, 240, 0.15);
     }
 
-    //Variants de badges - Médaillons romains
+    // Luxury badge variants
     &.bronze-badge {
         border-color: #cd7f32;
+        box-shadow: 
+            get($shadows, md),
+            0 0 10px rgba(205, 127, 50, 0.3);
         &::after {
-            content: '⚔️';
+            content: '◇';
             position: absolute;
             top: get($spacings, sm);
             right: get($spacings, sm);
             font-size: get($font-sizes, lg);
             color: #cd7f32;
+            text-shadow: 0 0 8px rgba(205, 127, 50, 0.6);
         }
     }
 
     &.silver-badge {
         border-color: #c0c0c0;
+        box-shadow: 
+            get($shadows, md),
+            0 0 15px rgba(192, 192, 192, 0.3);
         &::after {
-            content: '🛡️';
+            content: '◈';
             position: absolute;
             top: get($spacings, sm);
             right: get($spacings, sm);
             font-size: get($font-sizes, lg);
             color: #c0c0c0;
+            text-shadow: 0 0 8px rgba(192, 192, 192, 0.6);
         }
     }
 
     &.gold-badge {
-        border-color: $primary-gold;
-        box-shadow:
-        get($shadows, lg),
-        0 0 30px rgba(212, 175, 55, 0.4);
+        border-color: $text-primary;
+        box-shadow: 
+            get($shadows, lg),
+            0 0 30px rgba(212, 175, 55, 0.5);
         &::after {
-            content: '👑';
+            content: '◆';
             position: absolute;
             top: get($spacings, sm);
             right: get($spacings, sm);
             font-size: get($font-sizes, lg);
-            color: $primary-gold;
+            color: $text-primary;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
         }
     }
 
-    //Version cliquable
+    // Version cliquable
     &.clickable {
         @include card-clickable;
     }
 
-    //Effet de survol général - correction du doublon
+    // Effet de survol général - correction du doublon
     &:hover::after {
         opacity: 1;
     }
 
     &::after {
-        content:'';
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -131,12 +144,12 @@
     background: $bg-glass;
     @include flex-center;
     border: 2px solid rgba(212, 175, 55, 0.3);
-    position:relative;
+    position: relative;
     overflow: hidden;
     margin-bottom: get($spacings, sm);
-    box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(212, 175, 55, 0.2);
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(212, 175, 55, 0.2);
 
     img {
         width: 100%;
@@ -151,7 +164,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+       height: 100%;
         background: $primary-gradient;
         border-radius: calc(#{get($border-radius, md)} - 2px);
         @include flex-center;
@@ -206,7 +219,7 @@
     }
 
     &-value {
-        font-weight: ($font-weights, bold);
+        font-weight: get($font-weights, bold);
         color: $text-primary;
     }
 }

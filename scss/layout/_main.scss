@@ -1,37 +1,77 @@
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    // texture de pierre antique
-    radial-gradient(
-      ellipse at 30% 40%, rgba(139, 69, 19, 0.4) 0%, transparent 60%),
-    radial-gradient(
-      ellipse at 70% 20%,rgba(205, 127, 50, 0.3) 0%, transparent 50%),
-    radial-gradient(
-      ellipse at 30% 40%,rgba(160, 82, 45, 0.3) 0%,transparent 40%),
-    // dégradés terre et pierre
-    linear-gradient(135deg, bg-primary 0%, bg-tertiary 50%, bg-secondary 100%),
-    // texture de marbre subtile
-    repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 100px,
-        rgba(212, 175, 55, 0.03) 100px,
-        rgba(212, 175, 55, 0.03) 102px
-      );
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
-  z-index: -1;
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    
+    // Dark Souls apocalyptic background
+    background-color: white;
+    
+    min-width: 100%;
+    min-height: 100%;
+    
+    // Dark Souls atmospheric background - like ash lake
+    background:
+        // Dying embers scattered
+        radial-gradient(ellipse at 10% 90%, rgba(212, 98, 26, 0.15) 0%, transparent 30%),
+        radial-gradient(ellipse at 90% 10%, rgba(255, 107, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(ellipse at 30% 20%, rgba(212, 98, 26, 0.05) 0%, transparent 25%),
+        radial-gradient(ellipse at 70% 80%, rgba(26, 26, 26, 0.9) 0%, transparent 60%),
+        
+        // Main apocalyptic gradient - pure darkness
+        linear-gradient(135deg, $bg-primary 0%, $bg-tertiary 30%, $bg-secondary 70%, $bg-primary 100%),
+        
+        // Stone crack patterns
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 200px,
+            rgba(26, 26, 26, 0.3) 200px,
+            rgba(26, 26, 26, 0.3) 202px
+        ),
+        
+        // Ash particles texture
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 250px,
+            rgba(212, 98, 26, 0.02) 250px,
+            rgba(212, 98, 26, 0.02) 252px
+        );
+    
+    pointer-events: none;
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .container {
-  max-width: get($breakpoints, wide);
-  margin: 0 auto;
-  padding: get($spacings, lg);
+    max-width: get($breakpoints, wide);
+    margin: 0 auto;
+    padding: get($spacings, lg);
 
-  @include tablet {
-    padding: get($spacings, md);
-  }
+    @include ultrawide {
+        max-width: get($breakpoints, ultrawide);
+        padding: get($spacings, 2xl);
+    }
+
+    @include tablet {
+        padding: get($spacings, md);
+        max-width: 100%;
+    }
+
+    @include mobile {
+        padding: get($spacings, sm);
+    }
+
+    @include xs {
+        padding: get($spacings, xs);
+    }
 }
+
+// Note: .content, .section et .section-header sont définis dans components/_forms.scss

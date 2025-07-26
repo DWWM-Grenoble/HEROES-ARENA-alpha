@@ -1,16 +1,19 @@
-//======== COMPOSANT USER CARD : components/_user-card.scss ========
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== COMPOSANT USER CARD : components/_user-card.scss ==========
 
 .user-card {
     position: fixed;
     top: get($spacings, lg);
     right: get($spacings, lg);
-    background:
-    linear-gradient(135deg, rgba(78, 52, 46, 0.95) 0%, rgba(45, 24, 16, 0.9) 100%);
+    background: 
+        linear-gradient(135deg, rgba(78, 52, 46, 0.95) 0%, rgba(45, 24, 16, 0.9) 100%);
     border: 2px solid $primary-bronze;
     border-radius: get($border-radius, lg);
-    box-shadow:
-    get($shadows, lg),
-    0 0 20px rgba(212, 175, 55, 0.2);
+    box-shadow: 
+        get($shadows, lg),
+        0 0 20px rgba(212, 175, 55, 0.2);
     backdrop-filter: blur(20px);
     width: 200px;
     z-index: 900;
@@ -18,12 +21,12 @@
 
     &:hover {
         border-color: $primary-gold;
-        box-shadow:
-        get($shadows, lg),
-        0 0 30px rgba(212, 175, 55, 0.4);
+        box-shadow: 
+            get($shadows, lg),
+            0 0 30px rgba(212, 175, 55, 0.4);
     }
 
-    //État ouvert du menu
+    // État ouvert du menu
     &.open .user-menu {
         display: block;
     }
@@ -79,7 +82,7 @@
 
 .user-name {
     font-family: $font-family-secondary;
-    font-weight: get($font-weight, bold);
+    font-weight: get($font-weights, bold);
     color: $text-primary;
     font-size: get($font-sizes, sm);
     margin-bottom: 2px;
@@ -102,7 +105,7 @@
     transition: transform get($transitions, normal);
     margin-left: get($spacings, sm);
     font-size: 12px;
-
+    
     svg {
         fill: currentColor;
     }
@@ -111,7 +114,7 @@
 .user-menu {
     display: none;
     border-top: 1px solid rgba(212, 175, 55, 0.2);
-
+    
     &.active {
         display: block;
         animation: slideDown 0.3s ease;
@@ -122,7 +125,7 @@
     padding: get($spacings, sm) get($spacings, md);
 }
 
-.user-details-item {
+.user-detail-item {
     display: flex;
     align-items: center;
     padding: get($spacings, sm) 0;

@@ -1,42 +1,103 @@
-// ========== COMPOSANTS FORMS ==========
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== COMPOSANT FORMS : components/_forms.scss ==========
 
 .content {
-    @include glass-effect(0.4);
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.98) 0%, rgba(3, 3, 3, 1) 100%);
     border-radius: get($border-radius, xl);
     padding: get($spacings, 2xl);
-    border: 1px solid $bg-glass;
-    box-shadow: get($shadows, xl);
+    border: 2px solid $blood-black;
+    box-shadow: 
+        get($shadows, xl),
+        get($shadows, void);
     min-height: 600px;
-}
+    position: relative;
 
-@include mobile {
-    padding: get($spacings, lg);
+    &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, $blood-black, $rust-red, $crimson-shadow, $blood-black);
+        border-radius: get($border-radius, xl);
+        z-index: -1;
+        opacity: 0.2;
+    }
+
+    @include tablet {
+        padding: get($spacings, xl);
+        min-height: 500px;
+    }
+
+    @include mobile {
+        padding: get($spacings, lg);
+        min-height: 400px;
+        border-radius: get($border-radius, lg);
+    }
+
+    @include xs {
+        padding: get($spacings, md);
+        min-height: 350px;
+        border-radius: get($border-radius, md);
+        border-width: 2px;
+    }
 }
 
 .section {
     display: none;
-}
 
-&.active {
-    display: block;
-    animation: fadeInUp 0.6s cubic bezier(0.4, 0, 0.2, 1);
+    &.active {
+        display: block;
+        animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 }
 
 .section-header {
     text-align: center;
     margin-bottom: get($spacings, xl);
-}
 
-h2 {
-    font-size: get($font-sizes, 2xl);
-    font-weight: get($font-weight, bold);
-    color: $text-primary;
-    margin-bottom: get($spacings, sm);
-}
+    h2 {
+        font-size: get($font-sizes, 2xl);
+        font-weight: get($font-weights, bold);
+        color: $text-primary;
+        margin-bottom: get($spacings, sm);
 
-p {
-    color: $text-secondary;
-    font-size: get($font-sizes, lg);
+        @include tablet {
+            font-size: get($font-sizes, xl);
+        }
+
+        @include mobile {
+            font-size: get($font-sizes, lg);
+        }
+
+        @include xs {
+            font-size: get($font-sizes, base);
+        }
+    }
+
+    p {
+        color: $text-secondary;
+        font-size: get($font-sizes, lg);
+
+        @include tablet {
+            font-size: get($font-sizes, base);
+        }
+
+        @include mobile {
+            font-size: get($font-sizes, sm);
+        }
+    }
+
+    @include mobile {
+        margin-bottom: get($spacings, lg);
+    }
+
+    @include xs {
+        margin-bottom: get($spacings, md);
+    }
 }
 
 .form-grid {
@@ -45,41 +106,111 @@ p {
     gap: get($spacings, 2xl);
     margin-bottom: get($spacings, xl);
 
+    @include tablet {
+        gap: get($spacings, xl);
+    }
+
     @include mobile {
         grid-template-columns: 1fr;
         gap: get($spacings, lg);
+        margin-bottom: get($spacings, lg);
+    }
+
+    @include xs {
+        gap: get($spacings, md);
+        margin-bottom: get($spacings, md);
     }
 }
 
 .form-group {
     margin-bottom: get($spacings, lg);
-}
 
-label {
-    display: block;
-    margin-bottom: get($spacings, sm);
-    font-weight: get($font-weights, semibold);
-    color: $text-primary;
-    font-size: get($font-sizes, sm);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    label {
+        display: block;
+        margin-bottom: get($spacings, sm);
+        font-weight: get($font-weights, semibold);
+        color: $text-primary;
+        font-size: get($font-sizes, sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        @include mobile {
+            font-size: get($font-sizes, xs);
+            letter-spacing: 0.03em;
+        }
+    }
+
+    @include mobile {
+        margin-bottom: get($spacings, md);
+    }
+
+    @include xs {
+        margin-bottom: get($spacings, sm);
+    }
 }
 
 .form-input {
     width: 100%;
     padding: get($spacings, md) get($spacings, lg);
-    background: rgba(15, 23, 42, 0.6);
+    // Ultra dark void input
+    background: 
+        // Minimal dark texture
+        radial-gradient(circle at 20% 30%, rgba(8, 8, 8, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(10, 10, 10, 0.03) 0%, transparent 40%),
+        linear-gradient(135deg, rgba(5, 5, 5, 0.95) 0%, rgba(3, 3, 3, 1) 100%);
     backdrop-filter: blur(10px);
-    border: 2px solid $bg-glass;
+    border: 1px solid $crimson-shadow;
     border-radius: get($border-radius, md);
     color: $text-primary;
+    font-family: $font-family-accent;
     font-size: get($font-sizes, base);
     transition: all get($transitions, normal);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 1),
+        inset 0 0 8px rgba(0, 0, 0, 0.8);
+    min-height: 44px; // Touch-friendly minimum height
+    
+    // Dark placeholder
+    &::placeholder {
+        color: rgba(60, 60, 60, 0.6);
+        font-style: italic;
+    }
+
+    @include tablet {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, sm);
+    }
+
+    @include mobile {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, base);
+        min-height: 48px; // Larger touch target on mobile
+    }
+
+    @include xs {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, sm);
+        border-radius: get($border-radius, sm);
+    }
 
     &:focus {
         outline: none;
-        border-color: #ff6b9d;
-        box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.2);
+        border-color: $decay-brown;
+        box-shadow: 
+            0 0 0 3px rgba(40, 40, 40, 0.1),
+            0 0 8px rgba(30, 30, 30, 0.2),
+            inset 0 2px 4px rgba(0, 0, 0, 1),
+            inset 0 0 8px rgba(0, 0, 0, 0.9);
+        background: 
+            radial-gradient(circle at 25% 25%, rgba(10, 10, 10, 0.08) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(12, 12, 12, 0.05) 0%, transparent 40%),
+            linear-gradient(135deg, rgba(8, 8, 8, 0.98) 0%, rgba(5, 5, 5, 1) 100%);
+
+        @include mobile {
+            box-shadow: 
+                0 0 0 3px rgba(212, 98, 26, 0.3),
+                inset 0 2px 4px rgba(0, 0, 0, 0.9);
+        }
     }
 }
 
@@ -97,6 +228,12 @@ label {
     gap: get($spacings, sm);
     margin-bottom: get($spacings, lg);
     flex-wrap: wrap;
+    justify-content: center;
+
+    @include mobile {
+        gap: get($spacings, xs);
+        margin-bottom: get($spacings, md);
+    }
 }
 
 .catalog-tab {
@@ -109,6 +246,24 @@ label {
     transition: all get($transitions, normal);
     font-size: get($font-sizes, sm);
     font-weight: get($font-weights, medium);
+    min-height: 44px; // Touch-friendly
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        min-height: 40px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    @include xs {
+        padding: get($spacings, xs);
+        font-size: get($font-sizes, xs);
+        min-height: 36px;
+    }
 
     &:hover {
         background: rgba(255, 255, 255, 0.2);
@@ -130,6 +285,23 @@ label {
     overflow-y: auto;
     padding: get($spacings, sm);
     @include custom-scrollbar;
+
+    @include tablet {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        max-height: 250px;
+    }
+
+    @include mobile {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: get($spacings, xs);
+        max-height: 200px;
+        padding: get($spacings, xs);
+    }
+
+    @include xs {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        max-height: 180px;
+    }
 }
 
 .avatar-option {
@@ -171,9 +343,22 @@ label {
     letter-spacing: 0.1em;
     text-align: center;
 
-    @include mobile {
+    @include tablet {
         font-size: get($font-sizes, 3xl);
         margin-bottom: get($spacings, xl);
+        letter-spacing: 0.08em;
+    }
+    
+    @include mobile {
+        font-size: get($font-sizes, 2xl);
+        margin-bottom: get($spacings, lg);
+        letter-spacing: 0.05em;
+    }
+
+    @include xs {
+        font-size: get($font-sizes, xl);
+        margin-bottom: get($spacings, md);
+        letter-spacing: 0.03em;
     }
 }
 
@@ -183,9 +368,20 @@ label {
     gap: get($spacings, lg);
     margin-top: get($spacings, 2xl);
 
+    @include tablet {
+        gap: get($spacings, md);
+        margin-top: get($spacings, xl);
+    }
+
     @include mobile {
         flex-direction: column;
-        grid-auto-flow: get($spacings, md);
+        gap: get($spacings, md);
+        margin-top: get($spacings, lg);
+    }
+
+    @include xs {
+        gap: get($spacings, sm);
+        margin-top: get($spacings, md);
     }
 }
 
@@ -203,29 +399,33 @@ label {
     display: none;
 }
 
-// Bouton de création de héros stabilisés
+// Boutons de création de héros stabilisés
 .form-actions .btn,
 .btn[onclick*="createHeroFromForm"],
 .btn[onclick*="randomStats"] {
-
-    // SUpprimer les transformations problématiques
+    // Supprimer les transformations problématiques
     &:hover {
         transform: none !important;
         // Conserver seulement les effets visuels stables
-        background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+        background: 
+            linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
         border-color: $primary-gold;
-        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3),
+        box-shadow: 
+            0 0 15px rgba(212, 175, 55, 0.5),
+            0 4px 12px rgba(0, 0, 0, 0.3),
             inset 0 1px 0 rgba(255, 248, 225, 0.6);
     }
 
     &:active {
         transform: none !important;
-        background: linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        background: 
+            linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
+        box-shadow: 
+            0 2px 6px rgba(0, 0, 0, 0.4),
+            inset 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     // Désactiver l'effet de brillance qui peut causer des problèmes
-
     &::before {
         display: none;
     }
@@ -236,7 +436,6 @@ label {
         opacity: 0;
         transform: translateY(30px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);

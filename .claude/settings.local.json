@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm run sass:build:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

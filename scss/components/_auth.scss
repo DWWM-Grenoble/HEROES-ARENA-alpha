@@ -1,0 +1,1238 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== COMPOSANT AUTHENTIFICATION : components/_auth.scss ==========
+
+/* Interface d'authentification - Contrastes WCAG optimisés */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.215);
+    backdrop-filter: blur(8px);
+    z-index: get($z-indexes, modal);
+    @include flex-center;
+    animation: fadeIn 0.3s ease;
+    padding: get($spacings, md);
+    
+    // Responsive padding
+    @include tablet {
+        padding: get($spacings, sm);
+    }
+    
+    @include mobile {
+        padding: get($spacings, xs);
+    }
+}
+
+.auth-modal {
+    background: #ffffff;
+    border-radius: get($border-radius, xl);
+    border: 1px solid #e2e8f0;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.15),
+        0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: get($spacings, 2xl);
+    width: 100%;
+    max-width: 450px;
+    animation: slideInUp 0.4s ease;
+    position: relative;
+    margin: 0 auto;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+        border-radius: get($border-radius, xl) get($border-radius, xl) 0 0;
+    }
+    
+    // Responsive design
+    @include tablet {
+        max-width: 90%;
+        padding: get($spacings, xl);
+        margin: get($spacings, sm);
+    }
+    
+    @include mobile {
+        max-width: 95%;
+        padding: get($spacings, lg);
+        margin: get($spacings, xs);
+        border-radius: get($border-radius, lg);
+    }
+    
+    // Très petits écrans
+    @media (max-width: 360px) {
+        max-width: 98%;
+        padding: get($spacings, md);
+        margin: get($spacings, xs);
+    }
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: get($spacings, 2xl);
+
+    h2 {
+        font-size: get($font-sizes, 4xl);
+        font-weight: get($font-weights, bold);
+        color: #1e293b;
+        margin-bottom: get($spacings, sm);
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        
+        @include tablet {
+            font-size: get($font-sizes, 3xl);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, 2xl);
+            margin-bottom: get($spacings, xs);
+        }
+        
+        @media (max-width: 360px) {
+            font-size: get($font-sizes, xl);
+        }
+    }
+
+    p {
+        color: #64748b;
+        font-size: get($font-sizes, lg);
+        font-weight: get($font-weights, medium);
+        margin: 0;
+        line-height: 1.4;
+        
+        @include tablet {
+            font-size: get($font-sizes, base);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, sm);
+        }
+    }
+    
+    @include tablet {
+        margin-bottom: get($spacings, xl);
+    }
+    
+    @include mobile {
+        margin-bottom: get($spacings, lg);
+    }
+}
+
+.auth-tabs {
+    display: flex;
+    background: #f8fafc;
+    border-radius: get($border-radius, lg);
+    padding: 4px;
+    margin-bottom: get($spacings, xl);
+    border: 1px solid #e2e8f0;
+    
+    @include tablet {
+        margin-bottom: get($spacings, lg);
+        padding: 3px;
+    }
+    
+    @include mobile {
+        margin-bottom: get($spacings, md);
+        padding: 2px;
+        border-radius: get($border-radius, md);
+    }
+}
+
+.auth-tab {
+    flex: 1;
+    padding: get($spacings, md) get($spacings, lg);
+    background: transparent;
+    color: #64748b;
+    border: none;
+    border-radius: get($border-radius, md);
+    cursor: pointer;
+    font-weight: get($font-weights, semibold);
+    font-size: get($font-sizes, base);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    text-align: center;
+    
+    &:hover:not(.active) {
+        color: #1e293b;
+        background: #ffffff;
+    }
+
+    &.active {
+        background: #3b82f6;
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+    
+    @include tablet {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, sm);
+    }
+    
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        border-radius: get($border-radius, sm);
+    }
+    
+    // Très petits écrans - tabs empilés
+    @media (max-width: 360px) {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+}
+
+.auth-form {
+    display: none;
+
+    &.active {
+        display: block;
+        animation: fadeInUp 0.3s ease;
+    }
+}
+
+.auth-field {
+    margin-bottom: get($spacings, lg);
+
+    label {
+        display: block;
+        margin-bottom: get($spacings, sm);
+        font-weight: get($font-weights, semibold);
+        color: #1e293b;
+        font-size: get($font-sizes, base);
+        line-height: 1.4;
+        
+        &.required::after {
+            content: ' *';
+            color: #dc2626;
+        }
+        
+        @include tablet {
+            font-size: get($font-sizes, sm);
+            margin-bottom: get($spacings, xs);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, xs);
+        }
+    }
+
+    input {
+        width: 100%;
+        padding: get($spacings, lg);
+        background: #ffffff;
+        border: 2px solid #cbd5e1;
+        border-radius: get($border-radius, md);
+        color: #1e293b;
+        font-size: get($font-sizes, base);
+        font-weight: get($font-weights, medium);
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+
+        &::placeholder {
+            color: #9ca3af;
+        }
+
+        &:hover {
+            border-color: #94a3b8;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        &.error {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        &:invalid:not(:focus) {
+            border-color: #dc2626;
+        }
+        
+        @include tablet {
+            padding: get($spacings, md) get($spacings, lg);
+            font-size: get($font-sizes, sm);
+        }
+        
+        @include mobile {
+            padding: get($spacings, sm) get($spacings, md);
+            font-size: get($font-sizes, sm);
+            border-radius: get($border-radius, sm);
+        }
+        
+        @media (max-width: 360px) {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+    }
+    
+    @include tablet {
+        margin-bottom: get($spacings, md);
+    }
+    
+    @include mobile {
+        margin-bottom: get($spacings, sm);
+    }
+}
+
+.password-field {
+    position: relative;
+
+    input {
+        padding-right: 50px;
+        
+        @include tablet {
+            padding-right: 45px;
+        }
+        
+        @include mobile {
+            padding-right: 40px;
+        }
+        
+        @media (max-width: 360px) {
+            padding-right: 38px;
+        }
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #64748b;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: get($border-radius, sm);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+
+        &:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+            color: #1e293b;
+        }
+
+        .password-icon {
+            font-size: 14px;
+            line-height: 1;
+        }
+        
+        @include tablet {
+            right: 10px;
+            width: 26px;
+            height: 26px;
+            padding: 5px;
+            
+            .password-icon {
+                font-size: 13px;
+            }
+        }
+        
+        @include mobile {
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            padding: 4px;
+            
+            .password-icon {
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            right: 6px;
+            width: 22px;
+            height: 22px;
+            padding: 3px;
+            
+            .password-icon {
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+.auth-button {
+    width: 100%;
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    padding: get($spacings, lg);
+    border-radius: get($border-radius, md);
+    font-size: get($font-sizes, lg);
+    font-weight: get($font-weights, bold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: get($spacings, lg) 0;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    line-height: 1.4;
+    min-height: 48px; // Accessibilité tactile
+
+    &:hover {
+        background: #2563eb;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    }
+
+    &:disabled {
+        background: #6b7280;
+        color: #d1d5db;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    @include tablet {
+        padding: get($spacings, md);
+        font-size: get($font-sizes, base);
+        margin: get($spacings, md) 0;
+        min-height: 44px;
+    }
+    
+    @include mobile {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, base);
+        margin: get($spacings, sm) 0;
+        border-radius: get($border-radius, sm);
+        min-height: 42px;
+    }
+    
+    @media (max-width: 360px) {
+        padding: 12px 16px;
+        font-size: 15px;
+        min-height: 40px;
+    }
+}
+
+.auth-offline {
+    text-align: center;
+    padding: get($spacings, lg);
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: get($border-radius, md);
+    margin-top: get($spacings, lg);
+
+    p {
+        color: #64748b;
+        margin-bottom: get($spacings, sm);
+        font-size: get($font-sizes, base);
+        line-height: 1.5;
+        
+        strong {
+            color: #1e293b;
+        }
+        
+        @include tablet {
+            font-size: get($font-sizes, sm);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, xs);
+        }
+    }
+
+    p:last-of-type {
+        color: #64748b;
+        font-size: get($font-sizes, sm);
+        margin-bottom: get($spacings, md);
+    }
+
+    button {
+        background: #6b7280;
+        color: #ffffff;
+        border: 1px solid #6b7280;
+        padding: get($spacings, md) get($spacings, lg);
+        border-radius: get($border-radius, md);
+        cursor: pointer;
+        font-weight: get($font-weights, semibold);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: #4b5563;
+            border-color: #4b5563;
+        }
+    }
+}
+
+.error-message {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    padding: get($spacings, md);
+    border-radius: get($border-radius, md);
+    margin-bottom: get($spacings, md);
+    font-size: get($font-sizes, sm);
+    font-weight: get($font-weights, medium);
+    display: none;
+    line-height: 1.5;
+    word-wrap: break-word;
+    
+    &::before {
+        content: '⚠️ ';
+        margin-right: get($spacings, xs);
+    }
+    
+    @include tablet {
+        padding: get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        margin-bottom: get($spacings, sm);
+    }
+    
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        border-radius: get($border-radius, sm);
+    }
+    
+    @media (max-width: 360px) {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+.success-message {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #16a34a;
+    padding: get($spacings, md);
+    border-radius: get($border-radius, md);
+    margin-bottom: get($spacings, md);
+    font-size: get($font-sizes, sm);
+    font-weight: get($font-weights, medium);
+    display: none;
+    line-height: 1.5;
+    word-wrap: break-word;
+    
+    @include tablet {
+        padding: get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        margin-bottom: get($spacings, sm);
+    }
+    
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        border-radius: get($border-radius, sm);
+    }
+    
+    @media (max-width: 360px) {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    &::before {
+        content: '✅ ';
+        margin-right: get($spacings, xs);
+    }
+}
+
+.user-panel {
+    display: flex;
+    align-items: center;
+    gap: get($spacings, md);
+    padding: get($spacings, md) get($spacings, lg);
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: get($border-radius, md);
+    margin-bottom: get($spacings, lg);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: #3b82f6;
+    border-radius: 50%;
+    @include flex-center;
+    color: #ffffff;
+    font-weight: get($font-weights, bold);
+    font-size: get($font-sizes, base);
+}
+
+.user-info {
+    h3 {
+        color: #ffffff;
+        font-size: get($font-sizes, base);
+        margin-bottom: 4px;
+    }
+
+    p {
+        color: #cbd5e1;
+        font-size: get($font-sizes, sm);
+    }
+}
+
+.sync-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: get($spacings, xs);
+    font-size: get($font-sizes, xs);
+    color: #e2e8f0;
+}
+
+.sync-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+
+    &.syncing {
+        background: #f59e0b;
+        animation: pulse 1s infinite;
+    }
+
+    &.error {
+        background: #dc2626;
+    }
+}
+
+// Animations pour le modal auth
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(get($spacings, xl));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(get($spacings, sm));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+// Responsive pour le modal auth
+@include mobile {
+    .auth-overlay {
+        padding: get($spacings, sm);
+    }
+    
+    .auth-modal {
+        padding: get($spacings, lg);
+        max-width: 95%;
+        margin: get($spacings, sm);
+    }
+    
+    .auth-header h2 {
+        font-size: get($font-sizes, 3xl);
+    }
+    
+    .auth-field {
+        margin-bottom: get($spacings, md);
+        
+        input {
+            padding: get($spacings, md);
+            font-size: get($font-sizes, base);
+        }
+    }
+    
+    .password-field {
+        input {
+            padding-right: 45px;
+        }
+        
+        .password-toggle {
+            right: 10px;
+            padding: 4px;
+        }
+    }
+    
+    .auth-button {
+        padding: get($spacings, md);
+        font-size: get($font-sizes, base);
+        margin: get($spacings, md) 0;
+    }
+    
+    .auth-offline {
+        padding: get($spacings, md);
+        margin-top: get($spacings, md);
+    }
+}
+
+// ========== STYLES ORIGINAUX POUR L'ÉCRAN AUTH COMPLET ==========
+.auth-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("../../assets/background/home-bg1.png");
+    background-position: center;
+    // background: linear-gradient(135deg, $bg-primary, $bg-secondary);
+    @include flex-center;
+    z-index: get($z-indexes, modal);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    padding: get($spacings, 2xl) get($spacings, xl);
+    @include glass-effect(0.8);
+    border-radius: get($border-radius, xl);
+    box-shadow: get($shadows, xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(128, 128, 128, 0.073);
+    margin: 0 auto;
+    
+    @include tablet {
+        max-width: 90%;
+        padding: get($spacings, xl) get($spacings, lg);
+        margin: get($spacings, md);
+    }
+    
+    @include mobile {
+        max-width: 95%;
+        margin: get($spacings, sm);
+        padding: get($spacings, lg) get($spacings, md);
+        border-radius: get($border-radius, lg);
+    }
+    
+    @media (max-width: 360px) {
+        max-width: 98%;
+        margin: get($spacings, xs);
+        padding: get($spacings, md) get($spacings, sm);
+    }
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: get($spacings, 2xl);
+
+    h1 {
+        font-size: get($font-sizes, 4xl);
+        font-weight: get($font-weights, bold);
+        @include gradient-text;
+        margin-bottom: get($spacings, sm);
+
+        @include mobile {
+            font-size: get($font-sizes, 3xl);
+        }
+    }
+
+    p {
+        color: $text-secondary;
+        font-size: get($font-sizes, base);
+    }
+}
+
+.auth-form {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+
+    &.active {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: get($spacings, xl);
+        color: $text-primary;
+        font-size: get($font-sizes, 2xl);
+        font-weight: get($font-weights, semibold);
+    }
+}
+
+.form-group {
+    margin-bottom: get($spacings, lg);
+
+    label {
+        display: block;
+        margin-bottom: get($spacings, sm);
+        color: $text-primary;
+        font-weight: get($font-weights, medium);
+        font-size: get($font-sizes, base);
+        line-height: 1.4;
+        
+        @include tablet {
+            font-size: get($font-sizes, sm);
+            margin-bottom: get($spacings, xs);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, xs);
+        }
+    }
+    
+    @include tablet {
+        margin-bottom: get($spacings, md);
+    }
+    
+    @include mobile {
+        margin-bottom: get($spacings, sm);
+    }
+    
+    @media (max-width: 360px) {
+        margin-bottom: 12px;
+    }
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px get($spacings, md);
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid rgba(71, 85, 105, 0.5);
+    border-radius: get($border-radius, md);
+    color: $text-primary;
+    font-size: get($font-sizes, base);
+    transition: all get($transitions, normal);
+    box-sizing: border-box;
+    line-height: 1.4;
+
+    &:focus {
+        outline: none;
+        border-color: $secondary-blue;
+        box-shadow: 0 0 0 3px rgba($secondary-blue, 0.1);
+    }
+
+    &.error {
+        border-color: $error;
+        box-shadow: 0 0 0 3px rgba($error, 0.1);
+    }
+    
+    &::placeholder {
+        color: rgba($text-primary, 0.6);
+        transition: color get($transitions, normal);
+    }
+    
+    @include tablet {
+        padding: 10px get($spacings, sm);
+        font-size: get($font-sizes, sm);
+    }
+    
+    @include mobile {
+        padding: 8px get($spacings, sm);
+        font-size: get($font-sizes, sm);
+        border-radius: get($border-radius, sm);
+        
+        &::placeholder {
+            font-size: get($font-sizes, xs);
+        }
+    }
+    
+    @media (max-width: 360px) {
+        padding: 8px 12px;
+        font-size: 14px;
+        
+        &::placeholder {
+            font-size: 13px;
+        }
+    }
+}
+
+// Styles pour les exigences du mot de passe
+.password-requirements {
+    margin-top: get($spacings, xs);
+    padding: get($spacings, sm);
+    background: rgba($bg-secondary, 0.3);
+    border: 1px solid rgba($primary-gold, 0.2);
+    border-radius: get($border-radius, sm);
+    
+    small {
+        color: rgba($text-primary, 0.8);
+        font-size: get($font-sizes, xs);
+        line-height: 1.4;
+        display: block;
+        
+        @include tablet {
+            font-size: 11px;
+        }
+        
+        @include mobile {
+            font-size: 10px;
+            line-height: 1.3;
+        }
+        
+        @media (max-width: 360px) {
+            font-size: 9px;
+        }
+    }
+    
+    @include tablet {
+        padding: get($spacings, xs);
+        margin-top: 4px;
+    }
+    
+    @include mobile {
+        padding: 6px 8px;
+        margin-top: 3px;
+        border-radius: 4px;
+    }
+    
+    @media (max-width: 360px) {
+        padding: 4px 6px;
+        margin-top: 2px;
+    }
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 14px;
+    @include button-primary;
+    font-size: get($font-sizes, base);
+    margin-top: get($spacings, sm);
+    min-height: 48px; // Accessibilité tactile
+    line-height: 1.4;
+    transition: all get($transitions, normal);
+    border-radius: get($border-radius, md);
+    
+    @include tablet {
+        padding: 12px;
+        font-size: get($font-sizes, sm);
+        min-height: 44px;
+    }
+    
+    @include mobile {
+        padding: 10px;
+        font-size: get($font-sizes, sm);
+        min-height: 42px;
+        border-radius: get($border-radius, sm);
+        margin-top: get($spacings, xs);
+    }
+    
+    @media (max-width: 360px) {
+        padding: 10px 8px;
+        font-size: 14px;
+        min-height: 40px;
+    }
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: get($spacings, lg);
+    padding-top: get($spacings, lg);
+    border-top: 1px solid rgba(71, 85, 105, 0.3);
+
+    p {
+        color: $text-secondary;
+        font-size: get($font-sizes, base);
+        line-height: 1.4;
+        margin-bottom: get($spacings, xs);
+        
+        @include tablet {
+            font-size: get($font-sizes, sm);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, xs);
+            margin-bottom: 2px;
+        }
+    }
+
+    a {
+        color: $secondary-blue;
+        text-decoration: none;
+        font-weight: get($font-weights, medium);
+        font-size: get($font-sizes, base);
+        
+        @include tablet {
+            font-size: get($font-sizes, sm);
+        }
+        
+        @include mobile {
+            font-size: get($font-sizes, xs);
+        }
+        transition: color get($transitions, normal);
+
+        &:hover {
+            color: #6ba3ff;
+        }
+    }
+    
+    @include tablet {
+        margin-top: get($spacings, md);
+        padding-top: get($spacings, md);
+    }
+    
+    @include mobile {
+        margin-top: get($spacings, sm);
+        padding-top: get($spacings, sm);
+    }
+    
+    @media (max-width: 360px) {
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+}
+
+.forgot-link {
+    margin-top: get($spacings, sm);
+}
+
+// Optimisations spécifiques pour le formulaire d'inscription
+#registerForm {
+    // Pour les formulaires plus longs, réduire l'espacement sur mobile
+    @include mobile {
+        .form-group {
+            margin-bottom: 12px;
+            
+            &:last-of-type {
+                margin-bottom: get($spacings, sm);
+            }
+        }
+        
+        .password-requirements {
+            margin-top: 2px;
+            margin-bottom: 4px;
+        }
+    }
+    
+    @media (max-width: 360px) {
+        .form-group {
+            margin-bottom: 8px;
+        }
+        
+        .password-requirements {
+            margin-top: 1px;
+            margin-bottom: 2px;
+        }
+        
+        .auth-btn {
+            margin-top: 8px;
+        }
+    }
+}
+
+// Amélioration pour les champs de confirmation
+#confirmPassword {
+    // Style spécial pour la confirmation de mot de passe
+    &:valid {
+        border-color: rgba($success, 0.6);
+        
+        &:focus {
+            box-shadow: 0 0 0 3px rgba($success, 0.1);
+        }
+    }
+}
+
+// Messages d'erreur spécifiques aux formulaires longs
+#registerForm .error-message {
+    // Réduire la taille sur mobile pour économiser l'espace
+    @include mobile {
+        font-size: 11px;
+        padding: 4px 8px;
+        margin-bottom: 4px;
+    }
+    
+    @media (max-width: 360px) {
+        font-size: 10px;
+        padding: 3px 6px;
+        margin-bottom: 3px;
+    }
+}
+
+// Password Recovery
+.forgot-description,
+.verify-description,
+.reset-description {
+    text-align: center;
+    color: $text-secondary;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.recovery-code-display {
+    margin: get($spacings, lg) 0;
+}
+
+.recovery-code-box {
+    background: rgba($info, 0.1);
+    border: 2px solid rgba($info, 0.3);
+    border-radius: get($border-radius, lg);
+    padding: get($spacings, lg);
+    text-align: center;
+    margin: get($spacings, lg) 0;
+
+    h4 {
+        color: $info;
+        margin-bottom: 15px;
+        font-size: get($font-sizes, lg);
+        font-weight: get($font-weights, semibold);
+    }
+}
+
+.recovery-code {
+    background: rgba(15, 23, 42, 0.8);
+    border: 2px solid $info;
+    border-radius: get($border-radius, md);
+    padding: 15px get($spacings, lg);
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    font-weight: get($font-weights, bold);
+    color: #60a5fa;
+    letter-spacing: 3px;
+    margin: 15px 0;
+    user-select: all;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+
+    &:hover {
+        background: rgba(15, 23, 42, 1);
+        box-shadow: 0 0 15px rgba($info, 0.3);
+        transform: scale(1.02);
+    }
+}
+
+.recovery-note {
+    color: $text-muted;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    line-height: 1.4;
+
+    strong {
+        color: $warning;
+    }
+
+    small {
+        color: $text-muted;
+        font-style: italic;
+    }
+}
+
+#verificationCode {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-align: center;
+    font-weight: get($font-weights, semibold);
+
+    &:focus {
+        letter-spacing: 3px;
+    }
+}
+
+// Step Indicator
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: get($spacings, xl);
+    gap: 15px;
+
+    .step {
+        width: 12px;
+        height: 12px;
+        border-radius: $border-radius-round;
+        background: rgba(71, 85, 105, 0.5);
+        transition: all get($transitions, normal);
+
+        &.active {
+            background: $info;
+            box-shadow: 0 0 10px rgba($info, 0.5);
+        }
+
+        &.completed {
+            background: $success;
+        }
+    }
+}
+
+// Info and Warning Boxes
+.info-box {
+    background: rgba($info, 0.1);
+    border-left: 4px solid $info;
+    padding: 15px;
+    border-radius: get($border-radius, sm);
+    margin: get($spacings, lg) 0;
+    color: $text-secondary;
+    font-size: 0.9rem;
+
+    .info-icon {
+        color: $info;
+        margin-right: get($spacings, sm);
+    }
+}
+
+.warning-box {
+    background: rgba($warning, 0.1);
+    border-left: 4px solid $warning;
+    padding: 15px;
+    border-radius: get($border-radius, sm);
+    margin: get($spacings, lg) 0;
+    color: #fbbf24;
+    font-size: 0.9rem;
+
+    .warning-icon {
+        color: $warning;
+        margin-right: get($spacings, sm);
+    }
+}
+
+// Mobile responsive adjustments for recovery
+@include mobile {
+    .auth-container {
+        margin: get($spacings, lg);
+        padding: get($spacings, xl) get($spacings, lg);
+    }
+    
+    .recovery-code {
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+        padding: 12px 15px;
+    }
+    
+    .auth-header h1 {
+        font-size: get($font-sizes, 3xl);
+    }
+}

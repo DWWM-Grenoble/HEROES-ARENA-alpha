@@ -1,3 +1,6 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
 // Enhanced Hero Details Modal Styles
 
 // Avatar Container Enhanced
@@ -7,7 +10,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-
+    
     .hero-avatar-large {
         position: relative;
         width: 120px;
@@ -15,15 +18,16 @@
         border-radius: 50%;
         overflow: hidden;
         border: 4px solid #d4af37;
-        box-shadow: 0 0 20px rgba(212, 175, 55, 0.5),
-        inset 0 0 10px rgba(212, 175, 55, 0.2);
-
+        box-shadow: 
+            0 0 20px rgba(212, 175, 55, 0.5),
+            inset 0 0 10px rgba(212, 175, 55, 0.2);
+        
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
+        
         .avatar-border-glow {
             position: absolute;
             top: -4px;
@@ -36,13 +40,13 @@
             animation: glow-pulse 2s ease-in-out infinite alternate;
         }
     }
-
-    .avatar-decoration {
+    
+    .avatar-decorations {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 0.5rem;
-
+        
         .level-crown {
             font-size: 1.2rem;
             font-weight: bold;
@@ -50,7 +54,7 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             animation: sparkle 1.5s ease-in-out infinite alternate;
         }
-
+        
         .hero-badge-ornate {
             background: linear-gradient(135deg, #d4af37, #b8860b);
             color: white;
@@ -68,7 +72,7 @@
 // Enhanced Title Section
 .hero-details-title {
     text-align: center;
-
+    
     .hero-name-title {
         font-size: 2.5rem;
         font-weight: bold;
@@ -76,10 +80,10 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         margin-bottom: 1rem;
     }
-
+    
     .hero-class-badge-enhanced {
         background: linear-gradient(135deg, #4f46e5, #7c3aed);
         color: white;
@@ -91,18 +95,18 @@
         margin-bottom: 1rem;
         box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
     }
-
+    
     .hero-title-decorations {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-
+        
         .victory-laurels {
             font-size: 1.1rem;
             font-weight: bold;
             color: #10b981;
         }
-
+        
         .combat-record {
             font-size: 0.9rem;
             color: #6b7280;
@@ -113,7 +117,7 @@
 
 // Enhanced Close Button
 .enhanced-close {
-    background: linear-gradient(125deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     border: none;
     width: 40px;
@@ -123,8 +127,8 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0 4px 15px rgba(239, 68, 68, 0.3));
-
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    
     &:hover {
         transform: scale(1.1);
         box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
@@ -137,7 +141,7 @@
     border: 2px solid rgba(79, 70, 229, 0.2);
     border-radius: 15px;
     padding: 1.5rem;
-
+    
     .section-title {
         font-size: 1.3rem;
         font-weight: bold;
@@ -146,66 +150,66 @@
         text-align: center;
         text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
-
+    
     .stats-grid {
         display: grid;
         gap: 1rem;
         margin-bottom: 1.5rem;
     }
-
+    
     .stat-detail.enhanced {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         padding: 1rem;
-
+        
         .stat-header {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             margin-bottom: 0.75rem;
-
+            
             .stat-name {
                 font-weight: bold;
                 color: #e2e8f0;
             }
         }
-
+        
         .stat-bar-container {
             display: flex;
             align-items: center;
             gap: 1rem;
-
+            
             .stat-bar {
                 flex: 1;
                 height: 8px;
                 background: rgba(255, 255, 255, 0.1);
                 border-radius: 4px;
                 overflow: hidden;
-
+                
                 .stat-bar-fill {
                     height: 100%;
                     border-radius: 4px;
                     transition: width 1s ease;
-
+                    
                     &.force-fill {
                         background: linear-gradient(90deg, #ef4444, #dc2626);
                     }
-
+                    
                     &.agility-fill {
                         background: linear-gradient(90deg, #10b981, #059669);
                     }
-
+                    
                     &.magic-fill {
                         background: linear-gradient(90deg, #8b5cf6, #7c3aed);
                     }
-
+                    
                     &.defense-fill {
                         background: linear-gradient(90deg, #f59e0b, #d97706);
                     }
                 }
             }
-
+            
             .stat-value {
                 font-weight: bold;
                 color: #ffd700;
@@ -214,7 +218,7 @@
             }
         }
     }
-
+    
     .total-power {
         display: flex;
         justify-content: space-between;
@@ -224,12 +228,12 @@
         border: 2px solid rgba(255, 215, 0, 0.3);
         border-radius: 10px;
         margin-top: 1rem;
-
+        
         .power-label {
             font-weight: bold;
             color: #e2e8f0;
         }
-
+        
         .power-value {
             font-size: 1.2rem;
             font-weight: bold;
@@ -245,47 +249,47 @@
     border: 2px solid rgba(16, 185, 129, 0.2);
     border-radius: 15px;
     padding: 1.5rem;
-
+    
     .vitals-container {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
     }
-
+    
     .vital-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 0.75rem;
-
+        
         .vital-icon {
             font-size: 1.2rem;
         }
-
+        
         .vital-name {
             font-weight: bold;
             color: #e2e8f0;
         }
-
+        
         .vital-status, .level-badge {
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
-
-            &.excellent {background: #10b981; color: white;}
-            &.good {background: #f59e0b; color: white;}
-            &.warning {background: #f97316; color: white;}
-            &.critical {background: #ef4444; color: white;}
+            
+            &.excellent { background: #10b981; color: white; }
+            &.good { background: #f59e0b; color: white; }
+            &.warning { background: #f97316; color: white; }
+            &.critical { background: #ef4444; color: white; }
         }
-
+        
         .level-badge {
-            background: linear-gradient(125deg, #8b5cf6, #7c3aed);
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
             color: white;
         }
     }
-
+    
     .health-bar-detail.enhanced,
     .xp-bar.enhanced {
         position: relative;
@@ -294,16 +298,16 @@
         border-radius: 6px;
         overflow: hidden;
         margin-bottom: 0.5rem;
-
+        
         .health-fill.animated,
         .xp-fill.animated {
             height: 100%;
             border-radius: 6px;
             transition: width 1.5s ease;
             position: relative;
-
+            
             &::after {
-                content: "";
+                content: '';
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -313,8 +317,8 @@
                 animation: shimmer 2s infinite;
             }
         }
-
-        .heatlth-text,
+        
+        .health-text,
         .xp-text {
             position: absolute;
             top: 50%;
@@ -326,14 +330,14 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
         }
     }
-
+    
     .level-progress {
         .next-level {
             display: flex;
             justify-content: space-between;
             font-size: 0.9rem;
             color: #9ca3af;
-
+            
             .xp-total {
                 font-weight: bold;
                 color: #ffd700;
@@ -344,25 +348,25 @@
 
 // Enhanced Combat Section
 .combat-section.enhanced {
-    background: linear-gradient(125deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
     border: 2px solid rgba(239, 68, 68, 0.2);
     border-radius: 15px;
     padding: 1.5rem;
-
+    
     .combat-overview {
         display: flex;
         justify-content: space-around;
         align-items: center;
         margin-bottom: 1.5rem;
-
+        
         .combat-trophy {
             text-align: center;
-
+            
             .trophy-icon {
                 font-size: 3rem;
                 margin-bottom: 0.5rem;
             }
-
+            
             .trophy-title {
                 font-weight: bold;
                 color: #ffd700;
@@ -371,7 +375,7 @@
                 letter-spacing: 1px;
             }
         }
-
+        
         .winrate-display {
             .winrate-circle {
                 width: 80px;
@@ -381,7 +385,7 @@
                 align-items: center;
                 justify-content: center;
                 position: relative;
-
+                
                 .winrate-text {
                     font-size: 1.2rem;
                     font-weight: bold;
@@ -391,36 +395,36 @@
             }
         }
     }
-
+    
     .combat-stats.enhanced {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
-
+        
         .combat-stat.enhanced {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             padding: 1rem;
             text-align: center;
-
+            
             .stat-icon {
                 font-size: 1.5rem;
                 margin-bottom: 0.5rem;
             }
-
+            
             .stat-content {
                 display: flex;
                 flex-direction: column;
                 gap: 0.3rem;
-
+                
                 .label {
                     font-size: 0.9rem;
                     color: #9ca3af;
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                 }
-
+                
                 .value {
                     font-size: 1.3rem;
                     font-weight: bold;
@@ -431,18 +435,18 @@
     }
 }
 
-// Animations 
+// Animations
 @keyframes glow-pulse {
-    from {box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);}
-    to {box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);}
+    from { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+    to { box-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
 }
 
 @keyframes sparkle {
-    from {text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);}
-    to {text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);}
+    from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
 }
 
 @keyframes shimmer {
-    0% {transform: translateX(-100%);}
-    100% {transform: translateX(-100%);}
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }

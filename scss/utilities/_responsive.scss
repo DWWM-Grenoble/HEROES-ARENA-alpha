@@ -1,31 +1,30 @@
-<<<<<<< HEAD
-// scss/utilities/_responsive.scss
-=======
-// Classes utilitaires responsive
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
+// Classes utilitaires responsives
 @each $breakpoint,
 $size in $breakpoints {
-    @media (max-width: #{size}) {
+    @media (max-width: #{$size}) {
 
         // Visibilité
-        .hidden-#{breakpoint} {
+        .hidden-#{$breakpoint} {
             display: none !important;
         }
 
-        .visible-#{brakpoint} {
+        .visible-#{$breakpoint} {
             display: block !important;
         }
 
-        //Texte
+        // Texte
         .text-center-#{$breakpoint} {
             text-align: center;
         }
 
-        .text-left-#{breakpoint} {
+        .text-left-#{$breakpoint} {
             text-align: left;
         }
 
-        .text-right-#{breakpoint} {
+        .text-right-#{$breakpoint} {
             text-align: right;
         }
 
@@ -39,18 +38,21 @@ $size in $breakpoints {
         }
 
         // Grid
-
         .grid-1-#{$breakpoint} {
             grid-template-columns: 1fr;
         }
 
         .grid-2-#{$breakpoint} {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3-#{$breakpoint} {
             grid-template-columns: repeat(3, 1fr);
         }
     }
 }
 
-// Helpers pour les grilles responsive
+// Helpers pour les grilles responsives
 .heroes-grid {
     @include responsive-grid(1, 2, 3);
     gap: get($spacings, lg);
@@ -66,7 +68,6 @@ $size in $breakpoints {
 }
 
 // Responsive overrides from main CSS
-
 @include mobile {
     .form-grid {
         grid-template-columns: 1fr;
@@ -85,20 +86,19 @@ $size in $breakpoints {
 
     .vs-divider {
         transform: rotate(90deg);
-        font-size: get($font-size, 2xl);
+        font-size: get($font-sizes, 2xl);
     }
 
     .hero-modal-content {
         grid-template-columns: 1fr;
         gap: get($spacings, lg);
     }
-
-    .hero-modal-left,
-    .hero-avatar-large {
+    
+    .hero-modal-left .hero-avatar-large {
         width: 120px;
         height: 120px;
     }
-
+    
     .record-grid {
         grid-template-columns: 1fr;
         gap: get($spacings, sm);
@@ -122,11 +122,11 @@ $size in $breakpoints {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 15px;
     }
-
+    
     .file-buttons {
         flex-direction: column;
     }
-
+    
     .file-button {
         width: 100%;
     }
@@ -136,4 +136,3 @@ $size in $breakpoints {
         margin: get($spacings, lg);
     }
 }
->>>>>>> origin/Luca_branch

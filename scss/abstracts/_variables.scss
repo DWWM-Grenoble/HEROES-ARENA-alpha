@@ -1,49 +1,49 @@
-//Couleurs primaires - Or et bronze romain
-$primary-gold: #d4af37;
-$primary-bronze: #cd7f32;
-$primary-gradient: linear-gradient(135deg, $primary-gold, $primary-bronze);
-$secondary-gradient: linear-gradient(135deg, #8b4513, #a0522d);
+// ========== DARK MINIMAL PALETTE ==========
+// Primary Dark Colors - Ultra Minimal
+$void-black: #0a0a0a;         // Pure void
+$deep-black: #121212;         // Deep structure
+$carbon-grey: #1a1a1a;        // Carbon fiber
+$steel-grey: #242424;         // Cold steel
+$ash-grey: #2a2a2a;           // Dark ash
+$primary-gradient: linear-gradient(135deg, $void-black, $deep-black, $carbon-grey);
+$secondary-gradient: linear-gradient(135deg, $carbon-grey, $steel-grey);
 
+// Dark Base Colors - Structural
+$bg-primary: #0a0a0a;         // Pure void background
+$bg-secondary: #121212;       // Deep structure
+$bg-tertiary: #1a1a1a;        // Carbon layer
+$bg-card: rgba(18, 18, 18, 0.95);    // Structured card
+$bg-glass: rgba(42, 42, 42, 0.1);    // Glass overlay
 
-//Couleurs de base - Pierre, marbre et terre
-$bg-primary: #2d1810;  //Terre sombre
-$bg-secondary: #3e2723;  //Pierre brune
-$bg-tertiary: #1a0e0a;  //Terre très sombre
-$bg-card: rgba(78, 52, 46, 0.9);  //Pierre avec transparence
-$bg-glass: rgba(212, 175, 55, 0.15);  //Reflet doré
+// Text Colors - Minimal & Clean
+$text-primary: #ffffff;       // Pure white
+$text-secondary: #e0e0e0;     // Light grey
+$text-muted: #9e9e9e;         // Muted grey
+$text-white: #ffffff;         // Clean white
+$text-fire: #ff4444;          // Minimal red accent
+$text-accent: #666666;        // Dark accent
 
+// State Colors - Dark Minimal
+$success: #00ff00;            // Neon green
+$warning: #ffaa00;            // Bright orange
+$error: #ff0000;              // Pure red
+$info: #0088ff;               // Electric blue
 
-//Couleurs de texte - Inspirées des inscriptions romaines
-$text-primary: #f4e4bc;  //Parechemin antique
-$text-secondary: #d4af37;  //Or romain
-$text-muted: #8d6e63;  //Bronze terni
-$text-white: #fff8e1;  //Blanc cassé antique
+// Combat Colors - Minimal Combat
+$damage-normal: #666666;      // Medium grey
+$damage-special: #aa44ff;     // Purple accent
+$damage-power: #ff4444;       // Red power
+$damage-critical: #ffaa00;    // Orange critical
+$heal-color: #00ff00;         // Green heal
+$poison-color: #88ff00;       // Yellow-green poison
 
+// Badge Colors - Dark Minimal
+$badge-bronze: linear-gradient(135deg, #444444, #333333);
+$badge-silver: linear-gradient(135deg, #666666, #555555);
+$badge-gold: linear-gradient(135deg, #888888, #666666);
 
-//Couleurs d'état - Thème gladiateur
-$success: #4a7c59;  //Vert laurier de victoire
-$warning: #d4af37;  //Or d'avertissement
-$error: #8b0000;  //Rouge sang de l'arène
-$info: #6b5b95;  //Pourpre impérial
-
-
-//Couleurs de combat - Arène de gladiateurs
-$damage-normal: #cd5c5c;  //Rouge fer de lance
-$damage-special: #b8860b;  //Bronze sombre
-$damage-power: #ff4500;  //Rouge feux des dieux
-$damage-critical: #ffd700;  //Or pur des dieux
-$heal-color: #228b22;  //Vert herbes médicinales
-
-
-//Couleurs de badges - Métaux antiques
-$badge-bronze: linear-gradient(135deg, #cd7f32, #8b4513);
-$badge-silver: linear-gradient(135deg, #c0c0c0, #708090);
-$badge-gold: linear-gradient(135deg, #ffd700, #daa520);
-
-
-//======== ESPACEMENTS ========
-
-$spacing-sx: 4px;
+// ========== ESPACEMENTS ==========
+$spacing-xs: 4px;
 $spacing-sm: 8px;
 $spacing-md: 16px;
 $spacing-lg: 24px;
@@ -51,36 +51,36 @@ $spacing-xl: 32px;
 $spacing-2xl: 40px;
 $spacing-3xl: 60px;
 
-
-//======== BORDURES ========
-
+// ========== BORDURES ==========
 $border-radius-sm: 8px;
 $border-radius-md: 12px;
 $border-radius-lg: 16px;
 $border-radius-xl: 20px;
 $border-radius-round: 50%;
 
+// ========== DARK MINIMAL SHADOWS ==========
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.8);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.9);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 1);
+$shadow-glow: 0 0 20px rgba(255, 255, 255, 0.1); // Subtle white glow
+$shadow-fire: 0 0 15px rgba(255, 68, 68, 0.3); // Red accent glow
+$shadow-void: 0 0 40px rgba(0, 0, 0, 1); // Pure void
+$shadow-gold: 0 0 25px rgba(255, 255, 255, 0.2); // Clean white glow
 
-//======== OMBRES ANTIQUES ========
-
-$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-$shadow-glow: 0 0 20px rgba(212, 175, 55, 0.6);  //Lueur dorée
-
-
-//======== TYPOGRAPHIE ROMAINE ========
-
+// ========== DARK AGE CLASSIC TYPOGRAPHY ==========
 $font-family-primary: 'Cinzel',
+'IM Fell DW Pica',
 'Trajan Pro',
 'Times New Roman',
 serif;
-
-$font-family-secondary: 'Cinzel Decorative',
-'Optima',
-'Times New Roman',
+$font-family-secondary: 'MedievalSharp',
+'Uncial Antiqua',
+'Celtic Hand',
+'Old English Text MT',
 serif;
-
+$font-family-accent: 'Almendra',
+'Cinzel',
+'serif';
 $font-family-mono: 'Courier New',
 monospace;
 
@@ -100,36 +100,30 @@ $font-weight-bold: 700;
 $font-weight-extrabold: 800;
 $font-weight-black: 900;
 
+// ========== BREAKPOINTS - DARK SOULS RESPONSIVE ==========
+$breakpoint-xs: 360px;         // Très petits mobiles
+$breakpoint-mobile: 480px;     // Mobiles standard
+$breakpoint-tablet: 768px;     // Tablettes portrait
+$breakpoint-desktop: 1024px;   // Desktop small
+$breakpoint-wide: 1400px;      // Desktop large
+$breakpoint-ultrawide: 1920px; // Ultra-wide screens
 
-//======== BREAKPOINTS ========
-
-$breakpoint-mobile: 480px;
-$breakpoint-tablet: 768px;
-$breakpoint-desktop: 1024px;
-$breakpoint-wide: 1400px;
-
-
-//======== TRANSITIONS ========
-
+// ========== TRANSITIONS ==========
 $transition-fast: 0.2s ease;
 $transition-normal: 0.3s ease;
 $transition-slow: 0.5s ease;
 $transition-bounce: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-
-//======== Z-INDEX ========
-
+// ========== Z-INDEX ==========
 $z-dropdown: 100;
 $z-modal: 1000;
 $z-tooltip: 1100;
 $z-notification: 1200;
 
-
-//======== MAPS FOR EASIER ACCESS =========
-
-//Spacings map
+// ========== MAPS FOR EASIER ACCESS ==========
+// Spacings map
 $spacings: (
-    xs: $spacing-sx,
+    xs: $spacing-xs,
     sm: $spacing-sm,
     md: $spacing-md,
     lg: $spacing-lg,
@@ -138,7 +132,7 @@ $spacings: (
     3xl: $spacing-3xl
 );
 
-//Font sizes map
+// Font sizes map
 $font-sizes: (
     xs: $font-size-xs,
     sm: $font-size-sm,
@@ -151,7 +145,7 @@ $font-sizes: (
     5xl: 3rem
 );
 
-//Font weights map
+// Font weights map
 $font-weights: (
     normal: $font-weight-normal,
     medium: $font-weight-medium,
@@ -161,8 +155,9 @@ $font-weights: (
     black: $font-weight-black
 );
 
-//Border radius map
+// Border radius map
 $border-radius: (
+    xs: 4px,
     sm: $border-radius-sm,
     md: $border-radius-md,
     lg: $border-radius-lg,
@@ -171,16 +166,21 @@ $border-radius: (
     round: $border-radius-round
 );
 
-//Shadows map
-$shadows : (
+// Shadows map
+$shadows: (
     sm: $shadow-sm,
     md: $shadow-md,
     lg: $shadow-lg,
-    xl: 0 25px 50px rgba(0, 0, 0, 0.5),
-    glow: $shadow-glow
+    xl: 0 25px 50px rgba(10, 10, 10, 0.9),
+    glow: $shadow-glow,
+    fire: $shadow-fire,
+    void: $shadow-void,
+    gold: $shadow-gold,
+    blood: 0 0 20px rgba(255, 0, 0, 0.5),
+    crimson: 0 0 25px rgba(220, 20, 60, 0.6)
 );
 
-//Transitions map
+// Transitions map
 $transitions: (
     fast: $transition-fast,
     normal: $transition-normal,
@@ -188,7 +188,7 @@ $transitions: (
     bounce: $transition-bounce
 );
 
-//Z-indexes map
+// Z-indexes map
 $z-indexes: (
     dropdown: $z-dropdown,
     modal: $z-modal,
@@ -196,23 +196,41 @@ $z-indexes: (
     notification: $z-notification
 );
 
-//Breakpoints map
+// Breakpoints map
 $breakpoints: (
+    xs: $breakpoint-xs,
     mobile: $breakpoint-mobile,
     tablet: $breakpoint-tablet,
     desktop: $breakpoint-desktop,
-    wide: $breakpoint-wide
+    wide: $breakpoint-wide,
+    ultrawide: $breakpoint-ultrawide
 );
 
-//Additional variables used in components
+// Simplified color mappings
+$primary-bronze: $carbon-grey;
+$primary-gold: $text-secondary;
+$silver-primary: $steel-grey;
+$gold-primary: $text-secondary;
+$gold-secondary: $text-muted;
+$gold-bronze: $ash-grey;
+$bronze-shadow: $steel-grey;
 $secondary-blue: $info;
+$crimson-shadow: $error;
+$gore-red: $damage-power;
+$rust-red: $warning;
+$dried-blood: #800000;
+$primary-crimson: $error;
+$primary-mystic: $damage-special;
+$blood-black: $void-black;
+$decay-brown: $ash-grey;
+$walnut-brown: $steel-grey;
+$marble-white: $text-primary;
+$noble-gold: $text-secondary;
+$castle-grey: $steel-grey;
+$dark-stone: $carbon-grey;
+$medieval-copper: $warning;
 
-//Badge colors for animations
-$silver-primary: #c0c0c0;
-$gold-primary: #ffd700;
-$gold-secondary: #ff1493;
-
-//Badge colors map
+// Badge colors map
 $badge-colors: (
     bronze: $badge-bronze,
     silver: $badge-silver,

@@ -5,19 +5,19 @@
     "main": "index.html",
     "type": "module",
     "scripts":{
-        "dev":"netlify dev",
-        "build": "echo 'Build complete - static files ready'",
+        "dev": "python -m http.server 8000",
+        "build": "npm run sass:build",
         "test": "node js/test-simple.js",
-        "deploy": "netlify deploy --prod",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d .",
         "sass:watch": "sass --watch scss/main.scss:css/style.css --style expanded",
         "sass:build":"sass scss/main.scss:css/style.css --style compressed",
         "sass:dev":"sass --watch scss/main.scss:css/style.css --style expanded --source-map"
     },
-    "dependencies": {
-        "@netlify/functions": "^2.4.0"
-    },
+    "dependencies": {},
     "devDependencies": {
-        "netlify-cli": "17.0.0"
+        "gh-pages": "^6.1.1",
+        "sass": "^1.70.0"
     },
     "keywords": [
         "game",

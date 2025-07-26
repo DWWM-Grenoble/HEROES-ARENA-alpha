@@ -1,134 +1,156 @@
-// ======= UTILITAIRES utilities/_helpers.scss ======= //
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
-//  Classes utlitaires pour les espacements
+// ========== UTILITAIRES : utilities/_helpers.scss ==========
+// Classes utilitaires pour les espacements
+@each $name,
+$size in $spacings {
+    .m-#{$name} {
+        margin: $size;
+    }
 
-@each $name, $size in $spacings {
-  .m-#{$name} {
-    margin: $size !important;
-  }
-  .mt-#{$name} {
-    margin-top: $size !important;
-  }
-  .mr-#{$name} {
-    margin-right: $size !important;
-  }
-  .mb-#{$name} {
-    margin-bottom: $size !important;
-  }
-  .ml-#{$name} {
-    margin-left: $size !important;
-  }
-  .mx-#{$name} {
-    margin-left: $size !important;
-    margin-right: $size !important;
-  }
-  .my-#{$name} {
-    margin-top: $size !important;
-    margin-bottom: $size !important;
-  }
+    .mt-#{$name} {
+        margin-top: $size;
+    }
 
-  .p-#{$name} {
-    padding: $size !important;
-  }
-  .pt-#{$name} {
-    padding-top: $size !important;
-  }
-  .pr-#{$name} {
-    padding-right: $size !important;
-  }
-  .pb-#{$name} {
-    padding-bottom: $size !important;
-  }
-  .pl-#{$name} {
-    padding-left: $size !important;
-  }
-  .px-#{$name} {
-    padding-left: $size !important;
-    padding-right: $size !important;
-  }
-  .py-#{$name} {
-    padding-top: $size !important;
-    padding-bottom: $size !important;
-  }
+    .mr-#{$name} {
+        margin-right: $size;
+    }
+
+    .mb-#{$name} {
+        margin-bottom: $size;
+    }
+
+    .ml-#{$name} {
+        margin-left: $size;
+    }
+
+    .mx-#{$name} {
+        margin-left: $size;
+        margin-right: $size;
+    }
+
+    .my-#{$name} {
+        margin-top: $size;
+        margin-bottom: $size;
+    }
+
+    .p-#{$name} {
+        padding: $size;
+    }
+
+    .pt-#{$name} {
+        padding-top: $size;
+    }
+
+    .pr-#{$name} {
+        padding-right: $size;
+    }
+
+    .pb-#{$name} {
+        padding-bottom: $size;
+    }
+
+    .pl-#{$name} {
+        padding-left: $size;
+    }
+
+    .px-#{$name} {
+        padding-left: $size;
+        padding-right: $size;
+    }
+
+    .py-#{$name} {
+        padding-top: $size;
+        padding-bottom: $size;
+    }
 }
 
 // Classes utilitaires pour les couleurs de texte
 .text-primary {
-  color: $text-primary !important;
+    color: $text-primary;
 }
 
-text-secondary {
-  color: $text-secondary !important;
+.text-secondary {
+    color: $text-secondary;
 }
 
 .text-muted {
-  color: $text-muted !important;
+    color: $text-muted;
 }
+
 .text-success {
-  color: $success !important;
+    color: $success;
 }
 
 .text-warning {
-  color: $warning !important;
+    color: $warning;
 }
 
 .text-error {
-  color: $error !important;
+    color: $error;
 }
 
 .text-info {
-  color: $info !important;
+    color: $info;
 }
 
 // Classes utilitaires pour les tailles de police
-@each $name, $size in $font-sizes {
-  .text-#{$name} {
-    font-size: $size !important;
-  }
+@each $name,
+$size in $font-sizes {
+    .text-#{$name} {
+        font-size: $size;
+    }
 }
 
 // Classes utilitaires pour les poids de police
-@each $name, $weight in $font-weights {
-  .font-#{$name} {
-    font-weight: $weight !important;
-  }
+@each $name,
+$weight in $font-weights {
+    .font-#{$name} {
+        font-weight: $weight;
+    }
 }
+
 // Classes utilitaires pour flexbox
 .flex {
-  display: flex !important;
+    display: flex;
 }
+
 .flex-center {
-  @include flex-center;
+    @include flex-center;
 }
+
 .flex-between {
-  @include flex-between;
+    @include flex-between;
 }
+
 .flex-column {
-  @include flex-column;
+    @include flex-column;
 }
 
 .flex-wrap {
-  flex-wrap: wrap !important;
+    flex-wrap: wrap;
 }
 
 // Classes utilitaires pour grid
 .grid {
-  display: grid !important;
-}
-.grid-center {
-  place-items: center;
+    display: grid;
 }
 
-// classes animations
-animation-fade-in {
-  @include fade-in;
+.grid-center {
+    place-items: center;
+}
+
+// Classes d'animation
+.animate-fade-in {
+    @include fade-in;
 }
 
 .animate-glow {
-  @include glow-effect;
+    @include glow-effect;
 }
 
 // Global scrollbar styles
 * {
-  @include custom-scrollbar;
+    @include custom-scrollbar;
 }

@@ -1,0 +1,73 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== PAGE D'ACCUEIL SIMPLE ==========
+
+.home-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/background/home-bg1.png");
+    
+    @include flex-center;
+    flex-direction: column;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+
+    &.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.home-container {
+    text-align: center;
+    max-width: 600px;
+    padding: get($spacings, xl);
+}
+
+.home-title {
+    font-family: $font-family-secondary;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: $font-weight-black;
+    color: $text-primary;
+    margin-bottom: get($spacings, lg);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.home-slogan {
+    font-family: $font-family-primary;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: $text-secondary;
+    margin-bottom: get($spacings, 2xl);
+    line-height: 1.5;
+}
+
+.home-btn {
+    background: linear-gradient(135deg, $steel-grey, $carbon-grey);
+    border: 2px solid $text-secondary;
+    border-radius: get($border-radius, sm);
+    color: $text-primary;
+    font-family: $font-family-primary;
+    font-size: get($font-sizes, lg);
+    font-weight: $font-weight-bold;
+    padding: get($spacings, md) get($spacings, xl);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    
+    &:hover {
+        background: linear-gradient(135deg, $ash-grey, $steel-grey);
+        border-color: $text-primary;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+}

@@ -1,33 +1,50 @@
-// ========== LAYOUT NAVIGATION : layout/_navigation.scss ==========
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== LUXURY PALATIAL NAVIGATION : layout/_navigation.scss ==========
 
 .nav {
     display: flex;
-    background:
-        linear-gradient(135deg, rgba(78, 52, 46, 0.9) 0%, rgba(45, 24, 16, 0.8) 100%);
+    background: 
+        linear-gradient(135deg, rgba(26, 22, 18, 0.98) 0%, rgba(15, 13, 10, 1) 100%);
     border-radius: get($border-radius, md);
     padding: get($spacings, xs);
     margin-bottom: get($spacings, xl);
-    border: 1px solid $primary-bronze;
-    box-shadow:
-        get($shadows, md),
-        inset 0 1px 0 rgba(212, 175, 55, 0.2);
+    border: 2px solid $gold-bronze;
+    box-shadow: 
+        get($shadows, lg),
+        inset 0 1px 0 rgba(248, 245, 240, 0.08),
+        0 0 15px rgba(212, 175, 55, 0.2);
+
+    @include tablet {
+        padding: get($spacings, xs);
+        gap: get($spacings, xs);
+    }
 
     @include mobile {
         flex-direction: column;
         gap: get($spacings, xs);
+        padding: get($spacings, sm);
+        margin-bottom: get($spacings, lg);
+    }
+
+    @include xs {
+        padding: get($spacings, xs);
+        margin-bottom: get($spacings, md);
+        border-radius: get($border-radius, sm);
     }
 }
 
 .nav-tab {
     flex: 1;
     padding: get($spacings, md) get($spacings, lg);
-    background: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(78, 52, 46, 0.3));
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.6), rgba(10, 10, 10, 0.8));
     color: $text-muted;
-    border: 1px solidrgba(205, 127, 50, 0.3);
+    border: 1px solid rgba(20, 20, 20, 0.5);
     border-radius: get($border-radius, sm);
     cursor: pointer;
     font-family: $font-family-primary;
-    font-size: get($font-size, base);
+    font-size: get($font-sizes, base);
     font-weight: get($font-weights, semibold);
     transition: all get($transitions, normal);
     position: relative;
@@ -36,27 +53,28 @@
     letter-spacing: 0.05em;
 
     &::before {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(205, 127, 50, 0.2));
+        background: linear-gradient(135deg, rgba(40, 40, 40, 0.08), rgba(20, 20, 20, 0.3));
         opacity: 0;
         transition: opacity get($transitions, normal);
     }
 
     &::after {
-        content: "";
+        content: '';
         position: absolute;
-        bottom: -1px;
+        bottom: -2px;
         left: 50%;
         width: 0;
-        height: 2px;
-        background: $primary-gold;
+        height: 3px;
+        background: $text-secondary;
         transition: all get($transitions, normal);
         transform: translateX(-50%);
+        box-shadow: 0 0 4px rgba(80, 80, 80, 0.3);
     }
 
     &:hover {
@@ -70,18 +88,21 @@
 
         color: $text-secondary;
         transform: translateY(-1px);
-        border-color: rgba(212, 175, 55, 0.6);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border-color: rgba(40, 40, 40, 0.2);
+        box-shadow: 
+            0 4px 8px rgba(0, 0, 0, 1),
+            0 0 6px rgba(30, 30, 30, 0.1);
     }
 
     &.active {
-        background: linear-gradient(135deg, $primary-gold, $primary-bronze);
-        color: #1a0e0a;
-        border-color: $primary-gold;
-        box-shadow:
-            0 6px 16px rgba(212, 175, 55, 0.4),
-            inset 0 1px 0 rgba(255, 248, 225, 0.3);
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(135deg, $text-secondary, $bronze-shadow);
+        color: $text-white;
+        border-color: $text-secondary;
+        box-shadow: 
+            0 6px 16px rgba(80, 80, 80, 0.2),
+            inset 0 1px 0 rgba(60, 60, 60, 0.05),
+            get($shadows, void);
+        text-shadow: 0 0 6px rgba(80, 80, 80, 0.4);
 
         &::before {
             opacity: 0;
@@ -89,12 +110,50 @@
 
         &::after {
             width: 100%;
-            background: rgba(26, 14, 10, 0.3);
+            background: rgba(60, 60, 60, 0.4);
+            box-shadow: 0 0 8px rgba(60, 60, 60, 0.3);
         }
+    }
+
+    @include tablet {
+        padding: get($spacings, sm) get($spacings, lg);
+        font-size: get($font-sizes, sm);
     }
 
     @include mobile {
         text-align: center;
         padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, sm);
+        letter-spacing: 0.03em;
+        
+        &::after {
+            height: 2px;
+        }
+        
+        &:hover::after {
+            width: 60%;
+        }
+        
+        &.active::after {
+            width: 80%;
+        }
+    }
+
+    @include xs {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+        letter-spacing: 0.02em;
+        
+        &::after {
+            height: 2px;
+        }
+        
+        &:hover::after {
+            width: 50%;
+        }
+        
+        &.active::after {
+            width: 70%;
+        }
     }
 }
