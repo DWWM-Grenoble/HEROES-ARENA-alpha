@@ -2,7 +2,7 @@
 
 > **Un jeu de combat de héros web moderne avec système d'authentification local et architecture SCSS modulaire**
 
-## 🌐 **[▶️ JOUER MAINTENANT](https://dwwm-grenoble.github.io/HEROES-ARENA-alpha/)**
+
 
 [![Licence](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-success.svg)](https://dwwm-grenoble.github.io/HEROES-ARENA-alpha/)
@@ -45,7 +45,7 @@ Heroes Arena est un jeu de combat de héros web interactif où vous créez des p
 
 ## 🚀 Démo en Ligne
 
-🌐 **[Jouer maintenant sur Netlify](https://heroes-arena.netlify.app)**
+## 🌐 **[▶️ JOUER MAINTENANT](https://dwwm-grenoble.github.io/HEROES-ARENA-alpha/)**
 
 *Créez vos héros, combattez dans l'arène, et sauvegardez votre progression dans le cloud !*
 
