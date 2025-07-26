@@ -1,0 +1,281 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== OPTIMISATIONS DES INTERACTIONS TACTILES ==========
+
+// Classes utilitaires pour les interactions tactiles
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+    @include mobile {
+        min-height: 48px;
+        min-width: 48px;
+    }
+}
+
+.touch-large {
+    @include mobile {
+        min-height: 56px;
+        min-width: 56px;
+    }
+}
+
+// Amélioration des états de focus pour l'accessibilité
+.focus-visible {
+    &:focus-visible {
+        outline: 2px solid $primary-gold;
+        outline-offset: 2px;
+        border-radius: get($border-radius, sm);
+    }
+}
+
+// Optimisation des boutons pour le tactile
+@include mobile {
+    .btn,
+    button,
+    [role="button"] {
+        min-height: 48px;
+        padding: get($spacings, md) get($spacings, lg);
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        
+        // Retour tactile visuel
+        &:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+        
+        // Améliorer la zone de clic
+        &::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            z-index: -1;
+        }
+    }
+    
+    // Boutons de navigation tactiles
+    .nav-tab {
+        min-height: 48px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        
+        &:active {
+            transform: scale(0.98);
+            background: rgba(212, 175, 55, 0.2);
+        }
+    }
+    
+    // Éléments cliquables améliorés
+    .hero-card,
+    .filter-btn,
+    .catalog-tab,
+    .avatar-item,
+    .user-action-btn {
+        min-height: 48px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+    
+    // Sliders tactiles améliorés
+    .stat-slider {
+        touch-action: pan-x;
+        -webkit-tap-highlight-color: transparent;
+        
+        &::-webkit-slider-thumb {
+            cursor: grab;
+            
+            &:active {
+                cursor: grabbing;
+            }
+        }
+        
+        &::-moz-range-thumb {
+            cursor: grab;
+            
+            &:active {
+                cursor: grabbing;
+            }
+        }
+    }
+    
+    // Zones de texte tactiles
+    .form-input,
+    .form-select,
+    textarea {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        
+        // Améliorer la sélection de texte
+        &:focus {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+    }
+    
+    // Navigation de défilement améliorée
+    .modal-content,
+    .hero-modal,
+    .avatar-grid {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+    
+    // Éléments de navigation par balayage
+    .avatar-catalog,
+    .catalog-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    
+    // Retour haptique pour les actions importantes
+    .auth-btn,
+    .fight-btn,
+    .modal-close {
+        &:active {
+            animation: haptic-feedback 0.1s ease;
+        }
+    }
+}
+
+// Animation de retour haptique
+@keyframes haptic-feedback {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+// Optimisations spécifiques pour les gestes
+@include mobile {
+    // Prévenir le zoom accidentel
+    .hero-avatar,
+    .avatar-item,
+    .user-avatar {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    
+    // Améliorer le défilement des listes
+    .heroes-grid,
+    .avatar-grid,
+    .filter-section {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    // Gestion des swipe sur les cartes
+    .hero-card {
+        touch-action: pan-y;
+        
+        &:active {
+            transition: transform 0.1s ease;
+        }
+    }
+    
+    // Double-tap protection pour les éléments critiques
+    .delete-btn,
+    .logout-btn {
+        touch-action: manipulation;
+        
+        &:active {
+            background: rgba(255, 0, 0, 0.2);
+        }
+    }
+}
+
+// Optimisations pour l'orientation landscape sur mobile
+@media screen and (orientation: landscape) and (max-height: 600px) {
+    .modal-content,
+    .hero-modal {
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .auth-form {
+        padding: get($spacings, md);
+    }
+    
+    .stats-container {
+        .stat-group {
+            margin-bottom: get($spacings, md);
+        }
+    }
+}
+
+// Désactiver les effets de survol sur tactile
+@media (hover: none) {
+    .btn:hover,
+    .hero-card:hover,
+    .nav-tab:hover,
+    .filter-btn:hover {
+        transform: none;
+        box-shadow: inherit;
+    }
+    
+    // Garder les états actifs
+    .btn:active,
+    .hero-card:active,
+    .nav-tab:active,
+    .filter-btn:active {
+        transform: scale(0.98);
+    }
+}
+
+// Optimisations pour les pointeurs grossiers (doigts)
+@media (pointer: coarse) {
+    .btn,
+    .hero-card,
+    .nav-tab,
+    .filter-btn,
+    .modal-close,
+    .user-action-btn {
+        min-height: 48px;
+        min-width: 48px;
+    }
+    
+    // Augmenter la taille des éléments interactifs petits
+    .catalog-tab {
+        min-height: 44px;
+        padding: get($spacings, md) get($spacings, sm);
+    }
+    
+    .avatar-item {
+        min-width: 60px;
+        min-height: 60px;
+    }
+}
+
+// Support pour les écrans haute densité tactiles
+@media (-webkit-min-device-pixel-ratio: 2) and (pointer: coarse) {
+    .hero-avatar img,
+    .avatar-item img,
+    .user-avatar {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}

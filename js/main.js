@@ -57,6 +57,10 @@ class HeroesArena {
         return this.ui.showAvatarCategory(category);
     }
     
+    handleMobileAvatarCategory(category) {
+        return this.ui.handleMobileAvatarCategory(category);
+    }
+    
     updateClassInfo() {
         return this.ui.updateClassInfo();
     }

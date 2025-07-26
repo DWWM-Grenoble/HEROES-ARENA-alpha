@@ -1,0 +1,245 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== SÉLECTEUR DE SPÉCIALISATION AMÉLIORÉ ==========
+
+.catalog-selector {
+    margin-bottom: get($spacings, lg);
+    position: relative;
+}
+
+.selector-label {
+    display: block;
+    text-align: center;
+    color: $primary-gold;
+    font-family: $font-family-secondary;
+    font-size: get($font-sizes, lg);
+    font-weight: get($font-weights, bold);
+    margin-bottom: get($spacings, md);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    
+    @include mobile {
+        font-size: get($font-sizes, base);
+        margin-bottom: get($spacings, sm);
+    }
+}
+
+.specialty-select {
+    width: 100%;
+    padding: get($spacings, lg) get($spacings, xl);
+    font-size: get($font-sizes, base);
+    font-family: $font-family-primary;
+    font-weight: get($font-weights, semibold);
+    color: $text-primary;
+    
+    // Background avec gradient médiéval
+    background: 
+        linear-gradient(135deg, rgba(78, 52, 46, 0.95) 0%, rgba(45, 24, 16, 1) 50%, rgba(26, 22, 18, 0.98) 100%),
+        repeating-linear-gradient(45deg, 
+            transparent, 
+            transparent 15px, 
+            rgba(212, 175, 55, 0.03) 15px, 
+            rgba(212, 175, 55, 0.03) 17px);
+    
+    border: 3px solid $primary-bronze;
+    border-radius: get($border-radius, lg);
+    min-height: 60px;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    
+    // Supprimer l'apparence par défaut
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    // Icône dropdown personnalisée sophistiquée
+    background-image: 
+        url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e"),
+        linear-gradient(45deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+    background-repeat: no-repeat, no-repeat;
+    background-position: right get($spacings, lg) center, right 0 center;
+    background-size: 24px, 50px 100%;
+    padding-right: calc(#{get($spacings, xl)} + 50px);
+    
+    // États interactifs
+    &:hover {
+        border-color: $primary-gold;
+        box-shadow: 
+            0 0 20px rgba(212, 175, 55, 0.4),
+            inset 0 1px 0 rgba(212, 175, 55, 0.2);
+        background: 
+            linear-gradient(135deg, rgba(78, 52, 46, 1) 0%, rgba(45, 24, 16, 1) 50%, rgba(26, 22, 18, 1) 100%),
+            repeating-linear-gradient(45deg, 
+                transparent, 
+                transparent 15px, 
+                rgba(212, 175, 55, 0.05) 15px, 
+                rgba(212, 175, 55, 0.05) 17px),
+            url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e"),
+            linear-gradient(45deg, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0.15) 100%);
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-position: 0 0, 0 0, right get($spacings, lg) center, right 0 center;
+        background-size: 100% 100%, 100% 100%, 24px, 50px 100%;
+        transform: translateY(-1px);
+    }
+    
+    &:focus {
+        outline: none;
+        border-color: $primary-gold;
+        box-shadow: 
+            0 0 25px rgba(212, 175, 55, 0.6),
+            inset 0 2px 0 rgba(212, 175, 55, 0.3),
+            0 0 0 2px rgba(212, 175, 55, 0.2);
+        background: 
+            linear-gradient(135deg, rgba(78, 52, 46, 1) 0%, rgba(45, 24, 16, 1) 50%, rgba(26, 22, 18, 1) 100%),
+            repeating-linear-gradient(45deg, 
+                transparent, 
+                transparent 15px, 
+                rgba(212, 175, 55, 0.08) 15px, 
+                rgba(212, 175, 55, 0.08) 17px),
+            url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e"),
+            linear-gradient(45deg, rgba(212, 175, 55, 0.4) 0%, rgba(212, 175, 55, 0.2) 100%);
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+        background-position: 0 0, 0 0, right get($spacings, lg) center, right 0 center;
+        background-size: 100% 100%, 100% 100%, 24px, 50px 100%;
+    }
+    
+    &:active {
+        transform: scale(0.99);
+    }
+    
+    // Options stylisées
+    option {
+        background: rgba(26, 22, 18, 0.98);
+        color: $text-primary;
+        padding: get($spacings, md) get($spacings, lg);
+        font-weight: get($font-weights, medium);
+        font-size: get($font-sizes, base);
+        line-height: 1.4;
+        
+        &:hover,
+        &:focus,
+        &:checked {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(78, 52, 46, 0.9));
+            color: $text-primary;
+        }
+    }
+    
+    // Responsive mobile
+    @include mobile {
+        padding: get($spacings, md) get($spacings, lg);
+        font-size: get($font-sizes, base);
+        min-height: 52px;
+        background-position: right get($spacings, md) center, right 0 center;
+        background-size: 20px, 40px 100%;
+        padding-right: calc(#{get($spacings, lg)} + 40px);
+        
+        &:hover {
+            background-position: 0 0, 0 0, right get($spacings, md) center, right 0 center;
+            background-size: 100% 100%, 100% 100%, 20px, 40px 100%;
+        }
+        
+        &:focus {
+            background-position: 0 0, 0 0, right get($spacings, md) center, right 0 center;
+            background-size: 100% 100%, 100% 100%, 20px, 40px 100%;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        padding: get($spacings, sm) get($spacings, md);
+        font-size: get($font-sizes, sm);
+        min-height: 48px;
+        
+        option {
+            font-size: get($font-sizes, sm);
+            padding: get($spacings, sm) get($spacings, md);
+        }
+    }
+}
+
+// Animation d'apparition
+.catalog-selector {
+    animation: selectorFadeIn 0.5s ease-out;
+}
+
+@keyframes selectorFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Effet de lueur sur focus
+.specialty-select:focus {
+    animation: selectorGlow 2s ease-in-out infinite;
+}
+
+@keyframes selectorGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 25px rgba(212, 175, 55, 0.6),
+            inset 0 2px 0 rgba(212, 175, 55, 0.3),
+            0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 0 35px rgba(212, 175, 55, 0.8),
+            inset 0 2px 0 rgba(212, 175, 55, 0.4),
+            0 0 0 3px rgba(212, 175, 55, 0.3);
+    }
+}
+
+// Effet de particules dorées (optionnel)
+.catalog-selector::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        rgba(212, 175, 55, 0.1), 
+        transparent, 
+        rgba(212, 175, 55, 0.1), 
+        transparent);
+    border-radius: get($border-radius, lg);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity get($transitions, normal);
+}
+
+.catalog-selector:hover::before {
+    opacity: 1;
+    animation: particleShimmer 3s ease-in-out infinite;
+}
+
+@keyframes particleShimmer {
+    0%, 100% {
+        background: linear-gradient(45deg, 
+            rgba(212, 175, 55, 0.1), 
+            transparent, 
+            rgba(212, 175, 55, 0.1), 
+            transparent);
+    }
+    50% {
+        background: linear-gradient(45deg, 
+            transparent, 
+            rgba(212, 175, 55, 0.1), 
+            transparent, 
+            rgba(212, 175, 55, 0.1));
+    }
+}
+
+// Support pour les navigateurs qui ne supportent pas appearance: none
+@supports not (appearance: none) {
+    .specialty-select::-ms-expand {
+        display: none;
+    }
+}

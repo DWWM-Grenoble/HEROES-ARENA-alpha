@@ -14,17 +14,21 @@
 @use 'layout/main';
 @use 'layout/header';
 @use 'layout/navigation';
+@use 'layout/mobile';
 
 // 4. Components (reusable components)
 @use 'components/auth';
 @use 'components/hero-card';
+@use 'components/hero-card-mobile';
 @use 'components/arena';
 @use 'components/combat-log';
 @use 'components/modal';
 @use 'components/forms';
+@use 'components/forms-mobile';
 @use 'components/buttons';
 @use 'components/user-card';
 @use 'components/stats';
+@use 'components/specialty-select';
 @use 'components/roman-decorations';
 @use 'components/hero-details-enhanced';
 @use 'components/victory-enhanced';
@@ -40,6 +44,7 @@
 // 7. Utilities (helper classes, responsive)
 @use 'utilities/helpers';
 @use 'utilities/responsive';
+@use 'utilities/touch-interactions';
 
 // 8. Vendors (third-party styles)
 // Add vendor imports here if needed

@@ -1,0 +1,233 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== LAYOUT MOBILE GLOBAL ==========
+
+// Ajustements du conteneur principal pour mobile
+@include mobile {
+    .container {
+        padding: get($spacings, sm);
+        flex-direction: column;
+        
+        .header {
+            text-align: center;
+            margin-bottom: get($spacings, lg);
+            
+            h1 {
+                font-size: get($font-sizes, 2xl);
+                margin-bottom: get($spacings, sm);
+            }
+            
+            p {
+                font-size: get($font-sizes, base);
+                line-height: 1.5;
+                max-width: none;
+            }
+            
+            #appStatus {
+                font-size: get($font-sizes, sm);
+                margin-top: get($spacings, md);
+            }
+        }
+        
+        .content {
+            width: 100%;
+            max-width: none;
+            
+            .section {
+                padding: get($spacings, md) 0;
+                
+                h2 {
+                    font-size: get($font-sizes, xl);
+                    text-align: center;
+                    margin-bottom: get($spacings, lg);
+                }
+                
+                .section-header {
+                    text-align: center;
+                    margin-bottom: get($spacings, lg);
+                    
+                    p {
+                        font-size: get($font-sizes, sm);
+                        color: $text-muted;
+                        margin-top: get($spacings, sm);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Optimisation de l'ordre d'affichage des éléments
+@include mobile {
+    .container {
+        display: flex;
+        flex-direction: column;
+        
+        .user-card {
+            order: 1;
+        }
+        
+        .header {
+            order: 2;
+        }
+        
+        .nav {
+            order: 3;
+        }
+        
+        .content {
+            order: 4;
+        }
+    }
+}
+
+// Gestion de l'orientation landscape
+@media screen and (orientation: landscape) and (max-height: 600px) {
+    .container {
+        .header {
+            margin-bottom: get($spacings, md);
+            
+            h1 {
+                font-size: get($font-sizes, xl);
+                margin-bottom: get($spacings, xs);
+            }
+            
+            p {
+                font-size: get($font-sizes, sm);
+                margin-bottom: get($spacings, xs);
+            }
+        }
+        
+        .nav {
+            margin-bottom: get($spacings, md);
+        }
+        
+        .content {
+            .section {
+                padding: get($spacings, sm) 0;
+                
+                h2 {
+                    font-size: get($font-sizes, lg);
+                    margin-bottom: get($spacings, md);
+                }
+            }
+        }
+    }
+}
+
+// Ajustements pour très petits écrans
+@media (max-width: 380px) {
+    .container {
+        padding: get($spacings, xs);
+        
+        .header {
+            h1 {
+                font-size: get($font-sizes, xl);
+            }
+            
+            p {
+                font-size: get($font-sizes, sm);
+            }
+        }
+        
+        .content {
+            .section {
+                h2 {
+                    font-size: get($font-sizes, lg);
+                }
+            }
+        }
+    }
+}
+
+// Optimisation du défilement pour mobile
+@include mobile {
+    .container {
+        height: 100vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        
+        // Padding pour éviter que le contenu soit caché par les barres système
+        padding-top: env(safe-area-inset-top, get($spacings, sm));
+        padding-bottom: env(safe-area-inset-bottom, get($spacings, sm));
+        padding-left: env(safe-area-inset-left, get($spacings, sm));
+        padding-right: env(safe-area-inset-right, get($spacings, sm));
+    }
+}
+
+// Support pour les encoches d'écran (notch)
+@supports (padding-top: env(safe-area-inset-top)) {
+    @include mobile {
+        .container {
+            padding-top: calc(env(safe-area-inset-top) + #{get($spacings, sm)});
+            padding-bottom: calc(env(safe-area-inset-bottom) + #{get($spacings, sm)});
+        }
+        
+        .nav {
+            margin-top: get($spacings, sm);
+        }
+    }
+}
+
+// États de chargement optimisés pour mobile
+@include mobile {
+    .app-loading-status {
+        position: sticky;
+        top: 0;
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(10px);
+        padding: get($spacings, md);
+        text-align: center;
+        border-radius: get($border-radius, md);
+        margin-bottom: get($spacings, lg);
+        z-index: 50;
+    }
+}
+
+// Gestion des états d'erreur mobile
+@include mobile {
+    .error-state,
+    .empty-state {
+        text-align: center;
+        padding: get($spacings, xl) get($spacings, lg);
+        
+        h3 {
+            font-size: get($font-sizes, lg);
+            color: $text-primary;
+            margin-bottom: get($spacings, md);
+        }
+        
+        p {
+            font-size: get($font-sizes, base);
+            color: $text-muted;
+            line-height: 1.5;
+            margin-bottom: get($spacings, lg);
+        }
+        
+        .btn {
+            min-width: 200px;
+            margin: 0 auto;
+        }
+    }
+}
+
+// Animation d'entrée pour mobile
+@include mobile {
+    .section {
+        &.active {
+            animation: mobile-section-enter 0.3s ease-out;
+        }
+    }
+}
+
+@keyframes mobile-section-enter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

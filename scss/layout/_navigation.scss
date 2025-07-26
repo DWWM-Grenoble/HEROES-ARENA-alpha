@@ -22,10 +22,16 @@
     }
 
     @include mobile {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: get($spacings, xs);
         padding: get($spacings, sm);
         margin-bottom: get($spacings, lg);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
     }
 
     @include xs {
@@ -122,9 +128,15 @@
 
     @include mobile {
         text-align: center;
-        padding: get($spacings, sm) get($spacings, md);
+        padding: get($spacings, md) get($spacings, sm);
         font-size: get($font-sizes, sm);
         letter-spacing: 0.03em;
+        flex: 1;
+        min-width: 100px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         
         &::after {
             height: 2px;

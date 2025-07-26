@@ -288,22 +288,22 @@
                         <div class="form-group">
                             <label>Catalogue d'Avatars</label>
                             <div class="avatar-catalog">
-                                <div class="catalog-tabs">
-                                    <button class="catalog-tab active"
-                                        onclick="HeroesArena.showAvatarCategory('guerriers')">Guerriers</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('mages')">Mages</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('archers')">Archers</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('paladins')">Paladins</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('assassins')">Assassins</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('druides')">Druides</button>
-                                    <button class="catalog-tab"
-                                        onclick="HeroesArena.showAvatarCategory('generiques')">Génériques</button>
+                                <!-- Sélecteur de spécialisation unique -->
+                                <div class="catalog-selector">
+                                    <label for="avatarCategorySelect" class="selector-label">
+                                        ⚔️ Choisir une spécialisation
+                                    </label>
+                                    <select id="avatarCategorySelect" class="specialty-select" onchange="HeroesArena.handleMobileAvatarCategory(this.value)">
+                                        <option value="guerriers">🛡️ Guerriers - Maîtres de la Guerre</option>
+                                        <option value="mages">🔮 Mages - Seigneurs de la Magie</option>
+                                        <option value="archers">🏹 Archers - Tireurs d'Élite</option>
+                                        <option value="paladins">✨ Paladins - Gardiens de Lumière</option>
+                                        <option value="assassins">🗡️ Assassins - Maîtres de l'Ombre</option>
+                                        <option value="druides">🌿 Druides - Gardiens de la Nature</option>
+                                        <option value="generiques">⭐ Génériques - Héros Universels</option>
+                                    </select>
                                 </div>
+                                
                                 <div class="avatar-grid" id="avatarGrid">
                                     <!-- Les avatars seront générés par JavaScript -->
                                 </div>

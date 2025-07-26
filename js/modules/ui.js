@@ -87,6 +87,25 @@ export class UIManager {
         `).join('');
     }
     
+    /**
+     * Gérer la sélection d'avatar via le select
+     */
+    handleMobileAvatarCategory(category) {
+        this.showAvatarCategory(category);
+        
+        // Synchroniser tous les selects avec la sélection
+        const selects = [
+            document.getElementById('avatarCategorySelect'),
+            document.getElementById('profileAvatarCategorySelect')
+        ];
+        
+        selects.forEach(select => {
+            if (select && select.value !== category) {
+                select.value = category;
+            }
+        });
+    }
+    
     selectAvatar(filename) {
         this.selectedAvatar = filename;
         AppState.selectedAvatar = filename;
@@ -884,13 +903,20 @@ export class UIManager {
                 </div>
                 
                 <div class="modal-body">
-                    <div class="avatar-categories">
-                        <button class="catalog-tab active" onclick="window.HeroesArena.ui.showProfileAvatarCategory('guerriers')">Guerriers</button>
-                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('mages')">Mages</button>
-                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('archers')">Archers</button>
-                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('paladins')">Paladins</button>
-                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('assassins')">Assassins</button>
-                        <button class="catalog-tab" onclick="window.HeroesArena.ui.showProfileAvatarCategory('druides')">Druides</button>
+                    <!-- Sélecteur de spécialisation unique -->
+                    <div class="catalog-selector">
+                        <label for="profileAvatarCategorySelect" class="selector-label">
+                            ⚔️ Choisir une spécialisation
+                        </label>
+                        <select id="profileAvatarCategorySelect" class="specialty-select" onchange="window.HeroesArena.ui.showProfileAvatarCategory(this.value)">
+                            <option value="guerriers">🛡️ Guerriers - Maîtres de la Guerre</option>
+                            <option value="mages">🔮 Mages - Seigneurs de la Magie</option>
+                            <option value="archers">🏹 Archers - Tireurs d'Élite</option>
+                            <option value="paladins">✨ Paladins - Gardiens de Lumière</option>
+                            <option value="assassins">🗡️ Assassins - Maîtres de l'Ombre</option>
+                            <option value="druides">🌿 Druides - Gardiens de la Nature</option>
+                            <option value="generiques">⭐ Génériques - Héros Universels</option>
+                        </select>
                     </div>
                     
                     <div class="avatar-grid" id="profileAvatarGrid">

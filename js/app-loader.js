@@ -5,6 +5,7 @@
 window.HeroesArena = {
     showSection: () => console.log('Chargement...'),
     showAvatarCategory: () => console.log('Chargement...'),
+    handleMobileAvatarCategory: () => console.log('Chargement...'),
     updateClassInfo: () => console.log('Chargement...'),
     updateStats: () => console.log('Chargement...'),
     randomStats: () => console.log('Chargement...'),

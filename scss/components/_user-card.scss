@@ -39,9 +39,10 @@
         position: relative;
         top: auto;
         right: auto;
-        margin-bottom: get($spacings, lg);
+        margin: 0 auto get($spacings, lg) auto;
         width: 100%;
-        max-width: none;
+        max-width: 400px;
+        order: -1;
     }
 }
 

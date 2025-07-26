@@ -23,8 +23,9 @@
     }
 
     @include mobile {
-        padding: get($spacings, sm);
-        align-items: center;
+        padding: get($spacings, xs);
+        align-items: flex-start;
+        padding-top: get($spacings, lg);
     }
 
     @include xs {
@@ -74,11 +75,14 @@
     }
 
     @include mobile {
-        max-width: none;
-        margin: get($spacings, lg) auto;
+        max-width: 95vw;
+        width: 95vw;
+        margin: get($spacings, sm) auto;
         border-width: 2px;
         border-radius: get($border-radius, md);
         backdrop-filter: blur(15px);
+        max-height: 85vh;
+        overflow-y: auto;
     }
 
     @include xs {
@@ -1336,47 +1340,7 @@
     }
 }
 
-.avatar-categories {
-    display: flex;
-    flex-wrap: wrap;
-    gap: get($spacings, xs);
-    margin-bottom: get($spacings, lg);
-    justify-content: center;
-
-    .catalog-tab {
-        padding: get($spacings, sm) get($spacings, md);
-        background: rgba(78, 52, 46, 0.6);
-        border: 1px solid rgba(205, 127, 50, 0.3);
-        border-radius: get($border-radius, sm);
-        color: $text-muted;
-        cursor: pointer;
-        transition: all get($transitions, normal);
-        font-family: $font-family-primary;
-        font-size: get($font-sizes, sm);
-        font-weight: get($font-weights, medium);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-
-        &:hover {
-            background: rgba(212, 175, 55, 0.2);
-            color: $text-secondary;
-            border-color: rgba(212, 175, 55, 0.5);
-        }
-
-        &.active {
-            background: $primary-gradient;
-            color: #1a0e0a;
-            border-color: $primary-gold;
-            font-weight: get($font-weights, bold);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
-
-        @include mobile {
-            padding: get($spacings, xs) get($spacings, sm);
-            font-size: get($font-sizes, xs);
-        }
-    }
-}
+// Suppression de l'ancien système de boutons et select mobile
 
 #profileAvatarGrid {
     display: grid;

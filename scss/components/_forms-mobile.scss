@@ -1,0 +1,349 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== OPTIMISATIONS MOBILE POUR LES FORMULAIRES ==========
+
+// Optimisations générales des formulaires pour mobile
+@include mobile {
+    .form-group {
+        margin-bottom: get($spacings, md);
+        
+        label {
+            font-size: get($font-sizes, sm);
+            margin-bottom: get($spacings, sm);
+            display: block;
+            color: $text-secondary;
+            font-weight: get($font-weights, semibold);
+        }
+        
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: get($spacings, md) get($spacings, sm);
+            font-size: get($font-sizes, base);
+            min-height: 48px;
+            border-radius: get($border-radius, sm);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            background: rgba(10, 10, 10, 0.8);
+            color: $text-primary;
+            transition: all get($transitions, normal);
+            
+            // Améliorer le contraste et la lisibilité
+            &:focus {
+                outline: none;
+                border-color: $primary-gold;
+                box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+                background: rgba(15, 15, 15, 0.9);
+            }
+            
+            &::placeholder {
+                color: $text-muted;
+                font-size: get($font-sizes, sm);
+            }
+        }
+        
+        // Zones de texte spécifiques
+        textarea.form-input {
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+        
+        // Messages d'erreur optimisés
+        .error-message {
+            font-size: get($font-sizes, sm);
+            color: $error;
+            margin-top: get($spacings, xs);
+            padding: get($spacings, xs) get($spacings, sm);
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: get($border-radius, xs);
+            border-left: 3px solid $error;
+        }
+        
+        // Messages d'aide
+        .form-help {
+            font-size: get($font-sizes, xs);
+            color: $text-muted;
+            margin-top: get($spacings, xs);
+            line-height: 1.4;
+        }
+    }
+}
+
+// Optimisation spécifique pour l'authentification mobile
+@include mobile {
+    .auth-form {
+        padding: get($spacings, lg) get($spacings, md);
+        
+        h2 {
+            font-size: get($font-sizes, xl);
+            text-align: center;
+            margin-bottom: get($spacings, lg);
+            color: $primary-gold;
+        }
+        
+        .form-group {
+            margin-bottom: get($spacings, lg);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            min-height: 52px;
+            font-size: get($font-sizes, base);
+            font-weight: get($font-weights, semibold);
+            margin-top: get($spacings, md);
+            border-radius: get($border-radius, md);
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: get($spacings, lg);
+            
+            p {
+                margin-bottom: get($spacings, sm);
+                font-size: get($font-sizes, sm);
+                
+                a {
+                    color: $primary-gold;
+                    text-decoration: none;
+                    font-weight: get($font-weights, semibold);
+                    
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Optimisation des sliders de statistiques pour mobile
+@include mobile {
+    .stats-container {
+        background: rgba(15, 15, 15, 0.6);
+        border-radius: get($border-radius, md);
+        padding: get($spacings, lg);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        
+        h3 {
+            text-align: center;
+            color: $primary-gold;
+            margin-bottom: get($spacings, lg);
+        }
+        
+        .stat-group {
+            margin-bottom: get($spacings, lg);
+            
+            .stat-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: get($spacings, sm);
+                
+                .stat-label {
+                    font-size: get($font-sizes, base);
+                    font-weight: get($font-weights, semibold);
+                    color: $text-secondary;
+                }
+                
+                .stat-value {
+                    font-size: get($font-sizes, lg);
+                    font-weight: get($font-weights, bold);
+                    color: $primary-gold;
+                    min-width: 40px;
+                    text-align: right;
+                }
+            }
+            
+            .stat-slider {
+                width: 100%;
+                height: 12px;
+                margin: get($spacings, sm) 0;
+                -webkit-appearance: none;
+                appearance: none;
+                background: rgba(78, 52, 46, 0.6);
+                border-radius: get($border-radius, md);
+                outline: none;
+                border: 1px solid rgba(212, 175, 55, 0.3);
+                
+                &::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    appearance: none;
+                    width: 28px;
+                    height: 28px;
+                    background: $primary-gold;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: 3px solid $text-primary;
+                    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+                    transition: all get($transitions, fast);
+                    
+                    &:hover {
+                        transform: scale(1.1);
+                        box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+                    }
+                }
+                
+                &::-moz-range-thumb {
+                    width: 28px;
+                    height: 28px;
+                    background: $primary-gold;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    border: 3px solid $text-primary;
+                    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+                    transition: all get($transitions, fast);
+                    
+                    &:hover {
+                        transform: scale(1.1);
+                        box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+                    }
+                }
+                
+                &:active {
+                    &::-webkit-slider-thumb {
+                        transform: scale(1.2);
+                    }
+                    
+                    &::-moz-range-thumb {
+                        transform: scale(1.2);
+                    }
+                }
+            }
+            
+            .stat-bar {
+                height: 6px;
+                background: rgba(78, 52, 46, 0.4);
+                border-radius: get($border-radius, sm);
+                overflow: hidden;
+                margin-top: get($spacings, xs);
+                border: 1px solid rgba(212, 175, 55, 0.2);
+                
+                .stat-fill {
+                    height: 100%;
+                    border-radius: get($border-radius, sm);
+                    transition: width get($transitions, normal);
+                    
+                    &.force {
+                        background: linear-gradient(90deg, #ff4444, #ff6666);
+                    }
+                    
+                    &.agility {
+                        background: linear-gradient(90deg, #44ff44, #66ff66);
+                    }
+                    
+                    &.magic {
+                        background: linear-gradient(90deg, #4444ff, #6666ff);
+                    }
+                    
+                    &.defense {
+                        background: linear-gradient(90deg, #ffaa00, #ffcc44);
+                    }
+                }
+            }
+        }
+        
+        .total-points {
+            text-align: center;
+            font-size: get($font-sizes, lg);
+            font-weight: get($font-weights, bold);
+            margin-top: get($spacings, lg);
+            padding: get($spacings, md);
+            border-radius: get($border-radius, sm);
+            border: 2px solid;
+            
+            &.valid {
+                color: $success;
+                border-color: $success;
+                background: rgba(0, 255, 0, 0.1);
+            }
+            
+            &.invalid {
+                color: $error;
+                border-color: $error;
+                background: rgba(255, 0, 0, 0.1);
+            }
+        }
+    }
+}
+
+// Optimisation des boutons d'action pour mobile
+@include mobile {
+    .form-actions {
+        display: flex;
+        flex-direction: column;
+        gap: get($spacings, md);
+        margin-top: get($spacings, xl);
+        
+        .btn {
+            width: 100%;
+            min-height: 52px;
+            padding: get($spacings, md);
+            font-size: get($font-sizes, base);
+            font-weight: get($font-weights, semibold);
+            border-radius: get($border-radius, md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: get($spacings, sm);
+            
+            &:active {
+                transform: scale(0.98);
+            }
+        }
+        
+        // Premier bouton (primaire) plus proéminent
+        .btn:first-child {
+            background: $primary-gradient;
+            color: #1a0e0a;
+            border: 2px solid $primary-gold;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            
+            &:hover {
+                box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+                transform: translateY(-2px);
+            }
+        }
+    }
+}
+
+// Optimisation spécifique pour très petits écrans
+@media (max-width: 480px) {
+    .form-group {
+        .form-input,
+        .form-select {
+            padding: get($spacings, md);
+            font-size: get($font-sizes, base);
+            min-height: 52px;
+        }
+        
+        label {
+            font-size: get($font-sizes, base);
+        }
+    }
+    
+    .stats-container {
+        padding: get($spacings, md);
+        
+        .stat-group {
+            .stat-slider {
+                &::-webkit-slider-thumb {
+                    width: 32px;
+                    height: 32px;
+                }
+                
+                &::-moz-range-thumb {
+                    width: 32px;
+                    height: 32px;
+                }
+            }
+        }
+    }
+    
+    .form-actions {
+        .btn {
+            min-height: 56px;
+            font-size: get($font-sizes, lg);
+        }
+    }
+}

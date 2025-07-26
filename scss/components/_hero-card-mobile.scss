@@ -1,0 +1,259 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== OPTIMISATIONS MOBILE POUR LES CARTES DE HÉROS ==========
+
+// Optimisations pour les cartes de héros en mobile
+@include mobile {
+    .hero-card {
+        padding: get($spacings, sm);
+        min-height: 120px;
+        
+        .hero-avatar {
+            width: 50px;
+            height: 50px;
+            
+            img {
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        .hero-info {
+            gap: get($spacings, xs);
+            
+            .hero-name {
+                font-size: get($font-sizes, sm);
+                line-height: 1.2;
+            }
+            
+            .hero-class {
+                font-size: get($font-sizes, xs);
+                padding: get($spacings, xs) get($spacings, sm);
+            }
+            
+            .hero-level {
+                font-size: get($font-sizes, sm);
+            }
+        }
+        
+        .hero-stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: get($spacings, xs);
+            
+            .stat-item {
+                font-size: get($font-sizes, xs);
+                padding: get($spacings, xs);
+            }
+        }
+        
+        .hero-actions {
+            gap: get($spacings, xs);
+            margin-top: get($spacings, sm);
+            
+            .btn {
+                padding: get($spacings, sm) get($spacings, xs);
+                font-size: get($font-sizes, xs);
+                min-height: 44px;
+            }
+        }
+    }
+}
+
+// Grille de héros optimisée pour mobile
+@include mobile {
+    .heroes-grid {
+        grid-template-columns: 1fr;
+        gap: get($spacings, sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .heroes-grid {
+        gap: get($spacings, xs);
+    }
+    
+    .hero-card {
+        padding: get($spacings, xs);
+        border-radius: get($border-radius, sm);
+        
+        .hero-avatar {
+            width: 45px;
+            height: 45px;
+            
+            img {
+                width: 45px;
+                height: 45px;
+            }
+        }
+        
+        .hero-info {
+            .hero-name {
+                font-size: get($font-sizes, xs);
+            }
+            
+            .hero-class {
+                font-size: 10px;
+                padding: 2px get($spacings, xs);
+            }
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+    
+    // Adaptation spéciale pour très petits écrans
+    .avatar-catalog {
+        .catalog-tabs {
+            justify-content: flex-start;
+            
+            .catalog-tab {
+                min-width: 75px;
+                padding: get($spacings, sm) get($spacings, xs);
+                font-size: 10px;
+                min-height: 44px;
+            }
+        }
+    }
+}
+
+// Optimisation des filtres pour mobile
+@include mobile {
+    .filter-section {
+        .filters {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: get($spacings, xs);
+            
+            .filter-btn {
+                padding: get($spacings, sm) get($spacings, md);
+                font-size: get($font-sizes, sm);
+                min-height: 44px;
+                flex: 1;
+                min-width: 80px;
+                max-width: 120px;
+            }
+        }
+    }
+}
+
+// Optimisation des boutons de fichier pour mobile
+@include mobile {
+    .file-management-section {
+        .file-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: get($spacings, sm);
+            
+            .file-button {
+                padding: get($spacings, md);
+                font-size: get($font-sizes, sm);
+                text-align: center;
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                &.danger {
+                    grid-column: span 2;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .file-management-section {
+        .file-buttons {
+            grid-template-columns: 1fr;
+            
+            .file-button {
+                &.danger {
+                    grid-column: span 1;
+                }
+            }
+        }
+    }
+}
+
+// Optimisation de la création de héros pour mobile
+@include mobile {
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+        
+        .stats-container {
+            order: 2;
+        }
+        
+        .form-actions {
+            order: 3;
+            
+            .btn {
+                width: 100%;
+                min-height: 48px;
+                padding: get($spacings, md);
+                margin-bottom: get($spacings, sm);
+            }
+        }
+    }
+    
+    .avatar-catalog {
+        // Le nouveau sélecteur sera géré par specialty-select.scss
+        
+        .avatar-grid {
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: get($spacings, sm);
+            max-height: 200px;
+            overflow-y: auto;
+            
+            .avatar-item {
+                width: 50px;
+                height: 50px;
+                border-radius: get($border-radius, sm);
+                
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
+    }
+}
+
+// Optimisation des sliders de stats pour mobile
+@include mobile {
+    .stat-group {
+        .stat-slider {
+            height: 8px;
+            -webkit-appearance: none;
+            
+            &::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: $primary-gold;
+                cursor: pointer;
+                border: 2px solid $text-primary;
+                box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            }
+            
+            &::-moz-range-thumb {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: $primary-gold;
+                cursor: pointer;
+                border: 2px solid $text-primary;
+                box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            }
+        }
+    }
+}
