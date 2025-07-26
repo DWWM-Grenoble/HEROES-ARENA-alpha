@@ -213,16 +213,61 @@
 
 // File Management
 .file-management-section {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid $bg-glass;
+    background: 
+        repeating-linear-gradient(
+            135deg,
+            rgba(26, 26, 26, 0.8) 0px,
+            rgba(26, 26, 26, 0.8) 1px,
+            rgba(36, 36, 36, 0.8) 1px,
+            rgba(36, 36, 36, 0.8) 2px
+        ),
+        linear-gradient(135deg, rgba(18, 18, 18, 0.95) 0%, rgba(26, 26, 26, 0.9) 50%, rgba(10, 10, 10, 0.95) 100%);
+    border: 2px solid $steel-grey;
     border-radius: get($border-radius, md);
     padding: get($spacings, lg);
     margin: get($spacings, lg) 0;
+    position: relative;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+    // Luxury corner accents
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border: 1px solid $ash-grey;
+        background: $steel-grey;
+    }
+    
+    &::before {
+        top: 4px;
+        left: 4px;
+        border-right: none;
+        border-bottom: none;
+    }
+    
+    &::after {
+        bottom: 4px;
+        right: 4px;
+        border-left: none;
+        border-top: none;
+    }
 
     h3 {
-        margin: 0 0 15px 0;
-        color: white;
+        margin: 0 0 get($spacings, lg) 0;
+        color: $text-primary;
+        font-family: $font-family-primary;
         font-size: get($font-sizes, lg);
+        font-weight: get($font-weights, bold);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        border-bottom: 1px solid $ash-grey;
+        padding-bottom: get($spacings, sm);
     }
 }
 
@@ -242,19 +287,37 @@
 }
 
 .file-button {
-    background: linear-gradient(135deg, $info, #1d4ed8);
-    color: white;
-    border: none;
+    // Base style matching the luxury theme of the app
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            $ash-grey 0px,
+            $ash-grey 1px,
+            $steel-grey 1px,
+            $steel-grey 2px
+        ),
+        linear-gradient(135deg, $steel-grey 0%, $ash-grey 30%, $carbon-grey 70%, $deep-black 100%);
+    color: $text-primary;
+    border: 2px solid $ash-grey;
     padding: get($spacings, sm) get($spacings, md);
     border-radius: get($border-radius, sm);
     cursor: pointer;
+    font-family: $font-family-primary;
     font-weight: get($font-weights, semibold);
-    transition: all 0.2s ease;
+    transition: all get($transitions, normal);
     font-size: get($font-sizes, sm);
     min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 
     @include mobile {
         min-height: 48px;
@@ -268,38 +331,130 @@
         font-size: get($font-sizes, sm);
     }
 
-    &:hover {
-        box-shadow: 0 5px 15px rgba($info, 0.4);
-        filter: brightness(1.1);
+    // Luxury accent symbol
+    &::after {
+        content: '◆';
+        position: absolute;
+        top: 3px;
+        right: 4px;
+        font-size: 8px;
+        color: rgba(160, 160, 160, 0.5);
     }
 
-    &:active {
-        @include mobile {
-            transform: translateY(1px);
-            filter: brightness(0.95);
+    &:hover {
+        border-color: $text-secondary;
+        box-shadow: 
+            0 4px 8px rgba(0, 0, 0, 1),
+            0 0 15px rgba(224, 224, 224, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        filter: brightness(1.1);
+        
+        &::after {
+            color: rgba(224, 224, 224, 0.8);
         }
     }
 
+    &:active {
+        transform: translateY(1px);
+        box-shadow: 
+            0 1px 2px rgba(0, 0, 0, 0.9),
+            inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        filter: brightness(0.95);
+    }
+
+    // Specific themed variants
     &.save {
-        background: linear-gradient(135deg, $success, #059669);
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                $ash-grey 0px,
+                $ash-grey 1px,
+                rgba(0, 255, 0, 0.1) 1px,
+                rgba(0, 255, 0, 0.1) 2px
+            ),
+            linear-gradient(135deg, $steel-grey 0%, rgba(0, 255, 0, 0.2) 30%, $ash-grey 70%, $deep-black 100%);
+        border-color: rgba(0, 255, 0, 0.3);
+        
+        &:hover {
+            border-color: $success;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 1),
+                0 0 15px rgba(0, 255, 0, 0.3);
+        }
     }
 
     &.load {
-        background: linear-gradient(135deg, $warning, #d97706);
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                $ash-grey 0px,
+                $ash-grey 1px,
+                rgba(255, 170, 0, 0.1) 1px,
+                rgba(255, 170, 0, 0.1) 2px
+            ),
+            linear-gradient(135deg, $steel-grey 0%, rgba(255, 170, 0, 0.2) 30%, $ash-grey 70%, $deep-black 100%);
+        border-color: rgba(255, 170, 0, 0.3);
+        
+        &:hover {
+            border-color: $warning;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 1),
+                0 0 15px rgba(255, 170, 0, 0.3);
+        }
     }
 
     &.export {
-        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                $ash-grey 0px,
+                $ash-grey 1px,
+                rgba(139, 92, 246, 0.1) 1px,
+                rgba(139, 92, 246, 0.1) 2px
+            ),
+            linear-gradient(135deg, $steel-grey 0%, rgba(139, 92, 246, 0.2) 30%, $ash-grey 70%, $deep-black 100%);
+        border-color: rgba(139, 92, 246, 0.3);
+        
+        &:hover {
+            border-color: #8b5cf6;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 1),
+                0 0 15px rgba(139, 92, 246, 0.3);
+        }
     }
 
     &.danger {
-        background: linear-gradient(135deg, $error, #dc2626);
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                $ash-grey 0px,
+                $ash-grey 1px,
+                rgba(255, 0, 0, 0.1) 1px,
+                rgba(255, 0, 0, 0.1) 2px
+            ),
+            linear-gradient(135deg, $steel-grey 0%, rgba(255, 0, 0, 0.2) 30%, $ash-grey 70%, $deep-black 100%);
+        border-color: rgba(255, 0, 0, 0.3);
+        
+        &:hover {
+            border-color: $error;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 1),
+                0 0 15px rgba(255, 0, 0, 0.3);
+        }
     }
 
     &:disabled {
-        opacity: 0.5;
+        opacity: 0.4;
         cursor: not-allowed;
         filter: none;
+        transform: none;
+        
+        &:hover {
+            border-color: $ash-grey;
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
     }
 }
 
