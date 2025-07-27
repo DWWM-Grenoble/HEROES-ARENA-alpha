@@ -189,6 +189,51 @@ export class CombatSystem {
     }
     
     async normalAttack(attacker, defender) {
+        const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
+        const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
+        
+        // Vérifier esquive d'abord
+        const dodgeChance = this.getDodgeChance(defender);
+        if (Math.random() * 100 < dodgeChance) {
+            this.addLogEntry(`${attacker.nom} attaque ${defender.nom}...`, 'attack');
+            await delay(300);
+            
+            combatEffects.createDodgeEffect(defenderSide);
+            await delay(200);
+            
+            this.addLogEntry(`💨 ${defender.nom} esquive l'attaque !`, 'dodge');
+            return;
+        }
+        
+        // Vérifier blocage
+        const blockChance = this.getBlockChance(defender);
+        if (Math.random() * 100 < blockChance) {
+            const baseDamage = Math.floor(attacker.force * (0.8 + Math.random() * 0.4));
+            const reducedDamage = Math.max(1, Math.floor(baseDamage * 0.3)); // Blocage réduit de 70%
+            
+            const oldHp = defender.pv;
+            defender.takeDamage(reducedDamage);
+            
+            this.addLogEntry(`${attacker.nom} attaque ${defender.nom}...`, 'attack');
+            await delay(300);
+            
+            // Effet de blocage selon la classe
+            const blockType = defender.classe === 'Paladin' ? 'shield' : 
+                             defender.classe === 'Guerrier' ? 'parry' : 'armor';
+            combatEffects.createBlockEffect(defenderSide, blockType);
+            await delay(200);
+            
+            combatEffects.showDamageNumber(reducedDamage, defenderSide, 'normal');
+            combatEffects.animateHealthBar(
+                defenderSide === 'left' ? 'fighter1Display' : 'fighter2Display',
+                oldHp, defender.pv, defender.pvMax
+            );
+            
+            this.addLogEntry(`🛡️ ${defender.nom} bloque ! Seulement ${reducedDamage} dégâts !`, 'defense');
+            return;
+        }
+        
+        // Attaque normale réussie
         const baseDamage = Math.floor(attacker.force * (0.8 + Math.random() * 0.4));
         const defense = Math.floor(defender.defense * (0.5 + Math.random() * 0.3));
         const finalDamage = Math.max(1, baseDamage - defense);
@@ -196,16 +241,13 @@ export class CombatSystem {
         const oldHp = defender.pv;
         defender.takeDamage(finalDamage);
         
-        // Effets visuels
-        const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
-        const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
-        
         // Log d'attaque d'abord
         this.addLogEntry(`${attacker.nom} attaque ${defender.nom}...`, 'attack');
         await delay(300);
         
-        // Effets visuels synchronisés
-        combatEffects.createAttackEffect(attackerSide, 'normal', finalDamage);
+        // Effets visuels améliorés - utiliser le type d'arme spécifique
+        const weaponType = this.getWeaponType(attacker.classe);
+        combatEffects.createPhysicalAttackEffect(attackerSide, weaponType, finalDamage);
         await delay(200);
         
         combatEffects.showDamageNumber(finalDamage, defenderSide, 'normal');
@@ -219,6 +261,22 @@ export class CombatSystem {
     }
     
     async specialAttack(attacker, defender) {
+        const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
+        const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
+        
+        // Vérifier esquive d'abord pour les attaques spéciales
+        const dodgeChance = this.getDodgeChance(defender) * 0.7; // Réduire la chance d'esquiver les attaques spéciales
+        if (Math.random() * 100 < dodgeChance) {
+            this.addLogEntry(`⚡ ${attacker.nom} charge une attaque spéciale...`, 'special');
+            await delay(400);
+            
+            combatEffects.createDodgeEffect(defenderSide);
+            await delay(200);
+            
+            this.addLogEntry(`💨 ${defender.nom} esquive l'attaque spéciale !`, 'dodge');
+            return;
+        }
+        
         const specialMultiplier = 1.5 + (attacker.magic / 100);
         const baseDamage = Math.floor(attacker.force * specialMultiplier);
         const defense = Math.floor(defender.defense * 0.7);
@@ -227,15 +285,16 @@ export class CombatSystem {
         const oldHp = defender.pv;
         defender.takeDamage(finalDamage);
         
-        // Effets visuels
-        const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
-        const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
-        
         // Log d'attaque spéciale
         this.addLogEntry(`⚡ ${attacker.nom} charge une attaque spéciale...`, 'special');
         await delay(400);
         
-        // Effets visuels synchronisés
+        // Effets visuels synchronisés avec le nouveau système d'armes
+        const weaponType = this.getWeaponType(attacker.classe);
+        combatEffects.createPhysicalAttackEffect(attackerSide, weaponType, finalDamage);
+        
+        // Ajouter un effet supplémentaire pour rendre l'attaque spéciale plus spectaculaire
+        await delay(150);
         combatEffects.createAttackEffect(attackerSide, 'special', finalDamage);
         await delay(300);
         
@@ -300,11 +359,12 @@ export class CombatSystem {
         const oldHp = defender.pv;
         defender.takeDamage(finalDamage);
         
-        // Effets visuels étalés
+        // Effets visuels étalés avec nouveau système classique
         const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         
-        combatEffects.createAttackEffect(attackerSide, 'power', finalDamage);
+        // Utiliser l'effet spécifique de classe Guerrier
+        combatEffects.createClassSpecialEffect(attackerSide, 'Guerrier', finalDamage);
         await delay(300);
         
         combatEffects.screenShake(8, 400);
@@ -333,12 +393,12 @@ export class CombatSystem {
         const oldAttackerHp = attacker.pv;
         attacker.pv = Math.min(attacker.pvMax, attacker.pv + healing);
         
-        // Effets visuels étalés
+        // Effets visuels étalés avec nouveau système classique
         const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         
-        // Attaque magique
-        combatEffects.createAttackEffect(attackerSide, 'special', finalDamage);
+        // Utiliser l'effet spécifique de classe Mage
+        combatEffects.createClassSpecialEffect(attackerSide, 'Mage', finalDamage);
         await delay(400);
         
         combatEffects.showDamageNumber(finalDamage, defenderSide, 'special');
@@ -347,8 +407,9 @@ export class CombatSystem {
             oldDefenderHp, defender.pv, defender.pvMax
         );
         
-        // Soins
+        // Soins avec effet visuel de guérison
         await delay(300);
+        combatEffects.createHealingEffect(attackerSide, healing);
         combatEffects.showDamageNumber(healing, attackerSide, 'heal');
         combatEffects.animateHealthBar(
             attackerSide === 'left' ? 'fighter1Display' : 'fighter2Display',
@@ -382,11 +443,12 @@ export class CombatSystem {
         await delay(400);
         defender.takeDamage(damage);
         
-        // Effets visuels étalés
+        // Effets visuels étalés avec nouveau système classique
         const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         
-        combatEffects.createAttackEffect(attackerSide, isCritical ? 'critical' : 'power', damage);
+        // Utiliser l'effet spécifique de classe Archer
+        combatEffects.createClassSpecialEffect(attackerSide, 'Archer', damage);
         await delay(300);
         
         if (isCritical) {
@@ -418,12 +480,12 @@ export class CombatSystem {
         const oldAttackerHp = attacker.pv;
         attacker.pv = Math.min(attacker.pvMax, attacker.pv + healing);
         
-        // Effets visuels étalés
+        // Effets visuels étalés avec nouveau système classique
         const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         
-        // Attaque divine
-        combatEffects.createAttackEffect(attackerSide, 'special', finalDamage);
+        // Utiliser l'effet spécifique de classe Paladin
+        combatEffects.createClassSpecialEffect(attackerSide, 'Paladin', finalDamage);
         await delay(400);
         
         combatEffects.showDamageNumber(finalDamage, defenderSide, 'special');
@@ -432,8 +494,9 @@ export class CombatSystem {
             oldDefenderHp, defender.pv, defender.pvMax
         );
         
-        // Guérison divine
+        // Guérison divine avec effet visuel
         await delay(400);
+        combatEffects.createHealingEffect(attackerSide, healing);
         combatEffects.showDamageNumber(healing, attackerSide, 'heal');
         combatEffects.animateHealthBar(
             attackerSide === 'left' ? 'fighter1Display' : 'fighter2Display',
@@ -479,12 +542,12 @@ export class CombatSystem {
         
         if (isCritical) {
             this.addLogEntry(`⚡ CRITIQUE ! Frappe mortelle dans l'ombre !`, 'power');
-            combatEffects.createAttackEffect(attackerSide, 'critical', finalDamage);
+            combatEffects.createClassSpecialEffect(attackerSide, 'Assassin', finalDamage);
             await delay(300);
             combatEffects.showDamageNumber(finalDamage, defenderSide, 'critical');
         } else {
             this.addLogEntry(`🗡️ Attaque furtive précise !`, 'power');
-            combatEffects.createAttackEffect(attackerSide, 'special', finalDamage);
+            combatEffects.createClassSpecialEffect(attackerSide, 'Assassin', finalDamage);
             await delay(300);
             combatEffects.showDamageNumber(finalDamage, defenderSide, 'special');
         }
@@ -523,9 +586,9 @@ export class CombatSystem {
         const attackerSide = attacker.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         const defenderSide = defender.id === this.currentCombat.fighter1.id ? 'left' : 'right';
         
-        // Attaque naturelle
+        // Attaque naturelle avec effet spécifique de classe Druide
         this.addLogEntry(`🌱 Attaque en symbiose avec la nature !`, 'power');
-        combatEffects.createAttackEffect(attackerSide, 'special', finalDamage);
+        combatEffects.createClassSpecialEffect(attackerSide, 'Druide', finalDamage);
         await delay(400);
         
         combatEffects.showDamageNumber(finalDamage, defenderSide, 'special');
@@ -534,9 +597,10 @@ export class CombatSystem {
             oldDefenderHp, defender.pv, defender.pvMax
         );
         
-        // Régénération
+        // Régénération avec effet visuel de guérison
         await delay(400);
         this.addLogEntry(`🍃 Régénération naturelle instantanée !`, 'power');
+        combatEffects.createHealingEffect(attackerSide, immediateHealing);
         combatEffects.showDamageNumber(immediateHealing, attackerSide, 'heal');
         combatEffects.animateHealthBar(
             attackerSide === 'left' ? 'fighter1Display' : 'fighter2Display',
@@ -559,11 +623,30 @@ export class CombatSystem {
             if (symbiosisResult && symbiosisResult.healed > 0) {
                 this.addLogEntry(`🌿 ${fighter.nom} régénère ${symbiosisResult.healed} PV (${symbiosisResult.turnsLeft} tours restants)`, 'heal');
                 
-                // Mise à jour visuelle
+                // Effets visuels de régénération
+                const fighterSide = fighter.id === this.currentCombat.fighter1.id ? 'left' : 'right';
                 const fighterId = fighter.id === this.currentCombat.fighter1.id ? 'fighter1Display' : 'fighter2Display';
+                
+                combatEffects.createHealingEffect(fighterSide, symbiosisResult.healed);
                 combatEffects.animateHealthBar(fighterId, fighter.pv - symbiosisResult.healed, fighter.pv, fighter.pvMax);
                 await delay(400);
             }
+        }
+        
+        // Traiter les effets de poison (si implémentés dans les classes)
+        if (fighter.poisonDamage && fighter.poisonDamage > 0) {
+            const poisonDamage = Math.floor(fighter.poisonDamage);
+            fighter.takeDamage(poisonDamage);
+            fighter.poisonDamage = Math.max(0, fighter.poisonDamage - 1);
+            
+            const fighterSide = fighter.id === this.currentCombat.fighter1.id ? 'left' : 'right';
+            const fighterId = fighter.id === this.currentCombat.fighter1.id ? 'fighter1Display' : 'fighter2Display';
+            
+            this.addLogEntry(`☠️ ${fighter.nom} subit ${poisonDamage} dégâts de poison`, 'attack');
+            combatEffects.createPoisonEffect(fighterSide);
+            combatEffects.showDamageNumber(poisonDamage, fighterSide, 'poison');
+            combatEffects.animateHealthBar(fighterId, fighter.pv + poisonDamage, fighter.pv, fighter.pvMax);
+            await delay(400);
         }
     }
     
@@ -752,6 +835,47 @@ export class CombatSystem {
     
     generateCombatId() {
         return 'combat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    // Déterminer le type d'arme selon la classe
+    getWeaponType(heroClass) {
+        const weaponMap = {
+            'Guerrier': 'sword',
+            'Mage': 'sword', // Les mages utilisent aussi des épées mais avec de la magie
+            'Archer': 'bow',
+            'Paladin': 'mace',
+            'Assassin': 'dagger',
+            'Druide': 'sword' // Les druides utilisent des armes basiques
+        };
+        return weaponMap[heroClass] || 'sword';
+    }
+    
+    // Déterminer la probabilité d'esquive selon la classe
+    getDodgeChance(defender) {
+        const baseChance = Math.floor(defender.agility / 15);
+        const classBonus = {
+            'Assassin': 10,
+            'Archer': 5,
+            'Druide': 3,
+            'Guerrier': 0,
+            'Mage': 2,
+            'Paladin': 0
+        };
+        return baseChance + (classBonus[defender.classe] || 0);
+    }
+    
+    // Déterminer la probabilité de blocage selon la classe
+    getBlockChance(defender) {
+        const baseChance = Math.floor(defender.defense / 20);
+        const classBonus = {
+            'Paladin': 15,
+            'Guerrier': 10,
+            'Druide': 5,
+            'Mage': 3,
+            'Archer': 2,
+            'Assassin': 0
+        };
+        return baseChance + (classBonus[defender.classe] || 0);
     }
     
     generateLogId() {
