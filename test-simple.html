@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - Effets de Combat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .arena {
+            width: 800px;
+            height: 400px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1e293b;
+            font-weight: bold;
+            padding: 12px 24px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #e6c15f 0%, #d4af37 100%);
+            transform: translateY(-2px);
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>🏟️ Test Simple - Effets de Combat</h1>
+    
+    <div class="status" id="status">Initialisation...</div>
+    
+    <div class="arena" id="arena"></div>
+    
+    <div class="controls">
+        <h3>Effets Spécifiques aux Classes</h3>
+        <button onclick="testEffect('Guerrier')">⚔️ Guerrier - Rage</button>
+        <button onclick="testEffect('Mage')">🔮 Mage - Bouclier</button>
+        <button onclick="testEffect('Archer')">🏹 Archer - Tir Multiple</button>
+        <button onclick="testEffect('Paladin')">🛡️ Paladin - Guérison</button>
+        <button onclick="testEffect('Assassin')">🗡️ Assassin - Ombre</button>
+        <button onclick="testEffect('Druide')">🌿 Druide - Nature</button>
+        <br><br>
+        <button onclick="testBasic()">💥 Test de Base</button>
+        <button onclick="clearAll()">🧹 Nettoyer</button>
+    </div>
+
+    <script>
+        // Système d'effets simplifié
+        class SimpleEffects {
+            constructor() {
+                this.particles = [];
+                this.canvas = null;
+                this.ctx = null;
+                this.animationId = null;
+            }
+            
+            init() {
+                try {
+                    const arena = document.getElementById('arena');
+                    if (!arena) {
+                        throw new Error('Arena non trouvée');
+                    }
+                    
+                    this.canvas = document.createElement('canvas');
+                    this.canvas.width = 800;
+                    this.canvas.height = 400;
+                    this.canvas.style.position = 'absolute';
+                    this.canvas.style.top = '0';
+                    this.canvas.style.left = '0';
+                    this.canvas.style.pointerEvents = 'none';
+                    
+                    arena.style.position = 'relative';
+                    arena.appendChild(this.canvas);
+                    
+                    this.ctx = this.canvas.getContext('2d');
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Erreur init:', error);
+                    return false;
+                }
+            }
+            
+            createClassEffect(heroClass) {
+                if (!this.ctx) {
+                    console.error('Canvas non initialisé');
+                    return;
+                }
+                
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                
+                // Nettoyer les particules existantes
+                this.particles = [];
+                
+                switch (heroClass) {
+                    case 'Guerrier':
+                        this.createFireEffect(centerX, centerY);
+                        break;
+                    case 'Mage':
+                        this.createMagicEffect(centerX, centerY);
+                        break;
+                    case 'Archer':
+                        this.createArrowEffect(centerX, centerY);
+                        break;
+                    case 'Paladin':
+                        this.createHealEffect(centerX, centerY);
+                        break;
+                    case 'Assassin':
+                        this.createShadowEffect(centerX, centerY);
+                        break;
+                    case 'Druide':
+                        this.createNatureEffect(centerX, centerY);
+                        break;
+                    default:
+                        this.createBasicEffect(centerX, centerY);
+                        break;
+                }
+                
+                this.startAnimation();
+            }
+            
+            createFireEffect(x, y) {
+                const colors = ['#ff0000', '#ff4444', '#ff8800', '#ffaa00'];
+                for (let i = 0; i < 50; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 4;
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: Math.random() * 8 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.02
+                    });
+                }
+            }
+            
+            createMagicEffect(x, y) {
+                const colors = ['#00aaff', '#0088dd', '#4400ff', '#8800ff'];
+                for (let i = 0; i < 60; i++) {
+                    const angle = (Math.PI * 2 * i) / 60;
+                    const radius = 50 + Math.random() * 30;
+                    this.particles.push({
+                        x: x + Math.cos(angle) * radius,
+                        y: y + Math.sin(angle) * radius,
+                        vx: Math.cos(angle) * 2,
+                        vy: Math.sin(angle) * 2,
+                        size: Math.random() * 6 + 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.015
+                    });
+                }
+            }
+            
+            createArrowEffect(x, y) {
+                const colors = ['#00ff00', '#44ff44', '#88ff88'];
+                for (let arrow = 0; arrow < 3; arrow++) {
+                    const offsetY = (arrow - 1) * 30;
+                    for (let i = 0; i < 20; i++) {
+                        this.particles.push({
+                            x: 100 + i * 30,
+                            y: y + offsetY + (Math.random() - 0.5) * 10,
+                            vx: 15,
+                            vy: (Math.random() - 0.5) * 3,
+                            size: Math.random() * 4 + 2,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.03
+                        });
+                    }
+                }
+            }
+            
+            createHealEffect(x, y) {
+                const colors = ['#ffdd00', '#ffee44', '#fff888', '#ffffff'];
+                for (let ring = 0; ring < 4; ring++) {
+                    const radius = 30 + ring * 20;
+                    const count = 15 + ring * 5;
+                    for (let i = 0; i < count; i++) {
+                        const angle = (Math.PI * 2 * i) / count;
+                        this.particles.push({
+                            x: x + Math.cos(angle) * radius,
+                            y: y + Math.sin(angle) * radius,
+                            vx: 0,
+                            vy: -2,
+                            size: Math.random() * 5 + 2,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.01
+                        });
+                    }
+                }
+            }
+            
+            createShadowEffect(x, y) {
+                const colors = ['#440088', '#660099', '#8800bb', '#aa00dd'];
+                for (let i = 0; i < 40; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 10 + 5;
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: Math.random() * 8 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.025
+                    });
+                }
+            }
+            
+            createNatureEffect(x, y) {
+                const colors = ['#00aa00', '#44bb44', '#66cc66', '#88dd88'];
+                for (let ring = 0; ring < 3; ring++) {
+                    const radius = 40 + ring * 25;
+                    const count = 20 + ring * 8;
+                    for (let i = 0; i < count; i++) {
+                        const angle = (Math.PI * 2 * i) / count + ring * 0.3;
+                        this.particles.push({
+                            x: x + Math.cos(angle) * radius,
+                            y: y + Math.sin(angle) * radius,
+                            vx: Math.cos(angle) * 1,
+                            vy: Math.sin(angle) * 1,
+                            size: Math.random() * 5 + 3,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.012
+                        });
+                    }
+                }
+            }
+            
+            createBasicEffect(x, y) {
+                const colors = ['#ffffff', '#ffdd44', '#ff8844'];
+                for (let i = 0; i < 30; i++) {
+                    this.particles.push({
+                        x: x + (Math.random() - 0.5) * 40,
+                        y: y + (Math.random() - 0.5) * 40,
+                        vx: (Math.random() - 0.5) * 8,
+                        vy: (Math.random() - 0.5) * 8,
+                        size: Math.random() * 6 + 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.02
+                    });
+                }
+            }
+            
+            startAnimation() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                this.animate();
+            }
+            
+            animate() {
+                if (!this.ctx || this.particles.length === 0) {
+                    return;
+                }
+                
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    
+                    // Mettre à jour
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.2; // Gravité
+                    p.life -= p.decay;
+                    
+                    // Dessiner
+                    this.ctx.save();
+                    this.ctx.globalAlpha = p.life;
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    this.ctx.restore();
+                    
+                    // Supprimer si mort
+                    if (p.life <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+                
+                if (this.particles.length > 0) {
+                    this.animationId = requestAnimationFrame(() => this.animate());
+                }
+            }
+            
+            clear() {
+                this.particles = [];
+                if (this.ctx) {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+            }
+        }
+        
+        // Variables globales
+        let effects = null;
+        
+        // Fonctions
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function testEffect(heroClass) {
+            if (!effects) {
+                updateStatus('❌ Système non initialisé');
+                return;
+            }
+            
+            try {
+                effects.createClassEffect(heroClass);
+                updateStatus(`✨ Effet ${heroClass} déclenché!`);
+            } catch (error) {
+                console.error('Erreur effet:', error);
+                updateStatus(`❌ Erreur: ${error.message}`);
+            }
+        }
+        
+        function testBasic() {
+            if (!effects) {
+                updateStatus('❌ Système non initialisé');
+                return;
+            }
+            
+            effects.createClassEffect('Basic');
+            updateStatus('✨ Test de base déclenché!');
+        }
+        
+        function clearAll() {
+            if (effects) {
+                effects.clear();
+                updateStatus('🧹 Effets nettoyés');
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStatus('Initialisation du système...');
+            
+            try {
+                effects = new SimpleEffects();
+                
+                if (effects.init()) {
+                    updateStatus('✅ Système initialisé - Cliquez sur un bouton pour tester!');
+                } else {
+                    updateStatus('❌ Erreur lors de l\'initialisation');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                updateStatus('❌ Erreur: ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test des Effets de Combat - Heroes Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .arena-container {
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            height: 400px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .arena {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .class-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .class-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #d4af37;
+        }
+
+        .class-description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .effect-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 50%, #d4af37 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1e293b;
+            font-weight: bold;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin: 5px;
+            min-width: 120px;
+        }
+
+        .effect-btn:hover {
+            background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .side-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .side-btn {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            border: 2px solid #64748b;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .side-btn.active {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+            border-color: #d4af37;
+            color: #1e293b;
+        }
+
+        .info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .damage-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .damage-input {
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            color: #ffffff;
+            padding: 8px 12px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        .status {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .arena-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏟️ Test des Effets de Combat</h1>
+        
+        <div class="info">
+            <p>Cette page permet de tester tous les effets spéciaux de combat des différentes classes de héros.</p>
+            <p>Cliquez sur les boutons pour déclencher les effets dans l'arène.</p>
+        </div>
+
+        <div class="status" id="status">Initialisation en cours...</div>
+
+        <div class="side-controls">
+            <button class="side-btn active" onclick="setSide('left')" id="leftBtn">Côté Gauche</button>
+            <button class="side-btn" onclick="setSide('right')" id="rightBtn">Côté Droit</button>
+        </div>
+
+        <div class="damage-controls">
+            <label for="damageInput">Dégâts simulés:</label>
+            <input type="number" id="damageInput" class="damage-input" value="25" min="1" max="100">
+            <button class="clear-btn" onclick="clearEffects()">Effacer Effets</button>
+            <button class="effect-btn" onclick="testBasicEffect()" style="margin-left: 10px;">Test de Base</button>
+        </div>
+
+        <div class="arena-container">
+            <div class="arena" id="arena"></div>
+        </div>
+
+        <div class="controls">
+            <!-- Guerrier -->
+            <div class="class-section">
+                <div class="class-title">⚔️ Guerrier</div>
+                <div class="class-description">Maître de la Rage - Explosion de flammes rouges intenses</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Guerrier')">
+                    Rage Berserker
+                </button>
+            </div>
+
+            <!-- Mage -->
+            <div class="class-section">
+                <div class="class-title">🔮 Mage</div>
+                <div class="class-description">Seigneur des Boucliers - Protection magique bleue</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Mage')">
+                    Bouclier Magique
+                </button>
+            </div>
+
+            <!-- Archer -->
+            <div class="class-section">
+                <div class="class-title">🏹 Archer</div>
+                <div class="class-description">Tireur Mortel - Flèches multiples vertes</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Archer')">
+                    Tir Multiple
+                </button>
+            </div>
+
+            <!-- Paladin -->
+            <div class="class-section">
+                <div class="class-title">🛡️ Paladin</div>
+                <div class="class-description">Gardien Lumineux - Aura de guérison dorée</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Paladin')">
+                    Aura de Guérison
+                </button>
+            </div>
+
+            <!-- Assassin -->
+            <div class="class-section">
+                <div class="class-title">🗡️ Assassin</div>
+                <div class="class-description">Maître de l'Ombre - Ombres violettes mortelles</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Assassin')">
+                    Frappe Mortelle
+                </button>
+            </div>
+
+            <!-- Druide -->
+            <div class="class-section">
+                <div class="class-title">🌿 Druide</div>
+                <div class="class-description">Gardien de la Nature - Symbiose naturelle verte</div>
+                <button class="effect-btn" onclick="triggerClassEffect('Druide')">
+                    Symbiose Naturelle
+                </button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="class-section">
+                <div class="class-title">💥 Effets Génériques</div>
+                <div class="class-description">Effets de base du système de combat</div>
+                <button class="effect-btn" onclick="triggerGenericEffect('normal')">Attaque Normale</button>
+                <button class="effect-btn" onclick="triggerGenericEffect('special')">Attaque Spéciale</button>
+                <button class="effect-btn" onclick="triggerGenericEffect('power')">Attaque Puissance</button>
+                <button class="effect-btn" onclick="triggerGenericEffect('critical')">Critique</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copie du système d'effets intégrée directement -->
+    <script>
+        // Système d'effets visuels pour le combat - Heroes Arena
+        class CombatEffects {
+            constructor() {
+                this.particles = [];
+                this.canvas = null;
+                this.ctx = null;
+                this.animationFrame = null;
+                this.isAnimating = false;
+            }
+            
+            // Initialiser le canvas d'effets
+            initCanvas() {
+                if (this.canvas) return;
+                
+                this.canvas = document.createElement('canvas');
+                this.canvas.id = 'combatEffectsCanvas';
+                this.canvas.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: 100;
+                `;
+                
+                const arena = document.querySelector('#arena');
+                if (arena) {
+                    arena.style.position = 'relative';
+                    arena.appendChild(this.canvas);
+                    
+                    this.resizeCanvas();
+                    this.ctx = this.canvas.getContext('2d');
+                    
+                    window.addEventListener('resize', () => this.resizeCanvas());
+                    return true;
+                }
+                return false;
+            }
+            
+            resizeCanvas() {
+                if (!this.canvas) return;
+                
+                const arena = document.querySelector('#arena');
+                if (arena) {
+                    const rect = arena.getBoundingClientRect();
+                    this.canvas.width = rect.width;
+                    this.canvas.height = rect.height;
+                }
+            }
+            
+            // Méthode utilitaire pour déclencher un effet de capacité spéciale selon la classe
+            createClassSpecialEffect(attackerSide, heroClass, damage = 0) {
+                if (!this.ctx) {
+                    if (!this.initCanvas()) return;
+                }
+                
+                const startX = attackerSide === 'left' ? 100 : this.canvas.width - 100;
+                const endX = attackerSide === 'left' ? this.canvas.width - 100 : 100;
+                const y = this.canvas.height / 2;
+                
+                switch (heroClass) {
+                    case 'Guerrier':
+                        this.createRageBerserkerEffect(startX, endX, y, damage);
+                        break;
+                    case 'Mage':
+                        this.createMagicShieldEffect(startX, endX, y);
+                        break;
+                    case 'Archer':
+                        this.createMultiShotEffect(startX, endX, y, damage);
+                        break;
+                    case 'Paladin':
+                        this.createHealingAuraEffect(startX, endX, y);
+                        break;
+                    case 'Assassin':
+                        this.createShadowStrikeEffect(startX, endX, y, damage);
+                        break;
+                    case 'Druide':
+                        this.createNatureSymbiosisEffect(startX, endX, y);
+                        break;
+                }
+                
+                this.startAnimation();
+            }
+            
+            // Créer des particules d'attaque
+            createAttackEffect(attackerSide, attackType, damage) {
+                if (!this.ctx) {
+                    if (!this.initCanvas()) return;
+                }
+                
+                const colors = this.getAttackColors(attackType);
+                const startX = attackerSide === 'left' ? 100 : this.canvas.width - 100;
+                const endX = attackerSide === 'left' ? this.canvas.width - 100 : 100;
+                const y = this.canvas.height / 2;
+                
+                // Créer l'effet selon le type d'attaque
+                switch (attackType) {
+                    case 'normal':
+                        this.createSlashEffect(startX, endX, y, colors, damage);
+                        break;
+                    case 'special':
+                        this.createSpecialEffect(startX, endX, y, colors, damage);
+                        break;
+                    case 'power':
+                        this.createPowerEffect(startX, endX, y, colors, damage);
+                        break;
+                    case 'critical':
+                        this.createCriticalEffect(startX, endX, y, colors, damage);
+                        break;
+                }
+                
+                this.startAnimation();
+            }
+            
+            getAttackColors(attackType) {
+                const colorSchemes = {
+                    normal: ['#ffffff', '#ffdd44', '#ff8844'],
+                    special: ['#44ddff', '#4488ff', '#8844ff'],
+                    power: ['#ff4444', '#ff8844', '#ffdd44'],
+                    critical: ['#ffff44', '#ff4444', '#ffffff']
+                };
+                return colorSchemes[attackType] || colorSchemes.normal;
+            }
+            
+            // Effet de slash pour attaque normale
+            createSlashEffect(startX, endX, y, colors, damage) {
+                const numParticles = Math.min(20 + damage, 50);
+                
+                for (let i = 0; i < numParticles; i++) {
+                    this.particles.push({
+                        x: startX + (endX - startX) * (i / numParticles),
+                        y: y + (Math.random() - 0.5) * 60,
+                        vx: (endX - startX) / 30 + (Math.random() - 0.5) * 5,
+                        vy: (Math.random() - 0.5) * 8,
+                        size: Math.random() * 4 + 2,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.02 + Math.random() * 0.03,
+                        type: 'slash'
+                    });
+                }
+            }
+            
+            // Effet spécial avec particules magiques
+            createSpecialEffect(startX, endX, y, colors, damage) {
+                const numParticles = Math.min(30 + damage, 80);
+                
+                // Particules principales
+                for (let i = 0; i < numParticles; i++) {
+                    const angle = (Math.PI * 2 * i) / numParticles;
+                    const radius = 20 + Math.random() * 40;
+                    
+                    this.particles.push({
+                        x: (startX + endX) / 2 + Math.cos(angle) * radius,
+                        y: y + Math.sin(angle) * radius,
+                        vx: Math.cos(angle) * 3,
+                        vy: Math.sin(angle) * 3,
+                        size: Math.random() * 6 + 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.015,
+                        type: 'magic'
+                    });
+                }
+                
+                // Onde de choc
+                this.particles.push({
+                    x: (startX + endX) / 2,
+                    y: y,
+                    radius: 10,
+                    maxRadius: 100 + damage,
+                    color: colors[0],
+                    life: 1.0,
+                    decay: 0.05,
+                    type: 'shockwave'
+                });
+            }
+            
+            // Effet de pouvoir avec explosion
+            createPowerEffect(startX, endX, y, colors, damage) {
+                const centerX = (startX + endX) / 2;
+                const numParticles = Math.min(50 + damage, 120);
+                
+                // Explosion centrale
+                for (let i = 0; i < numParticles; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 8 + 4;
+                    
+                    this.particles.push({
+                        x: centerX,
+                        y: y,
+                        vx: Math.cos(angle) * velocity,
+                        vy: Math.sin(angle) * velocity,
+                        size: Math.random() * 8 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.01,
+                        type: 'explosion'
+                    });
+                }
+            }
+            
+            // Effet critique avec étoiles
+            createCriticalEffect(startX, endX, y, colors, damage) {
+                const centerX = (startX + endX) / 2;
+                
+                // Étoiles scintillantes
+                for (let i = 0; i < 15; i++) {
+                    const angle = (Math.PI * 2 * i) / 15;
+                    const radius = 30 + Math.random() * 50;
+                    
+                    this.particles.push({
+                        x: centerX + Math.cos(angle) * radius,
+                        y: y + Math.sin(angle) * radius,
+                        vx: Math.cos(angle) * 2,
+                        vy: Math.sin(angle) * 2,
+                        size: Math.random() * 6 + 8,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.02,
+                        type: 'star',
+                        rotation: 0,
+                        rotationSpeed: (Math.random() - 0.5) * 0.3
+                    });
+                }
+            }
+            
+            // ========== EFFETS SPÉCIFIQUES AUX CLASSES ==========
+            
+            // Guerrier - Rage Berserker (effet de flammes rouges intenses)
+            createRageBerserkerEffect(startX, endX, y, damage) {
+                const centerX = (startX + endX) / 2;
+                const numParticles = Math.min(80 + damage, 150);
+                const colors = ['#ff0000', '#ff4444', '#ff8800', '#ffaa00'];
+                
+                // Explosion de rage au centre
+                for (let i = 0; i < numParticles; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 12 + 6;
+                    
+                    this.particles.push({
+                        x: centerX,
+                        y: y,
+                        vx: Math.cos(angle) * velocity,
+                        vy: Math.sin(angle) * velocity,
+                        size: Math.random() * 10 + 5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.015,
+                        type: 'rage_flame'
+                    });
+                }
+                
+                // Vagues de choc concentriques
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        this.particles.push({
+                            x: centerX,
+                            y: y,
+                            radius: 15,
+                            maxRadius: 120 + i * 30,
+                            color: '#ff4444',
+                            life: 1.0,
+                            decay: 0.03,
+                            type: 'rage_wave'
+                        });
+                    }, i * 200);
+                }
+            }
+            
+            // Mage - Bouclier Magique (effet de protection bleue)
+            createMagicShieldEffect(startX, endX, y) {
+                const centerX = (startX + endX) / 2;
+                const colors = ['#00aaff', '#0088dd', '#4400ff', '#8800ff'];
+                
+                // Cercle de protection magique
+                for (let i = 0; i < 60; i++) {
+                    const angle = (Math.PI * 2 * i) / 60;
+                    const radius = 60 + Math.sin(Date.now() * 0.01 + i) * 10;
+                    
+                    this.particles.push({
+                        x: centerX + Math.cos(angle) * radius,
+                        y: y + Math.sin(angle) * radius,
+                        vx: Math.cos(angle) * 0.5,
+                        vy: Math.sin(angle) * 0.5,
+                        size: Math.random() * 5 + 3,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.012,
+                        type: 'magic_shield',
+                        angle: angle
+                    });
+                }
+            }
+            
+            // Archer - Tir Multiple (effet de flèches multiples)
+            createMultiShotEffect(startX, endX, y, damage) {
+                const colors = ['#00ff00', '#44ff44', '#88ff88', '#aaff00'];
+                const arrowCount = 3;
+                
+                // Création de plusieurs flèches
+                for (let arrow = 0; arrow < arrowCount; arrow++) {
+                    const offsetY = (arrow - 1) * 20;
+                    
+                    // Traînée de chaque flèche
+                    for (let i = 0; i < 15; i++) {
+                        const progress = i / 15;
+                        const x = startX + (endX - startX) * progress;
+                        const currentY = y + offsetY;
+                        
+                        this.particles.push({
+                            x: x - i * 5,
+                            y: currentY + (Math.random() - 0.5) * 4,
+                            vx: (endX - startX) / 20,
+                            vy: (Math.random() - 0.5) * 2,
+                            size: Math.random() * 3 + 2,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.025 + Math.random() * 0.02,
+                            type: 'arrow_trail'
+                        });
+                    }
+                }
+            }
+            
+            // Paladin - Aura de Guérison (effet de lumière dorée)
+            createHealingAuraEffect(startX, endX, y) {
+                const centerX = (startX + endX) / 2;
+                const colors = ['#ffdd00', '#ffee44', '#fff888', '#ffffff'];
+                
+                // Aura de lumière dorée
+                for (let ring = 0; ring < 4; ring++) {
+                    const baseRadius = 30 + ring * 20;
+                    const particlesInRing = 20 + ring * 5;
+                    
+                    for (let i = 0; i < particlesInRing; i++) {
+                        const angle = (Math.PI * 2 * i) / particlesInRing + ring * 0.5;
+                        const radius = baseRadius + Math.sin(Date.now() * 0.005 + i) * 8;
+                        
+                        this.particles.push({
+                            x: centerX + Math.cos(angle) * radius,
+                            y: y + Math.sin(angle) * radius,
+                            vx: 0,
+                            vy: -1,
+                            size: Math.random() * 4 + 2,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.008,
+                            type: 'healing_light'
+                        });
+                    }
+                }
+            }
+            
+            // Assassin - Frappe Mortelle (effet d'ombres violettes)
+            createShadowStrikeEffect(startX, endX, y, damage) {
+                const centerX = (startX + endX) / 2;
+                const colors = ['#440088', '#660099', '#8800bb', '#aa00dd'];
+                
+                // Explosion d'ombre
+                for (let i = 0; i < 60; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 10 + 5;
+                    
+                    this.particles.push({
+                        x: centerX,
+                        y: y,
+                        vx: Math.cos(angle) * velocity,
+                        vy: Math.sin(angle) * velocity,
+                        size: Math.random() * 8 + 4,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: 0.02,
+                        type: 'shadow_particle'
+                    });
+                }
+            }
+            
+            // Druide - Symbiose Naturelle (effet de nature verte)
+            createNatureSymbiosisEffect(startX, endX, y) {
+                const centerX = (startX + endX) / 2;
+                const colors = ['#00aa00', '#44bb44', '#66cc66', '#88dd88'];
+                
+                // Cercle de vie naturelle
+                for (let ring = 0; ring < 3; ring++) {
+                    const baseRadius = 40 + ring * 25;
+                    const particlesInRing = 24 + ring * 8;
+                    
+                    for (let i = 0; i < particlesInRing; i++) {
+                        const angle = (Math.PI * 2 * i) / particlesInRing + ring * 0.3;
+                        const radius = baseRadius + Math.sin(Date.now() * 0.003 + i) * 12;
+                        
+                        this.particles.push({
+                            x: centerX + Math.cos(angle) * radius,
+                            y: y + Math.sin(angle) * radius,
+                            vx: Math.cos(angle) * 0.5,
+                            vy: Math.sin(angle) * 0.5,
+                            size: Math.random() * 5 + 3,
+                            color: colors[Math.floor(Math.random() * colors.length)],
+                            life: 1.0,
+                            decay: 0.01,
+                            type: 'nature_energy'
+                        });
+                    }
+                }
+            }
+            
+            // Animation des particules
+            startAnimation() {
+                if (this.isAnimating) return;
+                
+                this.isAnimating = true;
+                this.animate();
+            }
+            
+            animate() {
+                if (!this.ctx || this.particles.length === 0) {
+                    this.isAnimating = false;
+                    return;
+                }
+                
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Dessiner toutes les particules
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const particle = this.particles[i];
+                    
+                    this.drawParticle(particle);
+                    this.updateParticle(particle);
+                    
+                    // Supprimer les particules mortes
+                    if (particle.life <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+                
+                if (this.particles.length > 0) {
+                    this.animationFrame = requestAnimationFrame(() => this.animate());
+                } else {
+                    this.isAnimating = false;
+                }
+            }
+            
+            drawParticle(particle) {
+                this.ctx.save();
+                this.ctx.globalAlpha = particle.life;
+                
+                switch (particle.type) {
+                    case 'star':
+                        this.drawStar(particle);
+                        break;
+                    case 'shockwave':
+                    case 'rage_wave':
+                        this.drawShockwave(particle);
+                        break;
+                    default:
+                        this.ctx.fillStyle = particle.color;
+                        this.ctx.beginPath();
+                        this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        this.ctx.fill();
+                        break;
+                }
+                
+                this.ctx.restore();
+            }
+            
+            drawStar(particle) {
+                this.ctx.save();
+                this.ctx.translate(particle.x, particle.y);
+                this.ctx.rotate(particle.rotation);
+                
+                this.ctx.fillStyle = particle.color;
+                this.ctx.beginPath();
+                
+                const spikes = 5;
+                const outerRadius = particle.size;
+                const innerRadius = particle.size * 0.4;
+                
+                for (let i = 0; i < spikes * 2; i++) {
+                    const angle = (i * Math.PI) / spikes;
+                    const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                    const x = Math.cos(angle) * radius;
+                    const y = Math.sin(angle) * radius;
+                    
+                    if (i === 0) {
+                        this.ctx.moveTo(x, y);
+                    } else {
+                        this.ctx.lineTo(x, y);
+                    }
+                }
+                
+                this.ctx.closePath();
+                this.ctx.fill();
+                this.ctx.restore();
+            }
+            
+            drawShockwave(particle) {
+                this.ctx.strokeStyle = particle.color;
+                this.ctx.lineWidth = 3;
+                this.ctx.beginPath();
+                this.ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                this.ctx.stroke();
+            }
+            
+            updateParticle(particle) {
+                particle.life -= particle.decay;
+                
+                switch (particle.type) {
+                    case 'star':
+                        particle.x += particle.vx;
+                        particle.y += particle.vy;
+                        if (particle.rotationSpeed) {
+                            particle.rotation += particle.rotationSpeed;
+                        }
+                        break;
+                    case 'shockwave':
+                    case 'rage_wave':
+                        particle.radius += (particle.maxRadius - particle.radius) * 0.1;
+                        break;
+                    case 'magic_shield':
+                        particle.x += particle.vx;
+                        particle.y += particle.vy;
+                        if (particle.angle !== undefined) {
+                            particle.angle += 0.05;
+                        }
+                        break;
+                    default:
+                        particle.x += particle.vx;
+                        particle.y += particle.vy;
+                        particle.vy += 0.2; // Gravité
+                        break;
+                }
+            }
+            
+            // Secouer l'écran lors d'attaques puissantes
+            screenShake(intensity = 5, duration = 300) {
+                const arena = document.querySelector('#arena');
+                if (!arena) return;
+                
+                const originalTransform = arena.style.transform;
+                const startTime = Date.now();
+                
+                const shake = () => {
+                    const elapsed = Date.now() - startTime;
+                    if (elapsed < duration) {
+                        const x = (Math.random() - 0.5) * intensity;
+                        const y = (Math.random() - 0.5) * intensity;
+                        arena.style.transform = `translate(${x}px, ${y}px)`;
+                        requestAnimationFrame(shake);
+                    } else {
+                        arena.style.transform = originalTransform;
+                    }
+                };
+                
+                shake();
+            }
+            
+            // Nettoyer les effets
+            cleanup() {
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                }
+                
+                if (this.canvas && this.canvas.parentNode) {
+                    this.canvas.parentNode.removeChild(this.canvas);
+                }
+                
+                this.particles = [];
+                this.canvas = null;
+                this.ctx = null;
+                this.isAnimating = false;
+            }
+        }
+
+        // Variables globales
+        let combatEffectsInstance;
+        let currentSide = 'left';
+        
+        // Fonctions d'interface - Globales
+        window.updateStatus = function(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        window.setSide = function(side) {
+            currentSide = side;
+            console.log('Côté changé vers:', side);
+            
+            // Mettre à jour l'interface
+            document.getElementById('leftBtn').classList.toggle('active', side === 'left');
+            document.getElementById('rightBtn').classList.toggle('active', side === 'right');
+        }
+        
+        window.triggerClassEffect = function(heroClass) {
+            console.log('Déclenchement effet classe:', heroClass);
+            
+            if (!combatEffectsInstance) {
+                updateStatus('Erreur: Système d\'effets non initialisé');
+                return;
+            }
+            
+            try {
+                const damage = parseInt(document.getElementById('damageInput').value) || 25;
+                combatEffectsInstance.createClassSpecialEffect(currentSide, heroClass, damage);
+                updateStatus(`Effet ${heroClass} déclenché avec ${damage} dégâts du côté ${currentSide}`);
+                
+                // Effet de secousse pour les effets puissants
+                if (['Guerrier', 'Assassin'].includes(heroClass)) {
+                    setTimeout(() => {
+                        combatEffectsInstance.screenShake(8, 400);
+                    }, 200);
+                }
+            } catch (error) {
+                console.error('Erreur lors du déclenchement de l\'effet:', error);
+                updateStatus('Erreur lors du déclenchement de l\'effet');
+            }
+        }
+        
+        window.triggerGenericEffect = function(attackType) {
+            console.log('Déclenchement effet générique:', attackType);
+            
+            if (!combatEffectsInstance) {
+                updateStatus('Erreur: Système d\'effets non initialisé');
+                return;
+            }
+            
+            try {
+                const damage = parseInt(document.getElementById('damageInput').value) || 25;
+                combatEffectsInstance.createAttackEffect(currentSide, attackType, damage);
+                updateStatus(`Effet ${attackType} déclenché avec ${damage} dégâts du côté ${currentSide}`);
+                
+                // Effet de secousse pour les critiques
+                if (attackType === 'critical') {
+                    setTimeout(() => {
+                        combatEffectsInstance.screenShake(6, 300);
+                    }, 150);
+                }
+            } catch (error) {
+                console.error('Erreur lors du déclenchement de l\'effet:', error);
+                updateStatus('Erreur lors du déclenchement de l\'effet');
+            }
+        }
+        
+        window.clearEffects = function() {
+            console.log('Nettoyage des effets');
+            
+            if (!combatEffectsInstance) {
+                updateStatus('Erreur: Système d\'effets non initialisé');
+                return;
+            }
+            
+            try {
+                combatEffectsInstance.cleanup();
+                
+                // Réinitialiser le canvas
+                setTimeout(() => {
+                    combatEffectsInstance.initCanvas();
+                    updateStatus('Effets nettoyés et canvas réinitialisé');
+                }, 100);
+            } catch (error) {
+                console.error('Erreur lors du nettoyage:', error);
+                updateStatus('Erreur lors du nettoyage');
+            }
+        }
+        
+        window.testBasicEffect = function() {
+            if (combatEffectsInstance) {
+                combatEffectsInstance.createAttackEffect('left', 'normal', 25);
+                updateStatus('Test effet de base déclenché');
+            } else {
+                updateStatus('Système d\'effets non initialisé');
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateStatus('Initialisation du système d\'effets...');
+                
+                combatEffectsInstance = new CombatEffects();
+                console.log('CombatEffects créé');
+                
+                // Initialiser le canvas après un court délai
+                setTimeout(() => {
+                    if (combatEffectsInstance.initCanvas()) {
+                        updateStatus('✅ Système d\'effets initialisé - Prêt à tester!');
+                        console.log('Canvas initialisé avec succès');
+                    } else {
+                        updateStatus('❌ Erreur: Impossible d\'initialiser le canvas');
+                    }
+                }, 500);
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation:', error);
+                updateStatus('❌ Erreur lors de l\'initialisation: ' + error.message);
+            }
+        });
+        
+        // Redimensionnement automatique
+        window.addEventListener('resize', () => {
+            if (combatEffectsInstance) {
+                combatEffectsInstance.resizeCanvas();
+            }
+        });
+    </script>
+</body>
+</html>

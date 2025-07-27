@@ -71,6 +71,57 @@ export class CombatEffects {
             case 'critical':
                 this.createCriticalEffect(startX, endX, y, colors, damage);
                 break;
+            // Nouveaux effets spécifiques aux classes
+            case 'rage_berserker':
+                this.createRageBerserkerEffect(startX, endX, y, damage);
+                break;
+            case 'bouclier_magique':
+                this.createMagicShieldEffect(startX, endX, y);
+                break;
+            case 'tir_multiple':
+                this.createMultiShotEffect(startX, endX, y, damage);
+                break;
+            case 'aura_guerison':
+                this.createHealingAuraEffect(startX, endX, y);
+                break;
+            case 'frappe_mortelle':
+                this.createShadowStrikeEffect(startX, endX, y, damage);
+                break;
+            case 'symbiose_naturelle':
+                this.createNatureSymbiosisEffect(startX, endX, y);
+                break;
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Méthode utilitaire pour déclencher un effet de capacité spéciale selon la classe
+    createClassSpecialEffect(attackerSide, heroClass, damage = 0) {
+        if (!this.ctx) this.initCanvas();
+        
+        const startX = attackerSide === 'left' ? 100 : this.canvas.width - 100;
+        const endX = attackerSide === 'left' ? this.canvas.width - 100 : 100;
+        const y = this.canvas.height / 2;
+        
+        switch (heroClass) {
+            case 'Guerrier':
+                this.createRageBerserkerEffect(startX, endX, y, damage);
+                break;
+            case 'Mage':
+                this.createMagicShieldEffect(startX, endX, y);
+                break;
+            case 'Archer':
+                this.createMultiShotEffect(startX, endX, y, damage);
+                break;
+            case 'Paladin':
+                this.createHealingAuraEffect(startX, endX, y);
+                break;
+            case 'Assassin':
+                this.createShadowStrikeEffect(startX, endX, y, damage);
+                break;
+            case 'Druide':
+                this.createNatureSymbiosisEffect(startX, endX, y);
+                break;
         }
         
         this.startAnimation();
@@ -216,6 +267,315 @@ export class CombatEffects {
         });
     }
     
+    // ========== EFFETS SPÉCIFIQUES AUX CLASSES ==========
+    
+    // Guerrier - Rage Berserker (effet de flammes rouges intenses)
+    createRageBerserkerEffect(startX, endX, y, damage) {
+        const centerX = (startX + endX) / 2;
+        const numParticles = Math.min(80 + damage, 150);
+        const colors = ['#ff0000', '#ff4444', '#ff8800', '#ffaa00'];
+        
+        // Explosion de rage au centre
+        for (let i = 0; i < numParticles; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 12 + 6;
+            
+            this.particles.push({
+                x: centerX,
+                y: y,
+                vx: Math.cos(angle) * velocity,
+                vy: Math.sin(angle) * velocity,
+                size: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.015,
+                type: 'rage_flame'
+            });
+        }
+        
+        // Vagues de choc concentriques
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                this.particles.push({
+                    x: centerX,
+                    y: y,
+                    radius: 15,
+                    maxRadius: 120 + i * 30,
+                    color: '#ff4444',
+                    life: 1.0,
+                    decay: 0.03,
+                    type: 'rage_wave'
+                });
+            }, i * 200);
+        }
+    }
+    
+    // Mage - Bouclier Magique (effet de protection bleue)
+    createMagicShieldEffect(startX, endX, y) {
+        const centerX = (startX + endX) / 2;
+        const colors = ['#00aaff', '#0088dd', '#4400ff', '#8800ff'];
+        
+        // Cercle de protection magique
+        for (let i = 0; i < 60; i++) {
+            const angle = (Math.PI * 2 * i) / 60;
+            const radius = 60 + Math.sin(Date.now() * 0.01 + i) * 10;
+            
+            this.particles.push({
+                x: centerX + Math.cos(angle) * radius,
+                y: y + Math.sin(angle) * radius,
+                vx: Math.cos(angle) * 0.5,
+                vy: Math.sin(angle) * 0.5,
+                size: Math.random() * 5 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.012,
+                type: 'magic_shield',
+                angle: angle,
+                baseRadius: radius
+            });
+        }
+        
+        // Runessternes magiques
+        for (let i = 0; i < 8; i++) {
+            const angle = (Math.PI * 2 * i) / 8;
+            const distance = 80;
+            
+            this.particles.push({
+                x: centerX + Math.cos(angle) * distance,
+                y: y + Math.sin(angle) * distance,
+                size: 8,
+                color: '#00ddff',
+                life: 1.0,
+                decay: 0.02,
+                type: 'magic_rune',
+                rotation: 0,
+                rotationSpeed: 0.15
+            });
+        }
+    }
+    
+    // Archer - Tir Multiple (effet de flèches multiples)
+    createMultiShotEffect(startX, endX, y, damage) {
+        const colors = ['#00ff00', '#44ff44', '#88ff88', '#aaff00'];
+        const arrowCount = 3;
+        
+        // Création de plusieurs flèches
+        for (let arrow = 0; arrow < arrowCount; arrow++) {
+            const offsetY = (arrow - 1) * 20;
+            const speed = 8 + arrow * 2;
+            
+            // Traînée de chaque flèche
+            for (let i = 0; i < 15; i++) {
+                const progress = i / 15;
+                const x = startX + (endX - startX) * progress;
+                const currentY = y + offsetY;
+                
+                this.particles.push({
+                    x: x - i * 5,
+                    y: currentY + (Math.random() - 0.5) * 4,
+                    vx: (endX - startX) / 20,
+                    vy: (Math.random() - 0.5) * 2,
+                    size: Math.random() * 3 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1.0,
+                    decay: 0.025 + Math.random() * 0.02,
+                    type: 'arrow_trail'
+                });
+            }
+            
+            // Pointe de flèche
+            this.particles.push({
+                x: startX,
+                y: y + offsetY,
+                vx: (endX - startX) / 15,
+                vy: 0,
+                size: 6,
+                color: '#ffff00',
+                life: 1.0,
+                decay: 0.03,
+                type: 'arrow_head'
+            });
+        }
+    }
+    
+    // Paladin - Aura de Guérison (effet de lumière dorée)
+    createHealingAuraEffect(startX, endX, y) {
+        const centerX = (startX + endX) / 2;
+        const colors = ['#ffdd00', '#ffee44', '#fff888', '#ffffff'];
+        
+        // Aura de lumière dorée
+        for (let ring = 0; ring < 4; ring++) {
+            const baseRadius = 30 + ring * 20;
+            const particlesInRing = 20 + ring * 5;
+            
+            for (let i = 0; i < particlesInRing; i++) {
+                const angle = (Math.PI * 2 * i) / particlesInRing + ring * 0.5;
+                const radius = baseRadius + Math.sin(Date.now() * 0.005 + i) * 8;
+                
+                this.particles.push({
+                    x: centerX + Math.cos(angle) * radius,
+                    y: y + Math.sin(angle) * radius,
+                    vx: 0,
+                    vy: -1,
+                    size: Math.random() * 4 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1.0,
+                    decay: 0.008,
+                    type: 'healing_light'
+                });
+            }
+        }
+        
+        // Particules de guérison montantes
+        for (let i = 0; i < 30; i++) {
+            this.particles.push({
+                x: centerX + (Math.random() - 0.5) * 100,
+                y: y + 40,
+                vx: (Math.random() - 0.5) * 2,
+                vy: -3 - Math.random() * 2,
+                size: Math.random() * 6 + 3,
+                color: '#ffffff',
+                life: 1.0,
+                decay: 0.015,
+                type: 'heal_sparkle'
+            });
+        }
+    }
+    
+    // Assassin - Frappe Mortelle (effet d'ombres violettes)
+    createShadowStrikeEffect(startX, endX, y, damage) {
+        const centerX = (startX + endX) / 2;
+        const colors = ['#440088', '#660099', '#8800bb', '#aa00dd'];
+        
+        // Explosion d'ombre
+        for (let i = 0; i < 60; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = Math.random() * 10 + 5;
+            
+            this.particles.push({
+                x: centerX,
+                y: y,
+                vx: Math.cos(angle) * velocity,
+                vy: Math.sin(angle) * velocity,
+                size: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.02,
+                type: 'shadow_particle'
+            });
+        }
+        
+        // Lames d'ombre qui traversent
+        for (let i = 0; i < 5; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const length = 80;
+            
+            this.particles.push({
+                x: centerX,
+                y: y,
+                endX: centerX + Math.cos(angle) * length,
+                endY: y + Math.sin(angle) * length,
+                color: '#aa00dd',
+                life: 1.0,
+                decay: 0.08,
+                type: 'shadow_blade',
+                width: 4
+            });
+        }
+        
+        // Effet de critique avec étoiles sombres
+        for (let i = 0; i < 10; i++) {
+            const angle = (Math.PI * 2 * i) / 10;
+            const radius = 40 + Math.random() * 30;
+            
+            this.particles.push({
+                x: centerX + Math.cos(angle) * radius,
+                y: y + Math.sin(angle) * radius,
+                vx: Math.cos(angle) * 3,
+                vy: Math.sin(angle) * 3,
+                size: Math.random() * 8 + 6,
+                color: '#ff44ff',
+                life: 1.0,
+                decay: 0.025,
+                type: 'shadow_star',
+                rotation: 0,
+                rotationSpeed: (Math.random() - 0.5) * 0.4
+            });
+        }
+    }
+    
+    // Druide - Symbiose Naturelle (effet de nature verte)
+    createNatureSymbiosisEffect(startX, endX, y) {
+        const centerX = (startX + endX) / 2;
+        const colors = ['#00aa00', '#44bb44', '#66cc66', '#88dd88'];
+        
+        // Cercle de vie naturelle
+        for (let ring = 0; ring < 3; ring++) {
+            const baseRadius = 40 + ring * 25;
+            const particlesInRing = 24 + ring * 8;
+            
+            for (let i = 0; i < particlesInRing; i++) {
+                const angle = (Math.PI * 2 * i) / particlesInRing + ring * 0.3;
+                const radius = baseRadius + Math.sin(Date.now() * 0.003 + i) * 12;
+                
+                this.particles.push({
+                    x: centerX + Math.cos(angle) * radius,
+                    y: y + Math.sin(angle) * radius,
+                    vx: Math.cos(angle) * 0.5,
+                    vy: Math.sin(angle) * 0.5,
+                    size: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1.0,
+                    decay: 0.01,
+                    type: 'nature_energy'
+                });
+            }
+        }
+        
+        // Feuilles tourbillonnantes
+        for (let i = 0; i < 20; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 80 + 20;
+            
+            this.particles.push({
+                x: centerX + Math.cos(angle) * distance,
+                y: y + Math.sin(angle) * distance,
+                vx: (Math.random() - 0.5) * 3,
+                vy: -2 - Math.random() * 2,
+                size: Math.random() * 6 + 4,
+                color: '#44dd44',
+                life: 1.0,
+                decay: 0.012,
+                type: 'leaf',
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.2
+            });
+        }
+        
+        // Racines énergétiques
+        for (let i = 0; i < 8; i++) {
+            const angle = (Math.PI * 2 * i) / 8;
+            const points = [];
+            let currentX = centerX;
+            let currentY = y;
+            
+            for (let j = 0; j < 6; j++) {
+                currentX += Math.cos(angle + (Math.random() - 0.5) * 0.5) * 15;
+                currentY += Math.sin(angle + (Math.random() - 0.5) * 0.5) * 15;
+                points.push({ x: currentX, y: currentY });
+            }
+            
+            this.particles.push({
+                points: points,
+                color: '#228822',
+                life: 1.0,
+                decay: 0.025,
+                type: 'nature_root',
+                width: 3
+            });
+        }
+    }
+    
     // Animation des particules
     startAnimation() {
         if (this.isAnimating) return;
@@ -260,6 +620,13 @@ export class CombatEffects {
             case 'slash':
             case 'magic':
             case 'explosion':
+            case 'rage_flame':
+            case 'shadow_particle':
+            case 'nature_energy':
+            case 'healing_light':
+            case 'heal_sparkle':
+            case 'arrow_trail':
+            case 'arrow_head':
                 this.ctx.fillStyle = particle.color;
                 this.ctx.beginPath();
                 this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -267,6 +634,7 @@ export class CombatEffects {
                 break;
                 
             case 'star':
+            case 'shadow_star':
                 this.drawStar(particle);
                 break;
                 
@@ -275,7 +643,28 @@ export class CombatEffects {
                 break;
                 
             case 'shockwave':
+            case 'rage_wave':
                 this.drawShockwave(particle);
+                break;
+                
+            case 'magic_shield':
+                this.drawMagicShield(particle);
+                break;
+                
+            case 'magic_rune':
+                this.drawMagicRune(particle);
+                break;
+                
+            case 'shadow_blade':
+                this.drawShadowBlade(particle);
+                break;
+                
+            case 'leaf':
+                this.drawLeaf(particle);
+                break;
+                
+            case 'nature_root':
+                this.drawNatureRoot(particle);
                 break;
         }
         
@@ -337,6 +726,82 @@ export class CombatEffects {
         this.ctx.stroke();
     }
     
+    // Méthodes de dessin pour les nouveaux effets
+    drawMagicShield(particle) {
+        this.ctx.fillStyle = particle.color;
+        this.ctx.beginPath();
+        this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        // Effet de lueur
+        this.ctx.shadowColor = particle.color;
+        this.ctx.shadowBlur = 10;
+        this.ctx.fill();
+        this.ctx.shadowBlur = 0;
+    }
+    
+    drawMagicRune(particle) {
+        this.ctx.save();
+        this.ctx.translate(particle.x, particle.y);
+        this.ctx.rotate(particle.rotation);
+        
+        this.ctx.fillStyle = particle.color;
+        this.ctx.font = `${particle.size}px Arial`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('✦', 0, 0);
+        
+        this.ctx.restore();
+    }
+    
+    drawShadowBlade(particle) {
+        this.ctx.strokeStyle = particle.color;
+        this.ctx.lineWidth = particle.width;
+        this.ctx.lineCap = 'round';
+        
+        this.ctx.beginPath();
+        this.ctx.moveTo(particle.x, particle.y);
+        this.ctx.lineTo(particle.endX, particle.endY);
+        this.ctx.stroke();
+        
+        // Effet de lueur sombre
+        this.ctx.shadowColor = particle.color;
+        this.ctx.shadowBlur = 8;
+        this.ctx.stroke();
+        this.ctx.shadowBlur = 0;
+    }
+    
+    drawLeaf(particle) {
+        this.ctx.save();
+        this.ctx.translate(particle.x, particle.y);
+        this.ctx.rotate(particle.rotation);
+        
+        this.ctx.fillStyle = particle.color;
+        this.ctx.beginPath();
+        // Forme de feuille simple
+        this.ctx.ellipse(0, 0, particle.size * 0.8, particle.size, 0, 0, Math.PI * 2);
+        this.ctx.fill();
+        
+        this.ctx.restore();
+    }
+    
+    drawNatureRoot(particle) {
+        this.ctx.strokeStyle = particle.color;
+        this.ctx.lineWidth = particle.width;
+        this.ctx.lineCap = 'round';
+        
+        this.ctx.beginPath();
+        for (let i = 0; i < particle.points.length; i++) {
+            const point = particle.points[i];
+            if (i === 0) {
+                this.ctx.moveTo(point.x, point.y);
+            } else {
+                this.ctx.lineTo(point.x, point.y);
+            }
+        }
+        this.ctx.stroke();
+    }
+    
     updateParticle(particle) {
         particle.life -= particle.decay;
         
@@ -344,19 +809,56 @@ export class CombatEffects {
             case 'slash':
             case 'magic':
             case 'explosion':
+            case 'rage_flame':
+            case 'shadow_particle':
+            case 'nature_energy':
+            case 'healing_light':
+            case 'heal_sparkle':
+            case 'arrow_trail':
+            case 'arrow_head':
                 particle.x += particle.vx;
                 particle.y += particle.vy;
                 particle.vy += 0.2; // Gravité
                 break;
                 
             case 'star':
+            case 'shadow_star':
                 particle.x += particle.vx;
                 particle.y += particle.vy;
                 particle.rotation += particle.rotationSpeed;
                 break;
                 
             case 'shockwave':
+            case 'rage_wave':
                 particle.radius += (particle.maxRadius - particle.radius) * 0.1;
+                break;
+                
+            case 'magic_shield':
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                // Mouvement circulaire
+                particle.angle += 0.05;
+                particle.x = particle.x + Math.cos(particle.angle) * 2;
+                particle.y = particle.y + Math.sin(particle.angle) * 2;
+                break;
+                
+            case 'magic_rune':
+                particle.rotation += particle.rotationSpeed;
+                break;
+                
+            case 'shadow_blade':
+                // Les lames d'ombre restent fixes mais s'estompent
+                break;
+                
+            case 'leaf':
+                particle.x += particle.vx;
+                particle.y += particle.vy;
+                particle.rotation += particle.rotationSpeed;
+                particle.vy += 0.1; // Légère gravité
+                break;
+                
+            case 'nature_root':
+                // Les racines restent fixes mais s'estompent
                 break;
         }
     }

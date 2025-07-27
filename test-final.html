@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Final - Effets de Combat Heroes Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .arena-container {
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            height: 400px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .arena {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .class-section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .class-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #d4af37;
+        }
+
+        .class-description {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 50%, #d4af37 100%);
+            border: none;
+            border-radius: 8px;
+            color: #1e293b;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin: 3px;
+            min-width: 100px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .status {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .side-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .side-btn {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            border: 2px solid #64748b;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .side-btn.active {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+            border-color: #d4af37;
+            color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 2rem; }
+            .arena-container { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏟️ Test Final - Effets de Combat</h1>
+        
+        <div class="status" id="status">Initialisation...</div>
+
+        <div class="side-controls">
+            <button class="side-btn active" id="leftBtn">🟦 Côté Gauche</button>
+            <button class="side-btn" id="rightBtn">🟥 Côté Droit</button>
+        </div>
+
+        <div class="arena-container">
+            <div class="arena" id="arena"></div>
+        </div>
+
+        <div class="controls">
+            <div class="class-section">
+                <div class="class-title">⚔️ Guerrier</div>
+                <div class="class-description">Explosion de flammes rouges intenses</div>
+                <button onclick="testClass('Guerrier')">Rage Berserker</button>
+            </div>
+
+            <div class="class-section">
+                <div class="class-title">🔮 Mage</div>
+                <div class="class-description">Cercle magique de protection bleue</div>
+                <button onclick="testClass('Mage')">Bouclier Magique</button>
+            </div>
+
+            <div class="class-section">
+                <div class="class-title">🏹 Archer</div>
+                <div class="class-description">Salve de flèches vertes</div>
+                <button onclick="testClass('Archer')">Tir Multiple</button>
+            </div>
+
+            <div class="class-section">
+                <div class="class-title">🛡️ Paladin</div>
+                <div class="class-description">Aura de guérison dorée</div>
+                <button onclick="testClass('Paladin')">Aura de Guérison</button>
+            </div>
+
+            <div class="class-section">
+                <div class="class-title">🗡️ Assassin</div>
+                <div class="class-description">Ombres violettes mortelles</div>
+                <button onclick="testClass('Assassin')">Frappe Mortelle</button>
+            </div>
+
+            <div class="class-section">
+                <div class="class-title">🌿 Druide</div>
+                <div class="class-description">Symbiose naturelle verte</div>
+                <button onclick="testClass('Druide')">Symbiose Naturelle</button>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="testBasic()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); margin-right: 10px;">💥 Test de Base</button>
+            <button onclick="clearAll()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">🧹 Nettoyer</button>
+        </div>
+    </div>
+
+    <script>
+        // Système d'effets de combat intégré
+        class EffectsEngine {
+            constructor() {
+                this.particles = [];
+                this.canvas = null;
+                this.ctx = null;
+                this.animating = false;
+                this.currentSide = 'left';
+            }
+            
+            init() {
+                try {
+                    const arena = document.getElementById('arena');
+                    if (!arena) throw new Error('Arena introuvable');
+                    
+                    this.canvas = document.createElement('canvas');
+                    this.canvas.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        pointer-events: none;
+                        z-index: 10;
+                    `;
+                    
+                    arena.style.position = 'relative';
+                    arena.appendChild(this.canvas);
+                    
+                    this.resizeCanvas();
+                    this.ctx = this.canvas.getContext('2d');
+                    
+                    window.addEventListener('resize', () => this.resizeCanvas());
+                    
+                    // Événements pour les boutons de côté
+                    document.getElementById('leftBtn').onclick = () => this.setSide('left');
+                    document.getElementById('rightBtn').onclick = () => this.setSide('right');
+                    
+                    return true;
+                } catch (error) {
+                    console.error('Erreur init:', error);
+                    return false;
+                }
+            }
+            
+            resizeCanvas() {
+                if (!this.canvas) return;
+                const arena = document.getElementById('arena');
+                if (arena) {
+                    const rect = arena.getBoundingClientRect();
+                    this.canvas.width = rect.width;
+                    this.canvas.height = rect.height;
+                }
+            }
+            
+            setSide(side) {
+                this.currentSide = side;
+                document.getElementById('leftBtn').classList.toggle('active', side === 'left');
+                document.getElementById('rightBtn').classList.toggle('active', side === 'right');
+                this.updateStatus(`Côté changé vers: ${side === 'left' ? 'Gauche' : 'Droite'}`);
+            }
+            
+            updateStatus(message) {
+                document.getElementById('status').textContent = message;
+            }
+            
+            createClassEffect(heroClass) {
+                if (!this.ctx) {
+                    this.updateStatus('❌ Canvas non initialisé');
+                    return;
+                }
+                
+                this.particles = []; // Nettoyer
+                
+                const startX = this.currentSide === 'left' ? 100 : this.canvas.width - 100;
+                const endX = this.currentSide === 'left' ? this.canvas.width - 100 : 100;
+                const centerX = this.canvas.width / 2;
+                const centerY = this.canvas.height / 2;
+                
+                switch (heroClass) {
+                    case 'Guerrier':
+                        this.createWarriorEffect(centerX, centerY);
+                        break;
+                    case 'Mage':
+                        this.createMageEffect(centerX, centerY);
+                        break;
+                    case 'Archer':
+                        this.createArcherEffect(startX, endX, centerY);
+                        break;
+                    case 'Paladin':
+                        this.createPaladinEffect(centerX, centerY);
+                        break;
+                    case 'Assassin':
+                        this.createAssassinEffect(centerX, centerY);
+                        break;
+                    case 'Druide':
+                        this.createDruidEffect(centerX, centerY);
+                        break;
+                    default:
+                        this.createBasicEffect(centerX, centerY);
+                        break;
+                }
+                
+                this.startAnimation();
+                this.updateStatus(`✨ Effet ${heroClass} déclenché du côté ${this.currentSide === 'left' ? 'gauche' : 'droit'}!`);
+            }
+            
+            createWarriorEffect(x, y) {
+                const colors = ['#ff0000', '#ff4444', '#ff8800', '#ffaa00'];
+                // Explosion centrale
+                for (let i = 0; i < 80; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 12 + 6;
+                    this.addParticle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed, 
+                        Math.random() * 10 + 5, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.015);
+                }
+                // Vagues de choc
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        this.addShockwave(x, y, 15, 120 + i * 30, '#ff4444', 1.0, 0.03);
+                    }, i * 200);
+                }
+            }
+            
+            createMageEffect(x, y) {
+                const colors = ['#00aaff', '#0088dd', '#4400ff', '#8800ff'];
+                // Cercle magique
+                for (let i = 0; i < 60; i++) {
+                    const angle = (Math.PI * 2 * i) / 60;
+                    const radius = 60 + Math.sin(Date.now() * 0.01 + i) * 10;
+                    this.addParticle(
+                        x + Math.cos(angle) * radius, 
+                        y + Math.sin(angle) * radius,
+                        Math.cos(angle) * 0.5, Math.sin(angle) * 0.5,
+                        Math.random() * 5 + 3, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.012
+                    );
+                }
+                // Runes
+                for (let i = 0; i < 8; i++) {
+                    const angle = (Math.PI * 2 * i) / 8;
+                    const distance = 80;
+                    this.addStar(
+                        x + Math.cos(angle) * distance,
+                        y + Math.sin(angle) * distance,
+                        0, 0, 8, '#00ddff', 1.0, 0.02
+                    );
+                }
+            }
+            
+            createArcherEffect(startX, endX, y) {
+                const colors = ['#00ff00', '#44ff44', '#88ff88', '#aaff00'];
+                for (let arrow = 0; arrow < 3; arrow++) {
+                    const offsetY = (arrow - 1) * 25;
+                    for (let i = 0; i < 20; i++) {
+                        const progress = i / 20;
+                        this.addParticle(
+                            startX + (endX - startX) * progress - i * 8,
+                            y + offsetY + (Math.random() - 0.5) * 6,
+                            (endX - startX) / 25, (Math.random() - 0.5) * 2,
+                            Math.random() * 4 + 2, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.025
+                        );
+                    }
+                }
+            }
+            
+            createPaladinEffect(x, y) {
+                const colors = ['#ffdd00', '#ffee44', '#fff888', '#ffffff'];
+                // Anneaux de lumière
+                for (let ring = 0; ring < 4; ring++) {
+                    const radius = 30 + ring * 20;
+                    const count = 20 + ring * 5;
+                    for (let i = 0; i < count; i++) {
+                        const angle = (Math.PI * 2 * i) / count + ring * 0.5;
+                        this.addParticle(
+                            x + Math.cos(angle) * radius,
+                            y + Math.sin(angle) * radius,
+                            0, -1.5, Math.random() * 4 + 2, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.008
+                        );
+                    }
+                }
+                // Particules montantes
+                for (let i = 0; i < 30; i++) {
+                    this.addParticle(
+                        x + (Math.random() - 0.5) * 100,
+                        y + 40, (Math.random() - 0.5) * 2, -3 - Math.random() * 2,
+                        Math.random() * 6 + 3, '#ffffff', 1.0, 0.015
+                    );
+                }
+            }
+            
+            createAssassinEffect(x, y) {
+                const colors = ['#440088', '#660099', '#8800bb', '#aa00dd'];
+                // Explosion d'ombre
+                for (let i = 0; i < 60; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 10 + 5;
+                    this.addParticle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed,
+                        Math.random() * 8 + 4, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.02);
+                }
+                // Étoiles critiques
+                for (let i = 0; i < 10; i++) {
+                    const angle = (Math.PI * 2 * i) / 10;
+                    const radius = 40 + Math.random() * 30;
+                    this.addStar(
+                        x + Math.cos(angle) * radius,
+                        y + Math.sin(angle) * radius,
+                        Math.cos(angle) * 3, Math.sin(angle) * 3,
+                        Math.random() * 8 + 6, '#ff44ff', 1.0, 0.025
+                    );
+                }
+            }
+            
+            createDruidEffect(x, y) {
+                const colors = ['#00aa00', '#44bb44', '#66cc66', '#88dd88'];
+                // Cercles de nature
+                for (let ring = 0; ring < 3; ring++) {
+                    const radius = 40 + ring * 25;
+                    const count = 24 + ring * 8;
+                    for (let i = 0; i < count; i++) {
+                        const angle = (Math.PI * 2 * i) / count + ring * 0.3;
+                        this.addParticle(
+                            x + Math.cos(angle) * radius,
+                            y + Math.sin(angle) * radius,
+                            Math.cos(angle) * 0.5, Math.sin(angle) * 0.5,
+                            Math.random() * 5 + 3, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.01
+                        );
+                    }
+                }
+                // Feuilles tourbillonnantes
+                for (let i = 0; i < 20; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 80 + 20;
+                    this.addParticle(
+                        x + Math.cos(angle) * distance,
+                        y + Math.sin(angle) * distance,
+                        (Math.random() - 0.5) * 3, -2 - Math.random() * 2,
+                        Math.random() * 6 + 4, '#44dd44', 1.0, 0.012
+                    );
+                }
+            }
+            
+            createBasicEffect(x, y) {
+                const colors = ['#ffffff', '#ffdd44', '#ff8844'];
+                for (let i = 0; i < 40; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 8 + 4;
+                    this.addParticle(x, y, Math.cos(angle) * speed, Math.sin(angle) * speed,
+                        Math.random() * 6 + 3, colors[Math.floor(Math.random() * colors.length)], 1.0, 0.02);
+                }
+            }
+            
+            addParticle(x, y, vx, vy, size, color, life, decay) {
+                this.particles.push({
+                    x, y, vx, vy, size, color, life, decay, type: 'normal'
+                });
+            }
+            
+            addShockwave(x, y, radius, maxRadius, color, life, decay) {
+                this.particles.push({
+                    x, y, radius, maxRadius, color, life, decay, type: 'shockwave'
+                });
+            }
+            
+            addStar(x, y, vx, vy, size, color, life, decay) {
+                this.particles.push({
+                    x, y, vx, vy, size, color, life, decay, type: 'star', rotation: 0, rotationSpeed: (Math.random() - 0.5) * 0.3
+                });
+            }
+            
+            startAnimation() {
+                if (this.animating) return;
+                this.animating = true;
+                this.animate();
+            }
+            
+            animate() {
+                if (!this.ctx || this.particles.length === 0) {
+                    this.animating = false;
+                    return;
+                }
+                
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    
+                    // Mise à jour
+                    this.updateParticle(p);
+                    
+                    // Dessin
+                    this.drawParticle(p);
+                    
+                    // Suppression
+                    if (p.life <= 0) {
+                        this.particles.splice(i, 1);
+                    }
+                }
+                
+                if (this.particles.length > 0) {
+                    requestAnimationFrame(() => this.animate());
+                } else {
+                    this.animating = false;
+                }
+            }
+            
+            updateParticle(p) {
+                p.life -= p.decay;
+                
+                if (p.type === 'shockwave') {
+                    p.radius += (p.maxRadius - p.radius) * 0.1;
+                } else {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.2; // Gravité
+                    
+                    if (p.type === 'star' && p.rotationSpeed) {
+                        p.rotation += p.rotationSpeed;
+                    }
+                }
+            }
+            
+            drawParticle(p) {
+                this.ctx.save();
+                this.ctx.globalAlpha = p.life;
+                
+                if (p.type === 'shockwave') {
+                    this.ctx.strokeStyle = p.color;
+                    this.ctx.lineWidth = 3;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                } else if (p.type === 'star') {
+                    this.ctx.translate(p.x, p.y);
+                    this.ctx.rotate(p.rotation);
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.font = `${p.size}px Arial`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.fillText('✦', 0, 0);
+                } else {
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+                
+                this.ctx.restore();
+            }
+            
+            clear() {
+                this.particles = [];
+                if (this.ctx) {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+                this.animating = false;
+                this.updateStatus('🧹 Effets nettoyés');
+            }
+        }
+        
+        // Instance globale
+        let engine = null;
+        
+        // Fonctions globales
+        function testClass(heroClass) {
+            if (engine) {
+                engine.createClassEffect(heroClass);
+            }
+        }
+        
+        function testBasic() {
+            if (engine) {
+                engine.createBasicEffect();
+            }
+        }
+        
+        function clearAll() {
+            if (engine) {
+                engine.clear();
+            }
+        }
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                engine = new EffectsEngine();
+                
+                if (engine.init()) {
+                    engine.updateStatus('✅ Système d\'effets initialisé - Cliquez pour tester!');
+                } else {
+                    engine.updateStatus('❌ Erreur lors de l\'initialisation');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                document.getElementById('status').textContent = '❌ Erreur: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

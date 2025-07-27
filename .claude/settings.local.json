@@ -17,7 +17,8 @@
       "Bash(Get-FileHash css/style.min.css)",
       "Bash(ls:*)",
       "Bash(echo %date% %time%)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(start \"\" \"C:\\Users\\Admin\\Desktop\\HEROES-ARENA-alpha\\test-simple.html\")"
     ],
     "deny": []
   }
