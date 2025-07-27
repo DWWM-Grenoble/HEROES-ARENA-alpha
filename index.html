@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heroes Arena - Ultimate Edition</title>
     <link rel="icon" href="./assets/icon/icons8-battle-16.png" type="image/x-icon">
-    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/style.min.css?v=20250727-1115">
 </head>
 <body>
     <div class="background"></div>
@@ -279,57 +279,45 @@
                             <!-- Interface moderne de sélection de classe -->
                             <div class="class-selector-modern" id="classSelector">
                                 <div class="class-cards-grid">
-                                    <div class="class-card" data-class="Guerrier" onclick="selectHeroClass('Guerrier')">
+                                    <div class="class-card" data-class="Guerrier" onclick="openClassModal('Guerrier')">
                                         <div class="class-icon">⚔️</div>
                                         <div class="class-info">
                                             <h4>Guerrier</h4>
-                                            <p>Maître de la Rage</p>
-                                            <div class="class-bonus">+20% Force</div>
                                         </div>
                                     </div>
                                     
-                                    <div class="class-card" data-class="Mage" onclick="selectHeroClass('Mage')">
+                                    <div class="class-card" data-class="Mage" onclick="openClassModal('Mage')">
                                         <div class="class-icon">🔮</div>
                                         <div class="class-info">
                                             <h4>Mage</h4>
-                                            <p>Seigneur des Boucliers</p>
-                                            <div class="class-bonus">+20% Magie</div>
                                         </div>
                                     </div>
                                     
-                                    <div class="class-card" data-class="Archer" onclick="selectHeroClass('Archer')">
+                                    <div class="class-card" data-class="Archer" onclick="openClassModal('Archer')">
                                         <div class="class-icon">🏹</div>
                                         <div class="class-info">
                                             <h4>Archer</h4>
-                                            <p>Tireur Mortel</p>
-                                            <div class="class-bonus">+20% Agilité</div>
                                         </div>
                                     </div>
                                     
-                                    <div class="class-card" data-class="Paladin" onclick="selectHeroClass('Paladin')">
+                                    <div class="class-card" data-class="Paladin" onclick="openClassModal('Paladin')">
                                         <div class="class-icon">✨</div>
                                         <div class="class-info">
                                             <h4>Paladin</h4>
-                                            <p>Gardien Lumineux</p>
-                                            <div class="class-bonus">+20% Défense</div>
                                         </div>
                                     </div>
                                     
-                                    <div class="class-card" data-class="Assassin" onclick="selectHeroClass('Assassin')">
+                                    <div class="class-card" data-class="Assassin" onclick="openClassModal('Assassin')">
                                         <div class="class-icon">🗡️</div>
                                         <div class="class-info">
                                             <h4>Assassin</h4>
-                                            <p>Maître de l'Ombre</p>
-                                            <div class="class-bonus">+20% Agilité</div>
                                         </div>
                                     </div>
                                     
-                                    <div class="class-card" data-class="Druide" onclick="selectHeroClass('Druide')">
+                                    <div class="class-card" data-class="Druide" onclick="openClassModal('Druide')">
                                         <div class="class-icon">🌿</div>
                                         <div class="class-info">
                                             <h4>Druide</h4>
-                                            <p>Gardien de la Nature</p>
-                                            <div class="class-bonus">+10% Magie/Défense</div>
                                         </div>
                                     </div>
                                 </div>
@@ -648,6 +636,47 @@
         </div>
     </div>
 
+    <!-- Modal de détails de classe -->
+    <div id="classModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="classModalTitle">Classe de Héros</h2>
+                <button class="modal-close" onclick="closeClassModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="class-details">
+                    <div class="class-icon-large" id="classModalIcon">⚔️</div>
+                    <div class="class-info-detailed">
+                        <h3 id="classModalName">Nom de la classe</h3>
+                        <p class="class-subtitle" id="classModalSubtitle">Titre de la classe</p>
+                        <p class="class-description" id="classModalDescription">Description détaillée de la classe...</p>
+                        <div class="class-bonuses">
+                            <h4>Bonus de classe :</h4>
+                            <div class="bonus-item" id="classModalBonus">+20% Force</div>
+                        </div>
+                        <div class="class-abilities">
+                            <h4>Capacités spéciales :</h4>
+                            <ul id="classModalAbilities">
+                                <!-- Les capacités seront insérées ici -->
+                            </ul>
+                        </div>
+                        <div class="class-power-preview">
+                            <h4>Pouvoir spécial :</h4>
+                            <div class="power-card" id="classModalPower">
+                                <h5 id="classModalPowerName">Nom du pouvoir</h5>
+                                <p id="classModalPowerDescription">Description du pouvoir spécial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="selectClassFromModal()" id="selectClassBtn">Choisir cette classe</button>
+                <button class="btn btn-secondary" onclick="closeClassModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation entre pages -->
     <script>
         // Variable pour éviter les exécutions automatiques
@@ -905,6 +934,211 @@
                 oldSelect.value = '';
             }
         }
+        
+        // ========== FONCTIONS POUR LE MODAL DE CLASSE ==========
+        
+        // Variable globale pour stocker la classe sélectionnée
+        let currentClassSelection = null;
+        
+        // Données des classes
+        const classData = {
+            Guerrier: {
+                name: 'Guerrier',
+                icon: '⚔️',
+                subtitle: 'Maître de la Rage',
+                description: 'Le Guerrier est un combattant féroce qui excelle dans le combat rapproché. Sa force brute et sa résistance exceptionnelle en font un adversaire redoutable sur le champ de bataille. Spécialisé dans l\'art de la guerre, il mène ses alliés vers la victoire.',
+                bonus: '+20% Force',
+                abilities: [
+                    'Maîtrise des armes lourdes et boucliers',
+                    'Résistance accrue aux dégâts physiques',
+                    'Techniques de combat avancées',
+                    'Intimidation et leadership au combat',
+                    'Régénération rapide des points de vie'
+                ],
+                power: {
+                    name: 'Rage Berserker',
+                    description: 'Augmente les dégâts de 50% pendant 3 tours, mais réduit la défense de 30%. Se déclenche automatiquement quand les PV tombent sous 40%.'
+                }
+            },
+            Mage: {
+                name: 'Mage',
+                icon: '🔮',
+                subtitle: 'Seigneur des Boucliers',
+                description: 'Le Mage est un érudit des arts mystiques, capable de manipuler les énergies magiques pour créer des effets dévastateurs ou protecteurs. Son vaste savoir lui permet de maîtriser les forces élémentaires et de tisser des sorts complexes.',
+                bonus: '+20% Magie',
+                abilities: [
+                    'Sorts offensifs élémentaires puissants',
+                    'Boucliers magiques et sorts de protection',
+                    'Manipulation des énergies mystiques',
+                    'Télépathie et divination',
+                    'Invocation de familiers magiques'
+                ],
+                power: {
+                    name: 'Bouclier Mystique',
+                    description: 'Crée un bouclier absorbant 75% des dégâts pendant 4 tours. Le bouclier renvoie 25% des dégâts absorbés à l\'attaquant.'
+                }
+            },
+            Archer: {
+                name: 'Archer',
+                icon: '🏹',
+                subtitle: 'Tireur Mortel',
+                description: 'L\'Archer est un maître du tir à distance, capable d\'éliminer ses ennemis avec une précision légendaire avant qu\'ils ne puissent s\'approcher. Son agilité exceptionnelle et sa connaissance du terrain en font un adversaire insaisissable.',
+                bonus: '+20% Agilité',
+                abilities: [
+                    'Précision de tir exceptionnelle',
+                    'Vitesse de déplacement accrue',
+                    'Flèches spéciales et pièges',
+                    'Camouflage et furtivité',
+                    'Tir multiple et ricochet'
+                ],
+                power: {
+                    name: 'Pluie de Flèches',
+                    description: 'Tire une volée de flèches qui frappent tous les ennemis, infligeant 150% des dégâts normaux avec 30% de chance de coup critique.'
+                }
+            },
+            Paladin: {
+                name: 'Paladin',
+                icon: '✨',
+                subtitle: 'Gardien Lumineux',
+                description: 'Le Paladin est un guerrier saint qui unit la force martiale à la sagesse divine. Protecteur des innocents et ennemi des ténèbres, il tire sa puissance de sa foi inébranlable et de sa dévotion à la justice.',
+                bonus: '+20% Défense',
+                abilities: [
+                    'Sorts de guérison et de purification',
+                    'Aura protectrice pour les alliés',
+                    'Résistance aux effets néfastes',
+                    'Bannissement des créatures maléfiques',
+                    'Bénédictions divines au combat'
+                ],
+                power: {
+                    name: 'Lumière Divine',
+                    description: 'Soigne instantanément 40% des PV et purifie tous les effets négatifs. Inflige également des dégâts sacrés aux ennemis proches.'
+                }
+            },
+            Assassin: {
+                name: 'Assassin',
+                icon: '🗡️',
+                subtitle: 'Maître de l\'Ombre',
+                description: 'L\'Assassin est un tueur silencieux qui frappe depuis les ombres avec une efficacité mortelle. Sa vitesse fulgurante et sa maîtrise des poisons en font un adversaire que l\'on ne voit jamais venir.',
+                bonus: '+20% Agilité',
+                abilities: [
+                    'Attaques furtives dévastatrices',
+                    'Maîtrise des poisons et toxines',
+                    'Vitesse d\'attaque exceptionnelle',
+                    'Invisibilité temporaire',
+                    'Coups critiques mortels'
+                ],
+                power: {
+                    name: 'Frappe Assassine',
+                    description: 'Attaque surprise qui inflige 300% des dégâts normaux et applique un poison mortel pendant 3 tours. Ignore les armures.'
+                }
+            },
+            Druide: {
+                name: 'Druide',
+                icon: '🌿',
+                subtitle: 'Gardien de la Nature',
+                description: 'Le Druide vit en harmonie parfaite avec les forces naturelles, capable d\'invoquer le pouvoir des éléments et de communier avec toutes les créatures vivantes. Protecteur de l\'équilibre naturel.',
+                bonus: '+10% Magie/Défense',
+                abilities: [
+                    'Métamorphose en créatures animales',
+                    'Contrôle des éléments naturels',
+                    'Communication avec la faune',
+                    'Guérison par les plantes médicinales',
+                    'Invocation d\'alliés de la nature'
+                ],
+                power: {
+                    name: 'Furie de la Nature',
+                    description: 'Invoque des lianes et des racines qui immobilisent l\'ennemi pendant 2 tours tout en régénérant 15% des PV par tour.'
+                }
+            }
+        };
+        
+        /**
+         * Ouvrir le modal de détails de classe
+         */
+        window.openClassModal = function(className) {
+            currentClassSelection = className;
+            const data = classData[className];
+            
+            if (!data) {
+                console.error('Données de classe non trouvées pour:', className);
+                return;
+            }
+            
+            // Mettre à jour le contenu du modal
+            document.getElementById('classModalTitle').textContent = `Classe : ${data.name}`;
+            document.getElementById('classModalIcon').textContent = data.icon;
+            document.getElementById('classModalName').textContent = data.name;
+            document.getElementById('classModalSubtitle').textContent = data.subtitle;
+            document.getElementById('classModalDescription').textContent = data.description;
+            document.getElementById('classModalBonus').textContent = data.bonus;
+            
+            // Mettre à jour les capacités
+            const abilitiesList = document.getElementById('classModalAbilities');
+            abilitiesList.innerHTML = '';
+            data.abilities.forEach(ability => {
+                const li = document.createElement('li');
+                li.textContent = ability;
+                abilitiesList.appendChild(li);
+            });
+            
+            // Mettre à jour le pouvoir spécial
+            document.getElementById('classModalPowerName').textContent = data.power.name;
+            document.getElementById('classModalPowerDescription').textContent = data.power.description;
+            
+            // Mettre à jour le bouton de sélection
+            document.getElementById('selectClassBtn').textContent = `Choisir ${data.name}`;
+            
+            // Afficher le modal
+            document.getElementById('classModal').style.display = 'flex';
+            
+            // Ajouter la classe pour l\'animation si nécessaire
+            setTimeout(() => {
+                document.getElementById('classModal').style.opacity = '1';
+            }, 10);
+        };
+        
+        /**
+         * Fermer le modal de classe
+         */
+        window.closeClassModal = function() {
+            const modal = document.getElementById('classModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            currentClassSelection = null;
+        };
+        
+        /**
+         * Sélectionner la classe depuis le modal
+         */
+        window.selectClassFromModal = function() {
+            if (currentClassSelection) {
+                // Appeler la fonction originale de sélection
+                selectHeroClass(currentClassSelection);
+                // Fermer le modal
+                closeClassModal();
+            }
+        };
+        
+        // Fermer le modal de classe en cliquant sur l\'overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('classModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeClassModal();
+                    }
+                });
+            }
+        });
+        
+        // Fermer le modal avec la touche Échap (gérer les deux modals)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeClassModal();
+            }
+        });
         
         function enterApplication() {
             console.log('Navigation vers la page de connexion');

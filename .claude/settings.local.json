@@ -11,7 +11,13 @@
       "Bash(git push:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(dir:*)",
+      "Bash(tasklist:*)",
+      "Bash(Get-FileHash css/style.min.css)",
+      "Bash(ls:*)",
+      "Bash(echo %date% %time%)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

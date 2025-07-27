@@ -1385,3 +1385,194 @@
         }
     }
 }
+
+// ========== MODAL DE DÉTAILS DE CLASSE ==========
+
+.class-details {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: get($spacings, xl);
+    align-items: start;
+
+    @include tablet {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+        text-align: center;
+    }
+
+    @include mobile {
+        gap: get($spacings, md);
+    }
+}
+
+.class-icon-large {
+    font-size: 120px;
+    text-align: center;
+    padding: get($spacings, xl);
+    background: rgba($primary-gold, 0.1);
+    border-radius: get($border-radius, lg);
+    border: 2px solid rgba($primary-gold, 0.3);
+    box-shadow: 
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba($primary-gold, 0.2);
+    filter: drop-shadow(0 0 20px rgba($primary-gold, 0.3));
+
+    @include tablet {
+        font-size: 100px;
+        padding: get($spacings, lg);
+    }
+
+    @include mobile {
+        font-size: 80px;
+        padding: get($spacings, md);
+    }
+
+    @include xs {
+        font-size: 60px;
+        padding: get($spacings, sm);
+    }
+}
+
+.class-info-detailed {
+    h3 {
+        color: $primary-gold;
+        font-family: $font-family-secondary;
+        font-size: get($font-sizes, 2xl);
+        margin-bottom: get($spacings, xs);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        @include mobile {
+            font-size: get($font-sizes, xl);
+        }
+
+        @include xs {
+            font-size: get($font-sizes, lg);
+        }
+    }
+}
+
+.class-subtitle {
+    color: $text-secondary;
+    font-size: get($font-sizes, lg);
+    font-style: italic;
+    margin-bottom: get($spacings, md);
+    font-weight: get($font-weights, medium);
+
+    @include mobile {
+        font-size: get($font-sizes, base);
+        margin-bottom: get($spacings, sm);
+    }
+}
+
+.class-description {
+    color: $text-primary;
+    font-size: get($font-sizes, base);
+    line-height: 1.6;
+    margin-bottom: get($spacings, lg);
+
+    @include mobile {
+        font-size: get($font-sizes, sm);
+        margin-bottom: get($spacings, md);
+    }
+}
+
+.class-bonuses, .class-abilities, .class-power-preview {
+    margin-bottom: get($spacings, lg);
+
+    h4 {
+        color: $text-secondary;
+        font-size: get($font-sizes, lg);
+        margin-bottom: get($spacings, sm);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+
+        @include mobile {
+            font-size: get($font-sizes, base);
+        }
+    }
+
+    @include mobile {
+        margin-bottom: get($spacings, md);
+    }
+}
+
+.bonus-item {
+    display: inline-block;
+    padding: get($spacings, xs) get($spacings, md);
+    background: rgba($primary-gold, 0.2);
+    border: 1px solid rgba($primary-gold, 0.4);
+    border-radius: get($border-radius, sm);
+    color: $primary-gold;
+    font-weight: get($font-weights, bold);
+    font-size: get($font-sizes, sm);
+    text-shadow: 0 0 8px rgba($primary-gold, 0.3);
+
+    @include mobile {
+        padding: get($spacings, xs) get($spacings, sm);
+        font-size: get($font-sizes, xs);
+    }
+}
+
+.class-abilities {
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            color: $text-primary;
+            padding: get($spacings, xs) 0;
+            position: relative;
+            padding-left: get($spacings, lg);
+
+            &::before {
+                content: '⚡';
+                position: absolute;
+                left: 0;
+                color: $primary-gold;
+                font-size: get($font-sizes, sm);
+            }
+
+            @include mobile {
+                font-size: get($font-sizes, sm);
+                padding-left: get($spacings, md);
+            }
+        }
+    }
+}
+
+.power-card {
+    background: rgba($primary-gold, 0.1);
+    border: 1px solid rgba($primary-gold, 0.3);
+    border-radius: get($border-radius, md);
+    padding: get($spacings, md);
+    
+    h5 {
+        color: $primary-gold;
+        font-size: get($font-sizes, lg);
+        margin-bottom: get($spacings, xs);
+        font-weight: get($font-weights, bold);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+
+        @include mobile {
+            font-size: get($font-sizes, base);
+        }
+    }
+
+    p {
+        color: $text-primary;
+        font-size: get($font-sizes, sm);
+        line-height: 1.5;
+        margin: 0;
+
+        @include mobile {
+            font-size: get($font-sizes, xs);
+        }
+    }
+
+    @include mobile {
+        padding: get($spacings, sm);
+    }
+}

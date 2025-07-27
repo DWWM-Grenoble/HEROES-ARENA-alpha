@@ -606,7 +606,8 @@ body::after {
 .header {
   text-align: center;
   padding: 60px 0 40px 0;
-  background: linear-gradient(180deg, rgba(248, 245, 240, 0.02) 0%, transparent 100%), linear-gradient(135deg, rgba(26, 22, 18, 0.98) 0%, rgb(15, 13, 10) 100%);
+  background-image: url(/assets/background/textures/marbre-noir2.png);
+  background-repeat: no-repeat;
   border-radius: 16px;
   border: 3px solid #2a2a2a;
   box-shadow: 0 25px 50px rgba(10, 10, 10, 0.9), inset 0 1px 0 rgba(248, 245, 240, 0.08), 0 0 25px rgba(212, 175, 55, 0.2);
@@ -636,7 +637,7 @@ body::after {
   background-clip: text;
   margin-bottom: 8px;
   letter-spacing: 0.15em;
-  text-shadow: 0 0 8px rgb(0, 0, 0), 0 2px 4px rgb(0, 0, 0), 0 0 15px rgba(40, 40, 40, 0.2);
+  text-shadow: 0 0 8px rgb(121, 121, 121), 0 2px 4px rgb(0, 0, 0), 0 0 15px rgba(40, 40, 40, 0.2);
   text-transform: uppercase;
   filter: drop-shadow(0 0 10px rgb(0, 0, 0));
   position: relative;
@@ -5033,6 +5034,200 @@ body::after {
   }
 }
 
+.class-details {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .class-details {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .class-details {
+    gap: 16px;
+  }
+}
+
+.class-icon-large {
+  font-size: 120px;
+  text-align: center;
+  padding: 32px;
+  background: rgba(224, 224, 224, 0.1);
+  border-radius: 16px;
+  border: 2px solid rgba(224, 224, 224, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(224, 224, 224, 0.2);
+  filter: drop-shadow(0 0 20px rgba(224, 224, 224, 0.3));
+}
+@media (max-width: 768px) {
+  .class-icon-large {
+    font-size: 100px;
+    padding: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .class-icon-large {
+    font-size: 80px;
+    padding: 16px;
+  }
+}
+@media (max-width: 360px) {
+  .class-icon-large {
+    font-size: 60px;
+    padding: 8px;
+  }
+}
+
+.class-info-detailed h3 {
+  color: #e0e0e0;
+  font-family: "MedievalSharp", "Uncial Antiqua", "Celtic Hand", "Old English Text MT", serif;
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+@media (max-width: 480px) {
+  .class-info-detailed h3 {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 360px) {
+  .class-info-detailed h3 {
+    font-size: 1.125rem;
+  }
+}
+
+.class-subtitle {
+  color: #e0e0e0;
+  font-size: 1.125rem;
+  font-style: italic;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+@media (max-width: 480px) {
+  .class-subtitle {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+}
+
+.class-description {
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+@media (max-width: 480px) {
+  .class-description {
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+  }
+}
+
+.class-bonuses, .class-abilities, .class-power-preview {
+  margin-bottom: 24px;
+}
+.class-bonuses h4, .class-abilities h4, .class-power-preview h4 {
+  color: #e0e0e0;
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+@media (max-width: 480px) {
+  .class-bonuses h4, .class-abilities h4, .class-power-preview h4 {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 480px) {
+  .class-bonuses, .class-abilities, .class-power-preview {
+    margin-bottom: 16px;
+  }
+}
+
+.bonus-item {
+  display: inline-block;
+  padding: 4px 16px;
+  background: rgba(224, 224, 224, 0.2);
+  border: 1px solid rgba(224, 224, 224, 0.4);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-shadow: 0 0 8px rgba(224, 224, 224, 0.3);
+}
+@media (max-width: 480px) {
+  .bonus-item {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+.class-abilities ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.class-abilities ul li {
+  color: #ffffff;
+  padding: 4px 0;
+  position: relative;
+  padding-left: 24px;
+}
+.class-abilities ul li::before {
+  content: "⚡";
+  position: absolute;
+  left: 0;
+  color: #e0e0e0;
+  font-size: 0.875rem;
+}
+@media (max-width: 480px) {
+  .class-abilities ul li {
+    font-size: 0.875rem;
+    padding-left: 16px;
+  }
+}
+
+.power-card {
+  background: rgba(224, 224, 224, 0.1);
+  border: 1px solid rgba(224, 224, 224, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+}
+.power-card h5 {
+  color: #e0e0e0;
+  font-size: 1.125rem;
+  margin-bottom: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+@media (max-width: 480px) {
+  .power-card h5 {
+    font-size: 1rem;
+  }
+}
+.power-card p {
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+@media (max-width: 480px) {
+  .power-card p {
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 480px) {
+  .power-card {
+    padding: 8px;
+  }
+}
+
 .content {
   background: linear-gradient(135deg, rgba(5, 5, 5, 0.98) 0%, rgb(3, 3, 3) 100%);
   border-radius: 20px;
@@ -5467,24 +5662,24 @@ body::after {
 
 .class-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
 }
 @media (max-width: 768px) {
   .class-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 4px;
   }
 }
 @media (max-width: 480px) {
   .class-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 4px;
   }
 }
 @media (max-width: 360px) {
   .class-cards-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 4px;
   }
 }
@@ -5498,7 +5693,7 @@ body::after {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  min-height: 120px;
+  min-height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5508,19 +5703,19 @@ body::after {
 @media (max-width: 768px) {
   .class-card {
     padding: 8px;
-    min-height: 100px;
+    min-height: 90px;
   }
 }
 @media (max-width: 480px) {
   .class-card {
-    padding: 8px;
-    min-height: 90px;
+    padding: 4px;
+    min-height: 80px;
   }
 }
 @media (max-width: 360px) {
   .class-card {
     padding: 4px;
-    min-height: 80px;
+    min-height: 75px;
   }
 }
 .class-card:hover {
@@ -6226,17 +6421,17 @@ body::after {
 }
 .btn:hover {
   border-color: #ffffff;
-  box-shadow: 0 6px 16px rgba(26, 22, 18, 0.8), 0 0 25px rgba(255, 255, 255, 0.2), 0 0 15px rgba(255, 68, 68, 0.3), inset 0 1px 0 rgba(248, 245, 240, 0.3);
-  background: linear-gradient(135deg, #ffffff 0%, #2a2a2a 30%, #ff4444 70%, #ffffff 100%);
+  box-shadow: 0 4px 10px rgba(26, 22, 18, 0.6), 0 0 25px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(248, 245, 240, 0.2);
+  background: linear-gradient(135deg, #2a2a2a 0%, #ffffff 30%, #2a2a2a 70%, #242424 100%);
   color: #ffffff;
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.9);
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.6);
 }
 .btn:hover::before {
   left: 100%;
 }
 @media (max-width: 480px) {
   .btn:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 0 8px rgba(212, 98, 26, 0.3), inset 0 1px 0 rgba(196, 196, 196, 0.2);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7), 0 0 6px rgba(212, 98, 26, 0.2), inset 0 1px 0 rgba(196, 196, 196, 0.1);
   }
 }
 .btn:active {

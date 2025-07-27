@@ -1,5 +1,5 @@
-@use '../abstracts/variables' as *;
-@use '../abstracts/mixins' as *;
+@use '../abstracts/variables'as *;
+@use '../abstracts/mixins'as *;
 
 // ========== COMPOSANT FORMS : components/_forms.scss ==========
 
@@ -8,7 +8,7 @@
     border-radius: get($border-radius, xl);
     padding: get($spacings, 2xl);
     border: 2px solid $blood-black;
-    box-shadow: 
+    box-shadow:
         get($shadows, xl),
         get($shadows, void);
     min-height: 600px;
@@ -153,7 +153,7 @@
     width: 100%;
     padding: get($spacings, md) get($spacings, lg);
     // Ultra dark void input
-    background: 
+    background:
         // Minimal dark texture
         radial-gradient(circle at 20% 30%, rgba(8, 8, 8, 0.05) 0%, transparent 50%),
         radial-gradient(circle at 80% 70%, rgba(10, 10, 10, 0.03) 0%, transparent 40%),
@@ -165,11 +165,11 @@
     font-family: $font-family-accent;
     font-size: get($font-sizes, base);
     transition: all get($transitions, normal);
-    box-shadow: 
+    box-shadow:
         inset 0 2px 4px rgba(0, 0, 0, 1),
         inset 0 0 8px rgba(0, 0, 0, 0.8);
     min-height: 44px; // Touch-friendly minimum height
-    
+
     // Dark placeholder
     &::placeholder {
         color: rgba(60, 60, 60, 0.6);
@@ -196,18 +196,18 @@
     &:focus {
         outline: none;
         border-color: $decay-brown;
-        box-shadow: 
+        box-shadow:
             0 0 0 3px rgba(40, 40, 40, 0.1),
             0 0 8px rgba(30, 30, 30, 0.2),
             inset 0 2px 4px rgba(0, 0, 0, 1),
             inset 0 0 8px rgba(0, 0, 0, 0.9);
-        background: 
+        background:
             radial-gradient(circle at 25% 25%, rgba(10, 10, 10, 0.08) 0%, transparent 50%),
             radial-gradient(circle at 75% 75%, rgba(12, 12, 12, 0.05) 0%, transparent 40%),
             linear-gradient(135deg, rgba(8, 8, 8, 0.98) 0%, rgba(5, 5, 5, 1) 100%);
 
         @include mobile {
-            box-shadow: 
+            box-shadow:
                 0 0 0 3px rgba(212, 98, 26, 0.3),
                 inset 0 2px 4px rgba(0, 0, 0, 0.9);
         }
@@ -348,7 +348,7 @@
         margin-bottom: get($spacings, xl);
         letter-spacing: 0.08em;
     }
-    
+
     @include mobile {
         font-size: get($font-sizes, 2xl);
         margin-bottom: get($spacings, lg);
@@ -395,7 +395,8 @@
 }
 
 // Hidden elements
-.hidden, .hidden-file-input {
+.hidden,
+.hidden-file-input {
     display: none;
 }
 
@@ -403,14 +404,15 @@
 .form-actions .btn,
 .btn[onclick*="createHeroFromForm"],
 .btn[onclick*="randomStats"] {
+
     // Supprimer les transformations problématiques
     &:hover {
         transform: none !important;
         // Conserver seulement les effets visuels stables
-        background: 
+        background:
             linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
         border-color: $primary-gold;
-        box-shadow: 
+        box-shadow:
             0 0 15px rgba(212, 175, 55, 0.5),
             0 4px 12px rgba(0, 0, 0, 0.3),
             inset 0 1px 0 rgba(255, 248, 225, 0.6);
@@ -418,9 +420,9 @@
 
     &:active {
         transform: none !important;
-        background: 
+        background:
             linear-gradient(135deg, #c9a732 0%, #b8962e 50%, #c9a732 100%);
-        box-shadow: 
+        box-shadow:
             0 2px 6px rgba(0, 0, 0, 0.4),
             inset 0 2px 4px rgba(0, 0, 0, 0.2);
     }
@@ -438,191 +440,136 @@
 
 .class-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: get($spacings, md);
-    
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: get($spacings, sm);
+
     @include tablet {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: get($spacings, sm);
-    }
-    
-    @include mobile {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: get($spacings, xs);
     }
-    
+
+    @include mobile {
+        grid-template-columns: repeat(3, 1fr);
+        gap: get($spacings, xs);
+    }
+
     @include xs {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: get($spacings, xs);
     }
 }
 
 .class-card {
-    background: 
-        radial-gradient(circle at 20% 30%, rgba(8, 8, 8, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(10, 10, 10, 0.03) 0%, transparent 40%),
-        linear-gradient(135deg, rgba(5, 5, 5, 0.95) 0%, rgba(3, 3, 3, 1) 100%);
-    backdrop-filter: blur(10px);
-    border: 2px solid $crimson-shadow;
+    aspect-ratio: 1;
+    background: rgba(15, 23, 42, 0.6);
+    border: 2px solid rgba(212, 175, 55, 0.4);
     border-radius: get($border-radius, md);
-    padding: get($spacings, md);
     cursor: pointer;
     transition: all get($transitions, normal);
-    position: relative;
-    min-height: 120px;
     @include flex-center;
     flex-direction: column;
     text-align: center;
-    
-    @include tablet {
-        padding: get($spacings, sm);
-        min-height: 100px;
-    }
-    
-    @include mobile {
-        padding: get($spacings, sm);
-        min-height: 90px;
-    }
-    
-    @include xs {
-        padding: get($spacings, xs);
-        min-height: 80px;
-    }
-    
+    position: relative;
+
     &:hover {
-        border-color: $decay-brown;
-        transform: translateY(-2px);
-        background: 
-            radial-gradient(circle at 25% 25%, rgba(10, 10, 10, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(12, 12, 12, 0.05) 0%, transparent 40%),
-            linear-gradient(135deg, rgba(8, 8, 8, 0.98) 0%, rgba(5, 5, 5, 1) 100%);
-        box-shadow: 
-            0 4px 12px rgba(0, 0, 0, 0.4),
-            0 0 8px rgba(212, 98, 26, 0.2);
-            
+        border-color: rgba(212, 175, 55, 0.8);
+        transform: scale(1.05);
+        background: rgba(212, 175, 55, 0.1);
+
         .class-icon {
             transform: scale(1.1);
         }
+
+        .class-info h4 {
+            color: rgba(212, 175, 55, 0.9);
+        }
     }
-    
+
     &.selected {
         border-color: $primary-gold;
-        background: 
-            radial-gradient(circle at 25% 25%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(230, 193, 95, 0.05) 0%, transparent 40%),
-            linear-gradient(135deg, rgba(15, 15, 10, 0.98) 0%, rgba(10, 10, 5, 1) 100%);
-        box-shadow: 
-            0 0 0 2px rgba(212, 175, 55, 0.3),
-            0 4px 12px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-        
+        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.5);
+        transform: scale(1.05);
+        background: rgba(212, 175, 55, 0.15);
+
         .class-icon {
+            color: $primary-gold;
             transform: scale(1.1);
         }
-        
-        .class-bonus {
+
+        .class-info h4 {
             color: $primary-gold;
-            text-shadow: 0 0 4px rgba(212, 175, 55, 0.5);
         }
     }
-    
+
     &:active {
-        transform: translateY(0);
+        transform: scale(1.02);
     }
 }
 
 .class-icon {
-    font-size: get($font-sizes, 2xl);
-    margin-bottom: get($spacings, xs);
-    transition: transform get($transitions, normal);
-    
+    font-size: get($font-sizes, xl);
+    margin-bottom: 4px;
+    transition: all get($transitions, normal);
+    color: rgba(212, 175, 55, 0.8);
+
     @include tablet {
-        font-size: get($font-sizes, xl);
-    }
-    
-    @include mobile {
         font-size: get($font-sizes, lg);
-        margin-bottom: get($spacings, xs);
+        margin-bottom: 2px;
     }
-    
-    @include xs {
+
+    @include mobile {
         font-size: get($font-sizes, base);
         margin-bottom: 2px;
+    }
+
+    @include xs {
+        font-size: get($font-sizes, sm);
+        margin-bottom: 1px;
     }
 }
 
 .class-info {
     text-align: center;
-    
+
     h4 {
-        color: $text-primary;
-        font-weight: get($font-weights, bold);
-        font-size: get($font-sizes, base);
-        margin-bottom: get($spacings, xs);
+        color: rgba(224, 224, 224, 0.9);
+        font-weight: get($font-weights, semibold);
+        font-size: get($font-sizes, xs) !important;
+        margin: 0;
         font-family: $font-family-secondary;
-        
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        transition: all get($transitions, normal);
+        line-height: 1.2;
+
         @include tablet {
-            font-size: get($font-sizes, sm);
-        }
-        
-        @include mobile {
-            font-size: get($font-sizes, sm);
-            margin-bottom: 2px;
-        }
-        
-        @include xs {
-            font-size: get($font-sizes, xs);
-            margin-bottom: 1px;
-        }
-    }
-    
-    p {
-        color: $text-secondary;
-        font-size: get($font-sizes, xs);
-        margin-bottom: get($spacings, xs);
-        font-style: italic;
-        
-        @include mobile {
-            font-size: get($font-sizes, xs);
-            margin-bottom: 2px;
-        }
-        
-        @include xs {
             font-size: 10px;
-            margin-bottom: 1px;
+            letter-spacing: 0.01em;
+        }
+
+        @include mobile {
+            font-size: 9px;
+            letter-spacing: 0;
+        }
+
+        @include xs {
+            font-size: 8px;
+            letter-spacing: 0;
         }
     }
 }
 
-.class-bonus {
-    background: rgba(212, 175, 55, 0.2);
-    color: $primary-gold;
-    padding: 2px get($spacings, xs);
-    border-radius: get($border-radius, sm);
-    font-size: get($font-sizes, xs);
-    font-weight: get($font-weights, semibold);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    
-    @include mobile {
-        padding: 1px get($spacings, xs);
-        font-size: 10px;
-    }
-    
-    @include xs {
-        padding: 1px 4px;
-        font-size: 9px;
-    }
-}
+// Style simplifié : seulement icône et nom de spécialisation
 
 // Specialty Selector Modern Interface (Avatar Categories)
 .specialty-selector-modern {
     margin: get($spacings, lg) 0 get($spacings, xl) 0;
-    background: 
+    background:
         linear-gradient(135deg, rgba(15, 23, 42, 0.3) 0%, rgba(30, 41, 59, 0.2) 100%);
     border-radius: get($border-radius, lg);
     padding: get($spacings, lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    
+
     @include mobile {
         margin: get($spacings, md) 0 get($spacings, lg) 0;
         padding: get($spacings, md);
@@ -638,12 +585,12 @@
     font-family: $font-family-secondary;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    
+
     @include tablet {
         font-size: get($font-sizes, lg);
         margin-bottom: get($spacings, md);
     }
-    
+
     @include mobile {
         font-size: get($font-sizes, base);
         margin-bottom: get($spacings, sm);
@@ -655,17 +602,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: get($spacings, md);
-    
+
     @include tablet {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
         gap: get($spacings, sm);
     }
-    
+
     @include mobile {
         grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
         gap: get($spacings, sm);
     }
-    
+
     @include xs {
         grid-template-columns: repeat(2, 1fr);
         gap: get($spacings, xs);
@@ -673,7 +620,7 @@
 }
 
 .specialty-card {
-    background: 
+    background:
         linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
     backdrop-filter: blur(20px);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -687,7 +634,7 @@
     flex-direction: column;
     text-align: center;
     overflow: hidden;
-    
+
     // Effet de brillance subtle
     &::before {
         content: '';
@@ -696,78 +643,77 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.1), 
-            transparent
-        );
+        background: linear-gradient(90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent);
         transition: left 0.6s ease;
     }
-    
+
     @include tablet {
         padding: get($spacings, md);
         min-height: 95px;
     }
-    
+
     @include mobile {
         padding: get($spacings, sm);
         min-height: 85px;
     }
-    
+
     @include xs {
         padding: get($spacings, sm);
         min-height: 75px;
     }
-    
+
     &:hover {
         border-color: rgba(212, 175, 55, 0.4);
         transform: translateY(-3px) scale(1.02);
-        background: 
+        background:
             linear-gradient(145deg, rgba(45, 55, 72, 0.9) 0%, rgba(30, 41, 59, 0.95) 100%);
-        box-shadow: 
+        box-shadow:
             0 8px 25px rgba(0, 0, 0, 0.4),
             0 0 15px rgba(212, 175, 55, 0.2),
             inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            
+
         &::before {
             left: 100%;
         }
-            
+
         .specialty-icon {
             transform: scale(1.2) rotate(5deg);
         }
-        
+
         .specialty-name {
             color: rgba(212, 175, 55, 0.9);
         }
     }
-    
+
     &.active {
         border-color: $primary-gold;
-        background: 
+        background:
             linear-gradient(145deg, rgba(212, 175, 55, 0.15) 0%, rgba(184, 150, 46, 0.1) 100%);
-        box-shadow: 
+        box-shadow:
             0 0 0 3px rgba(212, 175, 55, 0.3),
             0 8px 25px rgba(0, 0, 0, 0.4),
             0 0 20px rgba(212, 175, 55, 0.3),
             inset 0 1px 0 rgba(255, 248, 220, 0.2);
         transform: translateY(-3px) scale(1.02);
-        
+
         .specialty-icon {
             transform: scale(1.2);
             filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.5));
         }
-        
+
         .specialty-name {
             color: $primary-gold;
             text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
         }
-        
+
         .specialty-desc {
             color: rgba(212, 175, 55, 0.8);
         }
     }
-    
+
     &:active {
         transform: translateY(-1px) scale(1.01);
     }
@@ -778,17 +724,17 @@
     margin-bottom: get($spacings, xs);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    
+
     @include tablet {
         font-size: get($font-sizes, xl);
         margin-bottom: get($spacings, xs);
     }
-    
+
     @include mobile {
         font-size: get($font-sizes, lg);
         margin-bottom: 4px;
     }
-    
+
     @include xs {
         font-size: get($font-sizes, base);
         margin-bottom: 2px;
@@ -808,17 +754,17 @@
     font-family: $font-family-secondary;
     letter-spacing: 0.02em;
     transition: all 0.3s ease;
-    
+
     @include tablet {
         font-size: get($font-sizes, sm);
         margin-bottom: 3px;
     }
-    
+
     @include mobile {
         font-size: get($font-sizes, sm);
         margin-bottom: 2px;
     }
-    
+
     @include xs {
         font-size: get($font-sizes, xs);
         margin-bottom: 1px;
@@ -832,15 +778,15 @@
     line-height: 1.2;
     transition: all 0.3s ease;
     opacity: 0.8;
-    
+
     @include tablet {
         font-size: 10px;
     }
-    
+
     @include mobile {
         font-size: 9px;
     }
-    
+
     @include xs {
         font-size: 8px;
         line-height: 1.1;
@@ -852,6 +798,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
