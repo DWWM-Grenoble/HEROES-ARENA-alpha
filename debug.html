@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Console - Heroes Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            color: #00ff00;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #88cc88;
+        }
+
+        .debug-section {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .debug-section h2 {
+            color: #ffff00;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .debug-btn {
+            background: #333;
+            border: 1px solid #666;
+            color: #00ff00;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .debug-btn:hover {
+            background: #444;
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .debug-btn.danger {
+            color: #ff6666;
+            border-color: #ff6666;
+        }
+
+        .debug-btn.danger:hover {
+            border-color: #ff3333;
+            box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);
+        }
+
+        .debug-btn.warning {
+            color: #ffaa00;
+            border-color: #ffaa00;
+        }
+
+        .debug-btn.warning:hover {
+            border-color: #ff8800;
+            box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
+        }
+
+        .console-output {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .log-info { color: #00ff00; }
+        .log-warning { color: #ffaa00; }
+        .log-error { color: #ff6666; }
+        .log-debug { color: #88aaff; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .stat-card h3 {
+            color: #88aaff;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #00ff00;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #1a1a1a;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .back-button:hover {
+            background: #88ff88;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="goBack()">← Retour</button>
+
+    <div class="header">
+        <h1>🐛 DEBUG CONSOLE</h1>
+        <p>Outils de développement Heroes Arena</p>
+    </div>
+
+    <div class="debug-section">
+        <h2>📊 Statistiques système</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Héros sauvegardés</h3>
+                <div class="stat-value" id="heroes-count">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>Taille du cache</h3>
+                <div class="stat-value" id="cache-size">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>Session active</h3>
+                <div class="stat-value" id="session-time">--</div>
+            </div>
+            <div class="stat-card">
+                <h3>Performances</h3>
+                <div class="stat-value" id="performance">--</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🔧 Actions de debug</h2>
+        <div class="button-grid">
+            <button class="debug-btn" onclick="debugActions.exportData()">
+                📤 Exporter données
+            </button>
+            <button class="debug-btn" onclick="debugActions.importData()">
+                📥 Importer données
+            </button>
+            <button class="debug-btn" onclick="debugActions.validateData()">
+                ✅ Valider données
+            </button>
+            <button class="debug-btn" onclick="debugActions.testCombat()">
+                ⚔️ Test combat
+            </button>
+            <button class="debug-btn warning" onclick="debugActions.resetSession()">
+                🔄 Reset session
+            </button>
+            <button class="debug-btn danger" onclick="debugActions.clearAll()">
+                🗑️ Tout effacer
+            </button>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2>📝 Console de sortie</h2>
+        <div class="console-output" id="console-output">
+            <div class="log-entry log-info">DEBUG CONSOLE INITIALISÉE</div>
+            <div class="log-entry log-info">En attente de commandes...</div>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🧪 Tests rapides</h2>
+        <div class="button-grid">
+            <button class="debug-btn" onclick="window.open('./test-effets-autonome.html', '_blank')">
+                🎨 Test effets visuels
+            </button>
+            <button class="debug-btn" onclick="window.open('./test-final.html', '_blank')">
+                🏟️ Test final
+            </button>
+            <button class="debug-btn" onclick="debugActions.performanceTest()">
+                ⚡ Test performance
+            </button>
+            <button class="debug-btn" onclick="debugActions.memoryUsage()">
+                🧠 Usage mémoire
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Système de log
+        class DebugLogger {
+            constructor() {
+                this.output = document.getElementById('console-output');
+            }
+
+            log(message, type = 'info') {
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                
+                this.output.appendChild(entry);
+                this.output.scrollTop = this.output.scrollHeight;
+                
+                // Limiter à 100 entrées
+                while (this.output.children.length > 100) {
+                    this.output.removeChild(this.output.firstChild);
+                }
+            }
+
+            info(message) { this.log(message, 'info'); }
+            warning(message) { this.log(message, 'warning'); }
+            error(message) { this.log(message, 'error'); }
+            debug(message) { this.log(message, 'debug'); }
+        }
+
+        const logger = new DebugLogger();
+
+        // Actions de debug
+        const debugActions = {
+            exportData() {
+                try {
+                    const data = {
+                        heroes: JSON.parse(localStorage.getItem('heroes') || '[]'),
+                        settings: JSON.parse(localStorage.getItem('gameSettings') || '{}'),
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `heroes-arena-backup-${Date.now()}.json`;
+                    a.click();
+                    
+                    logger.info('Données exportées avec succès');
+                } catch (error) {
+                    logger.error(`Erreur export: ${error.message}`);
+                }
+            },
+
+            importData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const data = JSON.parse(e.target.result);
+                                if (data.heroes) {
+                                    localStorage.setItem('heroes', JSON.stringify(data.heroes));
+                                    logger.info(`${data.heroes.length} héros importés`);
+                                }
+                                if (data.settings) {
+                                    localStorage.setItem('gameSettings', JSON.stringify(data.settings));
+                                    logger.info('Paramètres importés');
+                                }
+                                this.updateStats();
+                            } catch (error) {
+                                logger.error(`Erreur import: ${error.message}`);
+                            }
+                        };
+                        reader.readAsText(file);
+                    }
+                };
+                input.click();
+            },
+
+            validateData() {
+                logger.info('Validation des données en cours...');
+                
+                try {
+                    const heroes = JSON.parse(localStorage.getItem('heroes') || '[]');
+                    let errors = 0;
+                    
+                    heroes.forEach((hero, index) => {
+                        if (!hero.nom || !hero.classe) {
+                            logger.error(`Héros ${index}: données manquantes`);
+                            errors++;
+                        }
+                        if (!hero.force || !hero.agility || !hero.magic || !hero.defense) {
+                            logger.warning(`Héros ${index}: statistiques incomplètes`);
+                        }
+                    });
+                    
+                    if (errors === 0) {
+                        logger.info(`✅ Validation réussie - ${heroes.length} héros valides`);
+                    } else {
+                        logger.error(`❌ ${errors} erreurs détectées`);
+                    }
+                } catch (error) {
+                    logger.error(`Erreur validation: ${error.message}`);
+                }
+            },
+
+            testCombat() {
+                logger.info('Test de combat simulé...');
+                
+                setTimeout(() => {
+                    logger.debug('Initialisation des combattants');
+                }, 500);
+                
+                setTimeout(() => {
+                    logger.info('Combat en cours...');
+                }, 1000);
+                
+                setTimeout(() => {
+                    logger.info('🏆 Test de combat terminé avec succès');
+                }, 2000);
+            },
+
+            resetSession() {
+                if (confirm('Réinitialiser la session ?')) {
+                    sessionStorage.clear();
+                    logger.warning('Session réinitialisée');
+                    this.updateStats();
+                }
+            },
+
+            clearAll() {
+                if (confirm('⚠️ ATTENTION: Cela supprimera TOUT ! Continuer ?')) {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    logger.error('Toutes les données ont été effacées');
+                    this.updateStats();
+                }
+            },
+
+            performanceTest() {
+                logger.info('Test de performance en cours...');
+                
+                const start = performance.now();
+                
+                // Simulation de charge
+                for (let i = 0; i < 10000; i++) {
+                    Math.random() * Math.random();
+                }
+                
+                const end = performance.now();
+                const duration = (end - start).toFixed(2);
+                
+                logger.info(`⚡ Test terminé en ${duration}ms`);
+                
+                if (duration < 10) {
+                    logger.info('🟢 Performance excellente');
+                } else if (duration < 50) {
+                    logger.warning('🟡 Performance correcte');
+                } else {
+                    logger.error('🔴 Performance faible');
+                }
+            },
+
+            memoryUsage() {
+                logger.info('Analyse de l\'usage mémoire...');
+                
+                const used = performance.memory ? 
+                    (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(2) : 
+                    'Non disponible';
+                    
+                const total = performance.memory ? 
+                    (performance.memory.totalJSHeapSize / 1024 / 1024).toFixed(2) : 
+                    'Non disponible';
+                
+                logger.debug(`Mémoire utilisée: ${used} MB`);
+                logger.debug(`Mémoire totale: ${total} MB`);
+                
+                // Taille du localStorage
+                const lsSize = new Blob(Object.values(localStorage)).size;
+                logger.debug(`LocalStorage: ${(lsSize / 1024).toFixed(2)} KB`);
+            },
+
+            updateStats() {
+                try {
+                    // Nombre de héros
+                    const heroes = JSON.parse(localStorage.getItem('heroes') || '[]');
+                    document.getElementById('heroes-count').textContent = heroes.length;
+                    
+                    // Taille du cache
+                    const lsSize = new Blob(Object.values(localStorage)).size;
+                    document.getElementById('cache-size').textContent = `${(lsSize / 1024).toFixed(1)} KB`;
+                    
+                    // Performance
+                    const perf = performance.navigation ? 
+                        `${performance.navigation.type === 0 ? '🟢 Optimal' : '🟡 Rechargé'}` : 
+                        '🟢 Bon';
+                    document.getElementById('performance').textContent = perf;
+                    
+                } catch (error) {
+                    logger.error(`Erreur mise à jour stats: ${error.message}`);
+                }
+            }
+        };
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            logger.info('Interface de debug chargée');
+            debugActions.updateStats();
+            
+            // Mise à jour du temps de session
+            const startTime = Date.now();
+            setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('session-time').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        });
+
+        // Capturer les erreurs
+        window.addEventListener('error', (e) => {
+            logger.error(`Erreur JS: ${e.message}`);
+        });
+
+        // Raccourcis clavier
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'e':
+                        e.preventDefault();
+                        debugActions.exportData();
+                        break;
+                    case 'i':
+                        e.preventDefault();
+                        debugActions.importData();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        debugActions.resetSession();
+                        break;
+                }
+            }
+        });
+
+        // Fonction de navigation retour
+        function goBack() {
+            try {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.location.href = './index.html';
+                }
+            } catch (error) {
+                console.log('Erreur navigation, redirection vers index');
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+
+    <!-- Modal d'information -->
+    <script type="module" src="./js/modules/info-modal.js"></script>
+</body>
+</html>

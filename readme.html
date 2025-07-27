@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Heroes Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #334155;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #d4af37;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            border-left: 4px solid #d4af37;
+            padding-left: 15px;
+        }
+
+        .section h3 {
+            color: #60a5fa;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        .section ul, .section ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            color: #e2e8f0;
+        }
+
+        .section li {
+            margin-bottom: 5px;
+        }
+
+        .highlight-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .warning-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .success-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .code-block {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            color: #d1d5db;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tech-card {
+            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            border: 2px solid #4b5563;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .tech-card h4 {
+            color: #d4af37;
+            margin-bottom: 8px;
+        }
+
+        .tech-card p {
+            font-size: 0.9rem;
+            color: #9ca3af;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: #1e293b;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .toc {
+            background: rgba(51, 65, 85, 0.3);
+            border: 1px solid #475569;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc a {
+            color: #60a5fa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="back-button" onclick="goBack(); return false;">← Retour</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Heroes Arena</h1>
+            <p>Documentation complète du projet</p>
+        </div>
+
+        <div class="toc">
+            <h3>📋 Table des matières</h3>
+            <ul>
+                <li><a href="#overview">🎯 Vue d'ensemble</a></li>
+                <li><a href="#context">🎓 Contexte pédagogique</a></li>
+                <li><a href="#features">✨ Fonctionnalités</a></li>
+                <li><a href="#tech">⚡ Technologies</a></li>
+                <li><a href="#architecture">🏗️ Architecture</a></li>
+                <li><a href="#installation">🚀 Installation</a></li>
+                <li><a href="#usage">📖 Utilisation</a></li>
+                <li><a href="#development">👩‍💻 Développement</a></li>
+            </ul>
+        </div>
+
+        <section id="overview" class="section">
+            <h2>🎯 Vue d'ensemble</h2>
+            <p>
+                <strong>Heroes Arena</strong> est un jeu de combat en tour par tour développé en JavaScript vanilla. 
+                Le joueur peut créer des héros de différentes classes, les personnaliser et les faire combattre 
+                dans une arène avec des effets visuels spectaculaires.
+            </p>
+            
+            <div class="highlight-box">
+                <h4>🎮 Concept du jeu</h4>
+                <p>
+                    Chaque héros possède des statistiques uniques (Force, Agilité, Magie, Défense) et des capacités 
+                    spéciales selon sa classe. Les combats sont automatisés avec des animations Canvas immersives.
+                </p>
+            </div>
+        </section>
+
+        <section id="context" class="section">
+            <h2>🎓 Contexte pédagogique</h2>
+            <p>
+                Ce projet a été développé dans le cadre d'une <strong>formation Développeur Web et Web Mobile</strong> 
+                avec les objectifs suivants :
+            </p>
+            <ul>
+                <li><strong>Apprentissage JavaScript avancé</strong> : Modules ES6, Classes, Async/Await</li>
+                <li><strong>Gestion de projet Agile</strong> : Méthodologie Scrum, sprints, user stories</li>
+                <li><strong>Travail collaboratif</strong> : Git, code review, pair programming</li>
+                <li><strong>Architecture logicielle</strong> : Pattern MVC, modularité, clean code</li>
+                <li><strong>Interface utilisateur</strong> : UX/UI, responsive design, accessibility</li>
+            </ul>
+
+            <div class="success-box">
+                <h4>✅ Compétences développées</h4>
+                <ul>
+                    <li>Programmation orientée objet en JavaScript</li>
+                    <li>Manipulation du DOM et des APIs Web</li>
+                    <li>Animation avec Canvas API</li>
+                    <li>Gestion d'état et persistance des données</li>
+                    <li>Tests et debug d'applications complexes</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <h2>✨ Fonctionnalités</h2>
+            
+            <h3>🎭 Gestion des héros</h3>
+            <ul>
+                <li>Création de héros avec 6 classes disponibles</li>
+                <li>Système de statistiques équilibrées</li>
+                <li>Progression par niveaux et expérience</li>
+                <li>Sauvegarde automatique en Local Storage</li>
+            </ul>
+
+            <h3>⚔️ Système de combat</h3>
+            <ul>
+                <li>Combats automatisés en tour par tour</li>
+                <li>Mécaniques d'esquive et de blocage</li>
+                <li>Capacités spéciales par classe</li>
+                <li>Effets visuels avec particules Canvas</li>
+            </ul>
+
+            <h3>🎨 Interface utilisateur</h3>
+            <ul>
+                <li>Design moderne et responsive</li>
+                <li>Animations fluides et transitions</li>
+                <li>Système de modals interactives</li>
+                <li>Feedback visuel en temps réel</li>
+            </ul>
+        </section>
+
+        <section id="tech" class="section">
+            <h2>⚡ Technologies utilisées</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>JavaScript ES6+</h4>
+                    <p>Modules, Classes, Arrow Functions, Destructuring</p>
+                </div>
+                <div class="tech-card">
+                    <h4>HTML5 & CSS3</h4>
+                    <p>Semantic HTML, Flexbox, Grid, Animations</p>
+                </div>
+                <div class="tech-card">
+                    <h4>Canvas API</h4>
+                    <p>Animations 2D, Système de particules</p>
+                </div>
+                <div class="tech-card">
+                    <h4>Web APIs</h4>
+                    <p>Local Storage, Session Storage, Events</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="section">
+            <h2>🏗️ Architecture du projet</h2>
+            
+            <div class="code-block">
+heroes-arena/
+├── index.html              # Page d'accueil
+├── creation.html           # Création de héros  
+├── selection.html          # Sélection pour combat
+├── arena.html              # Arène de combat
+├── css/
+│   ├── style.css          # Styles principaux
+│   └── components/        # Composants CSS
+├── js/
+│   ├── core/
+│   │   ├── config.js      # Configuration globale
+│   │   └── utils.js       # Utilitaires
+│   ├── models/
+│   │   └── hero.js        # Modèle Hero
+│   └── modules/
+│       ├── hero-manager.js    # Gestion des héros
+│       ├── combat.js          # Système de combat
+│       ├── combat-effects.js  # Effets visuels
+│       ├── ui.js             # Interface utilisateur
+│       └── info-modal.js     # Modal d'information
+└── assets/               # Images et ressources
+            </div>
+
+            <h3>🔧 Modules principaux</h3>
+            <ul>
+                <li><strong>Hero Model</strong> : Gestion des données et comportements des héros</li>
+                <li><strong>Combat System</strong> : Logique de combat et règles de jeu</li>
+                <li><strong>Combat Effects</strong> : Système de particules et animations</li>
+                <li><strong>UI Manager</strong> : Interface et interactions utilisateur</li>
+                <li><strong>Hero Manager</strong> : CRUD des héros et persistance</li>
+            </ul>
+        </section>
+
+        <section id="installation" class="section">
+            <h2>🚀 Installation et lancement</h2>
+            
+            <div class="warning-box">
+                <h4>⚠️ Prérequis</h4>
+                <p>Un serveur web local est recommandé pour éviter les restrictions CORS.</p>
+            </div>
+
+            <h3>Méthode 1 : Serveur simple</h3>
+            <div class="code-block">
+# Avec Python 3
+python -m http.server 8000
+
+# Avec Node.js (http-server)
+npx http-server
+
+# Puis ouvrir http://localhost:8000
+            </div>
+
+            <h3>Méthode 2 : Extensions navigateur</h3>
+            <ul>
+                <li>Live Server (VS Code)</li>
+                <li>Preview on Web Server (Firefox)</li>
+                <li>Web Server for Chrome</li>
+            </ul>
+        </section>
+
+        <section id="usage" class="section">
+            <h2>📖 Guide d'utilisation</h2>
+            
+            <h3>1. Création d'un héros</h3>
+            <ol>
+                <li>Cliquer sur "Créer un Héros" sur la page d'accueil</li>
+                <li>Choisir une classe parmi 6 disponibles</li>
+                <li>Personnaliser le nom et l'avatar</li>
+                <li>Valider la création</li>
+            </ol>
+
+            <h3>2. Lancement d'un combat</h3>
+            <ol>
+                <li>Sélectionner "Combattre" depuis l'accueil</li>
+                <li>Choisir deux héros pour le duel</li>
+                <li>Lancer le combat automatisé</li>
+                <li>Observer les effets visuels et résultats</li>
+            </ol>
+
+            <h3>3. Classes de héros</h3>
+            <ul>
+                <li><strong>⚔️ Guerrier</strong> : Haute force, Rage Berserker</li>
+                <li><strong>🔮 Mage</strong> : Magie élevée, Bouclier Magique</li>
+                <li><strong>🏹 Archer</strong> : Grande agilité, Tir Multiple</li>
+                <li><strong>🛡️ Paladin</strong> : Défense forte, Aura de Guérison</li>
+                <li><strong>🗡️ Assassin</strong> : Critique élevé, Frappe Mortelle</li>
+                <li><strong>🌿 Druide</strong> : Équilibré, Symbiose Naturelle</li>
+            </ul>
+        </section>
+
+        <section id="development" class="section">
+            <h2>👩‍💻 Notes de développement</h2>
+            
+            <h3>🧪 Tests et debug</h3>
+            <ul>
+                <li><strong>test-effets-autonome.html</strong> : Test des effets visuels</li>
+                <li><strong>debug.html</strong> : Console de debug et outils</li>
+                <li>Console navigateur pour logs détaillés</li>
+            </ul>
+
+            <h3>📊 Métriques et performance</h3>
+            <ul>
+                <li>Système de particules optimisé (60 FPS)</li>
+                <li>Lazy loading des ressources</li>
+                <li>Cache intelligent des données</li>
+                <li>Animations GPU-accelerated</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>🔄 Cycle de développement Agile</h4>
+                <ol>
+                    <li><strong>Sprint Planning</strong> : Définition des user stories</li>
+                    <li><strong>Development</strong> : Implémentation par modules</li>
+                    <li><strong>Code Review</strong> : Validation par les pairs</li>
+                    <li><strong>Testing</strong> : Tests manuels et automatisés</li>
+                    <li><strong>Sprint Review</strong> : Démonstration des fonctionnalités</li>
+                    <li><strong>Retrospective</strong> : Amélioration continue</li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="section" style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #334155;">
+            <p style="color: #94a3b8; font-style: italic;">
+                Projet réalisé avec ❤️ dans le cadre de la formation Développeur Web et Web Mobile
+            </p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-top: 10px;">
+                © 2024 Heroes Arena - Projet pédagogique
+            </p>
+        </div>
+    </div>
+
+    <!-- Script pour le bouton retour -->
+    <script>
+        function goBack() {
+            try {
+                // Vérifier s'il y a un historique
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    // Fallback : retourner à l'index
+                    window.location.href = './index.html';
+                }
+            } catch (error) {
+                console.log('Erreur navigation, redirection vers index');
+                window.location.href = './index.html';
+            }
+        }
+    </script>
+
+    <!-- Modal d'information -->
+    <script type="module" src="./js/modules/info-modal.js"></script>
+</body>
+</html>
