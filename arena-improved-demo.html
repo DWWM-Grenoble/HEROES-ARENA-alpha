@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heroes Arena - Interface Améliorée</title>
+    <link rel="icon" href="./assets/icon/icons8-battle-16.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1612 0%, #0f0d0a 100%);
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #d4af37;
+        }
+        
+        .demo-header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #d4af37 0%, #fff 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .comparison h2 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .old-interface {
+            opacity: 0.7;
+        }
+        
+        .features-list {
+            background: rgba(26, 22, 18, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .features-list h2 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .feature-item h3 {
+            color: #d4af37;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .feature-item p {
+            color: #e0e0e0;
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .demo-header h1 {
+                font-size: 2rem;
+            }
+            
+            .demo-header p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🏟️ Interface d'Arène Améliorée</h1>
+            <p>Découvrez la nouvelle expérience utilisateur de Heroes Arena</p>
+        </div>
+
+        <div class="comparison">
+            <!-- Interface originale -->
+            <div class="old-interface">
+                <h2>❌ Interface Actuelle</h2>
+                <div class="arena">
+                    <div class="arena-header">
+                        <h3>ARÈNE DE COMBAT</h3>
+                        <p class="arena-subtitle">Sélectionnez deux héros et regardez-les s'affronter</p>
+                    </div>
+
+                    <div class="fighter-selection">
+                        <div class="fighter-select">
+                            <h4>Combattant 1</h4>
+                            <select class="hero-selector">
+                                <option value="">Sélectionnez un héros</option>
+                                <option value="1">Aragorn le Brave</option>
+                                <option value="2">Legolas l'Archer</option>
+                            </select>
+                        </div>
+
+                        <div class="vs-divider">VS</div>
+
+                        <div class="fighter-select">
+                            <h4>Combattant 2</h4>
+                            <select class="hero-selector">
+                                <option value="">Sélectionnez un héros</option>
+                                <option value="1">Gandalf le Sage</option>
+                                <option value="2">Gimli le Nain</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fighters-display">
+                        <div class="fighter-display">
+                            <div class="fighter-avatar-large">
+                                <span class="fighter-placeholder">?</span>
+                            </div>
+                            <h5>En attente...</h5>
+                            <p>Aucun héros sélectionné</p>
+                            <div class="health-bar">
+                                <div class="health-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+
+                        <div class="vs-divider">⚔️</div>
+
+                        <div class="fighter-display">
+                            <div class="fighter-avatar-large">
+                                <span class="fighter-placeholder">?</span>
+                            </div>
+                            <h5>En attente...</h5>
+                            <p>Aucun héros sélectionné</p>
+                            <div class="health-bar">
+                                <div class="health-fill" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arena-actions">
+                        <button class="btn fight-btn" disabled>Commencer le Combat</button>
+                        <button class="btn btn-secondary">Réinitialiser</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interface améliorée -->
+            <div class="new-interface">
+                <h2>✨ Interface Améliorée</h2>
+                <div class="arena-improved">
+                    <div class="arena-header-improved">
+                        <h3 class="arena-title">Arène Légendaire</h3>
+                        <p class="arena-subtitle">Préparez-vous au combat épique</p>
+                    </div>
+
+                    <div class="fighter-selection-improved">
+                        <div class="hero-selector-improved">
+                            <div class="hero-selector-label">🛡️ Champion 1</div>
+                            <select class="hero-selector-dropdown">
+                                <option value="">Choisissez votre champion</option>
+                                <option value="1">🗡️ Aragorn le Brave (Niveau 15)</option>
+                                <option value="2">🏹 Legolas l'Archer (Niveau 12)</option>
+                                <option value="3">⚡ Gandalf le Sage (Niveau 20)</option>
+                            </select>
+                        </div>
+
+                        <div class="vs-divider-improved">
+                            <div class="vs-icon">VS</div>
+                            <div class="vs-swords"></div>
+                        </div>
+
+                        <div class="hero-selector-improved">
+                            <div class="hero-selector-label">⚔️ Champion 2</div>
+                            <select class="hero-selector-dropdown">
+                                <option value="">Choisissez votre champion</option>
+                                <option value="1">🪓 Gimli le Nain (Niveau 18)</option>
+                                <option value="2">🗡️ Boromir le Noble (Niveau 14)</option>
+                                <option value="3">🏹 Faramir l'Éclaireur (Niveau 16)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fighters-display-improved">
+                        <div class="fighter-card-improved ready">
+                            <div class="fighter-avatar-improved">
+                                <img src="./assets/avatars/guerrier_1.png" alt="Aragorn" style="opacity: 0.8;">
+                            </div>
+                            <div class="hero-info-improved">
+                                <div class="hero-name">Aragorn le Brave</div>
+                                <div class="hero-class">Guerrier Légendaire</div>
+                                <div class="hero-level">Niveau 15</div>
+                            </div>
+                            <div class="health-bar-improved">
+                                <div class="health-fill" style="width: 100%"></div>
+                                <div class="health-text">100/100</div>
+                            </div>
+                        </div>
+
+                        <div class="vs-divider-improved">
+                            <div class="vs-icon">⚔️</div>
+                        </div>
+
+                        <div class="fighter-card-improved ready">
+                            <div class="fighter-avatar-improved">
+                                <img src="./assets/avatars/nain_1.png" alt="Gimli" style="opacity: 0.8;">
+                            </div>
+                            <div class="hero-info-improved">
+                                <div class="hero-name">Gimli le Nain</div>
+                                <div class="hero-class">Gardien des Montagnes</div>
+                                <div class="hero-level">Niveau 18</div>
+                            </div>
+                            <div class="health-bar-improved">
+                                <div class="health-fill" style="width: 100%"></div>
+                                <div class="health-text">100/100</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arena-actions-improved">
+                        <button class="action-btn-improved" onclick="startCombatDemo()">
+                            🗡️ Commencer le Duel
+                        </button>
+                        <button class="action-btn-improved" onclick="resetDemo()">
+                            🔄 Nouvelle Bataille
+                        </button>
+                        <button class="action-btn-improved" onclick="showStats()">
+                            📊 Statistiques
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des améliorations -->
+        <div class="features-list">
+            <h2>🚀 Améliorations Apportées</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>🎨 Design Moderne</h3>
+                    <p>Interface redesignée avec des gradients élégants, des effets de lueur et des animations fluides pour une expérience immersive.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>✨ Animations Interactives</h3>
+                    <p>Effets visuels dynamiques incluant des animations de combat, des brillances au survol et des transitions fluides.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>📱 Interface Responsive</h3>
+                    <p>Adaptation parfaite à tous les écrans avec des optimisations spécifiques pour mobile, tablette et desktop.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🎯 Meilleure Convivialité</h3>
+                    <p>Navigation intuitive avec des indicateurs visuels clairs, des libellés descriptifs et une hiérarchie d'information améliorée.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>⚡ Feedback Visuel</h3>
+                    <p>États visuels distincts pour chaque phase de combat (prêt, attaque, défense, victoire, défaite) avec des couleurs et animations spécifiques.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🏆 Barres de Vie Améliorées</h3>
+                    <p>Nouvelles barres de vie avec animations fluides, texte informatif et effets visuels pour une meilleure lisibilité.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🛡️ Cartes de Héros</h3>
+                    <p>Présentation enrichie des héros avec avatars améliorés, informations détaillées et design cohérent.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3>🎮 Boutons d'Action</h3>
+                    <p>Boutons redesignés avec effets de brillance, états hover/active améliorés et accessibilité tactile optimisée.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Démonstration interactive
+        function startCombatDemo() {
+            const cards = document.querySelectorAll('.fighter-card-improved');
+            const actionBtn = document.querySelector('.action-btn-improved');
+            
+            actionBtn.textContent = '⚔️ Combat en cours...';
+            actionBtn.disabled = true;
+            
+            // Simulated combat sequence
+            setTimeout(() => {
+                cards[0].classList.add('attacking');
+                cards[1].classList.add('defending');
+            }, 500);
+            
+            setTimeout(() => {
+                cards[0].classList.remove('attacking');
+                cards[1].classList.remove('defending');
+                cards[1].classList.add('attacking');
+                cards[0].classList.add('defending');
+                
+                // Update health bar
+                const healthBar = cards[0].querySelector('.health-fill');
+                const healthText = cards[0].querySelector('.health-text');
+                healthBar.style.width = '75%';
+                healthText.textContent = '75/100';
+            }, 1500);
+            
+            setTimeout(() => {
+                cards[0].classList.remove('defending');
+                cards[1].classList.remove('attacking');
+                cards[1].classList.add('victory');
+                cards[0].classList.add('defeat');
+                
+                // Final health update
+                const healthBar = cards[0].querySelector('.health-fill');
+                const healthText = cards[0].querySelector('.health-text');
+                healthBar.style.width = '0%';
+                healthText.textContent = '0/100';
+                
+                actionBtn.textContent = '🏆 Gimli Victorious!';
+            }, 2500);
+            
+            setTimeout(() => {
+                resetDemo();
+            }, 4000);
+        }
+        
+        function resetDemo() {
+            const cards = document.querySelectorAll('.fighter-card-improved');
+            const actionBtn = document.querySelector('.action-btn-improved');
+            
+            cards.forEach(card => {
+                card.className = 'fighter-card-improved ready';
+            });
+            
+            // Reset health bars
+            document.querySelectorAll('.health-fill').forEach(bar => {
+                bar.style.width = '100%';
+            });
+            document.querySelectorAll('.health-text').forEach(text => {
+                text.textContent = '100/100';
+            });
+            
+            actionBtn.textContent = '🗡️ Commencer le Duel';
+            actionBtn.disabled = false;
+        }
+        
+        function showStats() {
+            alert('📊 Statistiques des Héros:\n\n' +
+                  '🗡️ Aragorn le Brave:\n' +
+                  '• Force: 35/40\n' +
+                  '• Agilité: 28/40\n' +
+                  '• Magie: 15/40\n' +
+                  '• Défense: 30/40\n\n' +
+                  '🪓 Gimli le Nain:\n' +
+                  '• Force: 40/40\n' +
+                  '• Agilité: 20/40\n' +
+                  '• Magie: 10/40\n' +
+                  '• Défense: 38/40');
+        }
+        
+        // Auto-demo every 10 seconds
+        setInterval(() => {
+            const actionBtn = document.querySelector('.action-btn-improved');
+            if (!actionBtn.disabled) {
+                startCombatDemo();
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

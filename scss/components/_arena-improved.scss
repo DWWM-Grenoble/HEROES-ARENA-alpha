@@ -1,0 +1,1058 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== INTERFACE D'ARÈNE AMÉLIORÉE ==========
+
+.arena-improved {
+    background: 
+        linear-gradient(135deg, rgba(26, 22, 18, 0.98) 0%, rgba(15, 13, 10, 0.99) 50%, rgba(26, 22, 18, 0.98) 100%),
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 30px,
+            rgba(212, 175, 55, 0.03) 30px,
+            rgba(212, 175, 55, 0.03) 32px);
+    border-radius: get($border-radius, xl);
+    border: 3px solid $primary-gold;
+    padding: get($spacings, 2xl);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(212, 175, 55, 0.2),
+        inset 0 1px 0 rgba(212, 175, 55, 0.1);
+
+    // Effet de lueur animée
+    &::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        background: linear-gradient(45deg,
+            rgba(212, 175, 55, 0.4) 0%,
+            rgba(184, 150, 46, 0.2) 25%,
+            rgba(212, 175, 55, 0.4) 50%,
+            rgba(184, 150, 46, 0.2) 75%,
+            rgba(212, 175, 55, 0.4) 100%);
+        border-radius: calc(#{get($border-radius, xl)} + 3px);
+        z-index: -1;
+        animation: arenaGlow 4s ease-in-out infinite;
+    }
+
+    @include tablet {
+        padding: get($spacings, xl);
+        border-radius: get($border-radius, lg);
+        
+        &::before {
+            border-radius: calc(#{get($border-radius, lg)} + 3px);
+        }
+    }
+
+    @include mobile {
+        padding: get($spacings, lg);
+        border-radius: get($border-radius, md);
+        border-width: 2px;
+        
+        &::before {
+            border-radius: calc(#{get($border-radius, md)} + 2px);
+        }
+    }
+}
+
+// En-tête de l'arène redesigné
+.arena-header-improved {
+    text-align: center;
+    margin-bottom: get($spacings, 2xl);
+    position: relative;
+
+    .arena-title {
+        font-size: get($font-sizes, 4xl);
+        font-weight: get($font-weights, bold);
+        font-family: $font-family-secondary;
+        background: linear-gradient(135deg, $primary-gold 0%, #fff 50%, $primary-gold 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: get($spacings, md);
+        text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+
+        @include tablet {
+            font-size: get($font-sizes, 3xl);
+            letter-spacing: 0.1em;
+        }
+
+        @include mobile {
+            font-size: get($font-sizes, 2xl);
+            letter-spacing: 0.08em;
+        }
+    }
+
+    .arena-subtitle {
+        color: $text-secondary;
+        font-size: get($font-sizes, lg);
+        font-style: italic;
+        opacity: 0.9;
+
+        @include mobile {
+            font-size: get($font-sizes, base);
+        }
+    }
+
+    // Décoration ornementale
+    &::after {
+        content: '⚔️';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: get($font-sizes, 2xl);
+        opacity: 0.6;
+        animation: weaponFloat 3s ease-in-out infinite;
+    }
+}
+
+// Section de sélection des combattants améliorée
+.fighter-selection-improved {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: get($spacings, 2xl);
+    align-items: center;
+    margin-bottom: get($spacings, 2xl);
+    padding: get($spacings, xl);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+    border-radius: get($border-radius, lg);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+
+    @include tablet {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+        padding: get($spacings, lg);
+    }
+
+    @include mobile {
+        gap: get($spacings, md);
+        padding: get($spacings, md);
+        border-radius: get($border-radius, md);
+    }
+}
+
+// Sélecteur de héros amélioré
+.hero-selector-improved {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.4);
+    border-radius: get($border-radius, lg);
+    padding: get($spacings, lg);
+    transition: all get($transitions, normal);
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+
+    // Effet de brillance au survol
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+       
+    }
+
+    &:hover {
+        border-color: $primary-gold;
+        
+       
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    .hero-selector-label {
+        color: $primary-gold;
+        font-weight: get($font-weights, bold);
+        font-size: get($font-sizes, lg);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: get($spacings, md);
+        text-align: center;
+
+        @include mobile {
+            font-size: get($font-sizes, base);
+        }
+    }
+
+    .hero-selector-dropdown {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: get($border-radius, md);
+        padding: get($spacings, md);
+        color: $text-primary;
+        font-size: get($font-sizes, base);
+        transition: all get($transitions, normal);
+        cursor: pointer;
+        min-height: 48px;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-gold;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        }
+
+        &:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+        }
+
+        @include mobile {
+            padding: get($spacings, sm);
+            font-size: get($font-sizes, sm);
+        }
+
+        &.hidden {
+            display: none;
+        }
+    }
+
+    // Sélecteur moderne avec dropdown personnalisé
+    .hero-selector-modern {
+        position: relative;
+        width: 100%;
+        z-index: 100;
+
+        &:has(.hero-options-dropdown[style*="block"]) {
+            z-index: 200;
+        }
+
+        .selected-hero-display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: get($border-radius, md);
+            padding: get($spacings, md);
+            cursor: pointer;
+            transition: all get($transitions, normal);
+            display: flex;
+            align-items: center;
+            gap: get($spacings, md);
+            min-height: 60px;
+
+            &:hover {
+                border-color: rgba(212, 175, 55, 0.6);
+                background: rgba(0, 0, 0, 0.7);
+            }
+
+            &.active {
+                border-color: $primary-gold;
+                box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+            }
+
+            .hero-preview-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                border: 2px solid rgba(212, 175, 55, 0.5);
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(212, 175, 55, 0.1);
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .preview-placeholder {
+                    color: rgba(212, 175, 55, 0.7);
+                    font-size: get($font-sizes, lg);
+                    font-weight: get($font-weights, bold);
+                }
+            }
+
+            .hero-preview-info {
+                flex: 1;
+                text-align: left;
+
+                .hero-preview-name {
+                    color: $text-primary;
+                    font-weight: get($font-weights, semibold);
+                    font-size: get($font-sizes, base);
+                    margin-bottom: 2px;
+                }
+
+                .hero-preview-class {
+                    color: $text-secondary;
+                    font-size: get($font-sizes, sm);
+                    opacity: 0.8;
+                }
+            }
+
+            .selector-arrow {
+                color: $primary-gold;
+                font-size: get($font-sizes, lg);
+                transition: transform get($transitions, normal);
+            }
+
+            &.active .selector-arrow {
+                transform: rotate(180deg);
+            }
+        }
+
+        .hero-options-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(15, 13, 10, 0.98);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-top: none;
+            border-radius: 0 0 get($border-radius, md) get($border-radius, md);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 101;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.7),
+                0 0 20px rgba(212, 175, 55, 0.2);
+
+            .hero-option-card {
+                display: flex;
+                align-items: center;
+                gap: get($spacings, md);
+                padding: get($spacings, md);
+                cursor: pointer;
+                transition: all get($transitions, fast);
+                border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+
+                &:hover {
+                    background: rgba(212, 175, 55, 0.1);
+                }
+
+                &.disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    background: rgba(255, 0, 0, 0.1);
+
+                    &:hover {
+                        background: rgba(255, 0, 0, 0.1);
+                    }
+                }
+
+                .hero-option-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    border: 2px solid rgba(212, 175, 55, 0.3);
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .avatar-fallback {
+                        background: #666;
+                        width: 100%;
+                        height: 100%;
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: bold;
+                        font-size: get($font-sizes, lg);
+                    }
+                }
+
+                .hero-option-info {
+                    flex: 1;
+                    text-align: left;
+
+                    .hero-option-name {
+                        color: $text-primary;
+                        font-weight: get($font-weights, semibold);
+                        font-size: get($font-sizes, base);
+                        margin-bottom: 4px;
+                    }
+
+                    .hero-option-details {
+                        display: flex;
+                        gap: get($spacings, sm);
+                        font-size: get($font-sizes, xs);
+
+                        .hero-option-class {
+                            color: $primary-gold;
+                        }
+
+                        .hero-option-level {
+                            color: $text-secondary;
+                        }
+
+                        .hero-option-health {
+                            color: $text-secondary;
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+
+                            .health-indicator {
+                                width: 8px;
+                                height: 8px;
+                                border-radius: 50%;
+
+                                &.healthy {
+                                    background: #10b981;
+                                }
+
+                                &.wounded {
+                                    background: #f59e0b;
+                                }
+
+                                &.critical {
+                                    background: #ef4444;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @include mobile {
+            .selected-hero-display {
+                padding: get($spacings, sm);
+                min-height: 50px;
+
+                .hero-preview-avatar {
+                    width: 35px;
+                    height: 35px;
+                }
+
+                .hero-preview-info {
+                    .hero-preview-name {
+                        font-size: get($font-sizes, sm);
+                    }
+
+                    .hero-preview-class {
+                        font-size: get($font-sizes, xs);
+                    }
+                }
+            }
+
+            .hero-options-dropdown {
+                max-height: 250px;
+
+                .hero-option-card {
+                    padding: get($spacings, sm);
+
+                    .hero-option-avatar {
+                        width: 35px;
+                        height: 35px;
+                    }
+
+                    .hero-option-info {
+                        .hero-option-name {
+                            font-size: get($font-sizes, sm);
+                        }
+
+                        .hero-option-details {
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Diviseur VS amélioré
+.vs-divider-improved {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: get($spacings, sm);
+
+    .vs-icon {
+        font-size: get($font-sizes, 4xl);
+        font-weight: get($font-weights, black);
+        background: linear-gradient(135deg, $primary-gold 0%, #fff 50%, $primary-gold 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        animation: vsFloat 2s ease-in-out infinite;
+        font-family: $font-family-secondary;
+
+        @include tablet {
+            font-size: get($font-sizes, 3xl);
+        }
+
+        @include mobile {
+            font-size: get($font-sizes, 2xl);
+        }
+    }
+
+    .vs-swords {
+        display: flex;
+        gap: get($spacings, sm);
+        opacity: 0.7;
+
+        &::before,
+        &::after {
+            content: '⚔️';
+            font-size: get($font-sizes, lg);
+            animation: swordFloat 3s ease-in-out infinite;
+        }
+
+        &::after {
+            animation-delay: 1.5s;
+        }
+
+        @include mobile {
+            &::before,
+            &::after {
+                font-size: get($font-sizes, base);
+            }
+        }
+    }
+}
+
+// Affichage des combattants amélioré
+.fighters-display-improved {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: get($spacings, 2xl);
+    align-items: center;
+    margin: get($spacings, 2xl) 0;
+
+    @include tablet {
+        grid-template-columns: 1fr;
+        gap: get($spacings, lg);
+    }
+
+    @include mobile {
+        gap: get($spacings, md);
+        margin: get($spacings, lg) 0;
+    }
+}
+
+// Carte de combattant améliorée
+.fighter-card-improved {
+    background: 
+        linear-gradient(135deg, rgba(26, 22, 18, 0.95) 0%, rgba(15, 13, 10, 0.98) 100%),
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 20px,
+            rgba(212, 175, 55, 0.05) 20px,
+            rgba(212, 175, 55, 0.05) 22px);
+    border: 2px solid rgba(212, 175, 55, 0.3);
+    border-radius: get($border-radius, lg);
+    padding: get($spacings, xl);
+    text-align: center;
+    position: relative;
+    transition: all get($transitions, normal);
+    overflow: hidden;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(212, 175, 55, 0.1);
+
+    // États de combat animés
+    &.ready {
+        border-color: rgba(212, 175, 55, 0.6);
+        box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.6),
+            0 0 25px rgba(212, 175, 55, 0.3),
+            inset 0 1px 0 rgba(212, 175, 55, 0.2);
+    }
+
+    &.attacking {
+        animation: attackPulse 0.8s ease-in-out;
+        border-color: #ff6b35 !important;
+        background: 
+            linear-gradient(135deg, rgba(255, 107, 53, 0.3) 0%, rgba(15, 13, 10, 0.98) 100%),
+            repeating-linear-gradient(45deg,
+                transparent,
+                transparent 20px,
+                rgba(255, 107, 53, 0.1) 20px,
+                rgba(255, 107, 53, 0.1) 22px) !important;
+        box-shadow: 
+            0 0 40px rgba(255, 107, 53, 0.8),
+            0 15px 50px rgba(0, 0, 0, 0.7),
+            inset 0 2px 0 rgba(255, 107, 53, 0.5) !important;
+        transform: scale(1.05);
+    }
+
+    &.defending {
+        animation: defensePulse 0.6s ease-in-out;
+        border-color: #4ecdc4 !important;
+        background: 
+            linear-gradient(135deg, rgba(78, 205, 196, 0.3) 0%, rgba(15, 13, 10, 0.98) 100%),
+            repeating-linear-gradient(45deg,
+                transparent,
+                transparent 20px,
+                rgba(78, 205, 196, 0.1) 20px,
+                rgba(78, 205, 196, 0.1) 22px) !important;
+        box-shadow: 
+            0 0 35px rgba(78, 205, 196, 0.7),
+            0 15px 50px rgba(0, 0, 0, 0.7),
+            inset 0 2px 0 rgba(78, 205, 196, 0.5) !important;
+        transform: scale(1.02);
+    }
+
+    &.victory {
+        animation: victoryShine 2s ease-in-out;
+        border-color: $primary-gold;
+        background: 
+            linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(15, 13, 10, 0.98) 100%),
+            repeating-linear-gradient(45deg,
+                transparent,
+                transparent 20px,
+                rgba(212, 175, 55, 0.1) 20px,
+                rgba(212, 175, 55, 0.1) 22px);
+    }
+
+    &.defeat {
+        animation: defeatFade 1.5s ease-out forwards;
+        filter: grayscale(0.7) brightness(0.5);
+    }
+
+    @include tablet {
+        padding: get($spacings, lg);
+        border-radius: get($border-radius, md);
+    }
+
+    @include mobile {
+        padding: get($spacings, md);
+        border-radius: get($border-radius, sm);
+    }
+}
+
+// Avatar du combattant amélioré
+.fighter-avatar-improved {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto get($spacings, lg);
+    border-radius: 50%;
+    border: 3px solid $primary-gold;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(212, 175, 55, 0.3),
+        inset 0 2px 0 rgba(212, 175, 55, 0.2);
+    transition: all get($transitions, normal);
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 
+            0 12px 35px rgba(0, 0, 0, 0.5),
+            0 0 30px rgba(212, 175, 55, 0.5),
+            inset 0 3px 0 rgba(212, 175, 55, 0.3);
+    }
+
+    @include tablet {
+        width: 80px;
+        height: 80px;
+        margin-bottom: get($spacings, md);
+    }
+
+    @include mobile {
+        width: 70px;
+        height: 70px;
+        margin-bottom: get($spacings, sm);
+    }
+
+    img {
+        width: 90%;
+        height: 90%;
+        object-fit: cover;
+        object-position: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+// Informations du héros améliorées
+.hero-info-improved {
+    .hero-name {
+        color: $primary-gold;
+        font-size: get($font-sizes, xl);
+        font-weight: get($font-weights, bold);
+        font-family: $font-family-secondary;
+        margin-bottom: get($spacings, sm);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+
+        @include mobile {
+            font-size: get($font-sizes, lg);
+        }
+    }
+
+    .hero-class {
+        color: $text-secondary;
+        font-size: get($font-sizes, base);
+        font-weight: get($font-weights, medium);
+        margin-bottom: get($spacings, md);
+        text-transform: capitalize;
+
+        @include mobile {
+            font-size: get($font-sizes, sm);
+        }
+    }
+
+    .hero-level {
+        color: $text-primary;
+        font-size: get($font-sizes, lg);
+        font-weight: get($font-weights, semibold);
+        margin-bottom: get($spacings, md);
+
+        @include mobile {
+            font-size: get($font-sizes, base);
+        }
+    }
+}
+
+// Barre de vie améliorée
+.health-bar-improved {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(26, 26, 26, 0.9) 100%);
+    height: 18px;
+    border-radius: get($border-radius, lg);
+    overflow: hidden;
+    position: relative;
+    margin-top: get($spacings, md);
+    border: 2px solid rgba(212, 175, 55, 0.6);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.7),
+        0 2px 8px rgba(212, 175, 55, 0.4),
+        0 0 15px rgba(212, 175, 55, 0.2);
+
+    .health-fill {
+        background: linear-gradient(90deg, #10b981 0%, #16a085 30%, #f39c12 70%, #e74c3c 100%);
+        height: 100%;
+        border-radius: calc(#{get($border-radius, lg)} - 2px);
+        transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        box-shadow: 
+            0 0 15px rgba(16, 185, 129, 0.6),
+            inset 0 2px 0 rgba(255, 255, 255, 0.4),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+        // Animation de brillance plus visible
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.6) 50%,
+                transparent 100%);
+            animation: healthShine 3s ease-in-out infinite;
+        }
+
+        // Couleurs dynamiques selon le pourcentage de vie
+        &[style*="width: 100%"], &[style*="width: 9"], &[style*="width: 8"] {
+            background: linear-gradient(90deg, #10b981 0%, #16a085 100%);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        &[style*="width: 7"], &[style*="width: 6"], &[style*="width: 5"] {
+            background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        &[style*="width: 4"], &[style*="width: 3"], &[style*="width: 2"], &[style*="width: 1"] {
+            background: linear-gradient(90deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.8), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+        }
+    }
+
+    .health-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: get($font-sizes, sm);
+        font-weight: get($font-weights, black);
+        color: #fff;
+        text-shadow: 
+            0 1px 3px rgba(0, 0, 0, 0.9),
+            0 0 8px rgba(0, 0, 0, 0.7);
+        z-index: 3;
+        letter-spacing: 0.5px;
+    }
+
+    @include mobile {
+        height: 16px;
+
+        .health-text {
+            font-size: get($font-sizes, xs);
+        }
+    }
+}
+
+// Boutons d'action améliorés
+.arena-actions-improved {
+    display: flex;
+    gap: get($spacings, lg);
+    justify-content: center;
+    margin-top: get($spacings, 2xl);
+    flex-wrap: wrap;
+
+    @include mobile {
+        gap: get($spacings, md);
+        margin-top: get($spacings, xl);
+    }
+}
+
+.action-btn-improved {
+    background: linear-gradient(135deg, $primary-gold 0%, #b8962e 100%);
+    border: none;
+    border-radius: get($border-radius, lg);
+    padding: get($spacings, lg) get($spacings, 2xl);
+    color: #000;
+    font-weight: get($font-weights, bold);
+    font-size: get($font-sizes, lg);
+    font-family: $font-family-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all get($transitions, normal);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    min-height: 56px;
+    min-width: 160px;
+
+    // Effet de brillance
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
+        transition: left 0.8s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 
+            0 12px 35px rgba(0, 0, 0, 0.4),
+            0 0 30px rgba(212, 175, 55, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+
+        &::before {
+            left: 100%;
+        }
+    }
+
+    &:active {
+        transform: translateY(-1px) scale(1.02);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+
+        &:hover {
+            transform: none;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(212, 175, 55, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+    }
+
+    @include mobile {
+        padding: get($spacings, md) get($spacings, xl);
+        font-size: get($font-sizes, base);
+        min-height: 48px;
+        min-width: 140px;
+    }
+
+    @include xs {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+// Animations
+@keyframes arenaGlow {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.001);
+    }
+}
+
+@keyframes weaponFloat {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+@keyframes vsFloat {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(2deg);
+    }
+}
+
+@keyframes swordFloat {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(5deg) scale(1.1);
+    }
+}
+
+@keyframes attackPulse {
+    0% {
+        transform: scale(1);
+        border-color: rgba(212, 175, 55, 0.3);
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    }
+    25% {
+        transform: scale(1.08) rotate(1deg);
+        border-color: #ff6b35;
+        box-shadow: 
+            0 0 50px rgba(255, 107, 53, 1),
+            0 20px 60px rgba(0, 0, 0, 0.8),
+            inset 0 3px 0 rgba(255, 107, 53, 0.7);
+    }
+    50% {
+        transform: scale(1.05) rotate(-0.5deg);
+        border-color: #ff4757;
+        box-shadow: 
+            0 0 60px rgba(255, 71, 87, 1),
+            0 25px 70px rgba(0, 0, 0, 0.9),
+            inset 0 4px 0 rgba(255, 71, 87, 0.8);
+    }
+    75% {
+        transform: scale(1.08) rotate(0.5deg);
+        border-color: #ff6b35;
+        box-shadow: 
+            0 0 50px rgba(255, 107, 53, 1),
+            0 20px 60px rgba(0, 0, 0, 0.8),
+            inset 0 3px 0 rgba(255, 107, 53, 0.7);
+    }
+    100% {
+        transform: scale(1);
+        border-color: rgba(212, 175, 55, 0.3);
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    }
+}
+
+@keyframes defensePulse {
+    0% {
+        transform: scale(1);
+        border-color: rgba(212, 175, 55, 0.3);
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    }
+    25% {
+        transform: scale(1.04);
+        border-color: #4ecdc4;
+        box-shadow: 
+            0 0 40px rgba(78, 205, 196, 0.9),
+            0 15px 50px rgba(0, 0, 0, 0.7),
+            inset 0 3px 0 rgba(78, 205, 196, 0.6);
+    }
+    50% {
+        transform: scale(1.02);
+        border-color: #00cec9;
+        box-shadow: 
+            0 0 50px rgba(0, 206, 201, 1),
+            0 20px 60px rgba(0, 0, 0, 0.8),
+            inset 0 4px 0 rgba(0, 206, 201, 0.7);
+    }
+    75% {
+        transform: scale(1.04);
+        border-color: #4ecdc4;
+        box-shadow: 
+            0 0 40px rgba(78, 205, 196, 0.9),
+            0 15px 50px rgba(0, 0, 0, 0.7),
+            inset 0 3px 0 rgba(78, 205, 196, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        border-color: rgba(212, 175, 55, 0.3);
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    }
+}
+
+@keyframes victoryShine {
+    0% {
+        box-shadow: 
+            0 10px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.6),
+            0 0 40px rgba(212, 175, 55, 0.8),
+            inset 0 2px 0 rgba(212, 175, 55, 0.4);
+    }
+    100% {
+        box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.6),
+            0 0 30px rgba(212, 175, 55, 0.5),
+            inset 0 1px 0 rgba(212, 175, 55, 0.2);
+    }
+}
+
+@keyframes defeatFade {
+    0% {
+        opacity: 1;
+        filter: grayscale(0) brightness(1);
+    }
+    100% {
+        opacity: 0.4;
+        filter: grayscale(1) brightness(0.3);
+    }
+}
+
+@keyframes healthShine {
+    0%, 100% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+}

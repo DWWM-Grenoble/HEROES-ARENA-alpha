@@ -7,6 +7,7 @@ import { Hero } from './core/classes.js';
 import { uiManager } from './modules/ui.js';
 import { dataManager } from './modules/data.js';
 import { combatSystem } from './modules/combat.js';
+import { combatEffects } from './modules/combat-effects.js';
 import { authSystem } from './modules/auth.js';
 
 // Services
@@ -379,6 +380,7 @@ export async function initHeroesArenaRefactored() {
         // Exposer globalement
         window.HeroesArena = app;
         window.app = app;
+        window.combatEffects = combatEffects;
 
         // Fonctions globales simplifiées
         window.showHeroDetailsNow = (index) => app.showHeroDetails(index);

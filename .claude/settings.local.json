@@ -18,7 +18,8 @@
       "Bash(ls:*)",
       "Bash(echo %date% %time%)",
       "Bash(grep:*)",
-      "Bash(start \"\" \"C:\\Users\\Admin\\Desktop\\HEROES-ARENA-alpha\\test-simple.html\")"
+      "Bash(start \"\" \"C:\\Users\\Admin\\Desktop\\HEROES-ARENA-alpha\\test-simple.html\")",
+      "Bash(find:*)"
     ],
     "deny": []
   }

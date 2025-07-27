@@ -13,6 +13,8 @@ export class CombatEffects {
     initCanvas() {
         if (this.canvas) return;
         
+        console.log('🎨 Initialisation du canvas d\'effets de combat...');
+        
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'combatEffectsCanvas';
         this.canvas.style.cssText = `
@@ -25,8 +27,14 @@ export class CombatEffects {
             z-index: 100;
         `;
         
-        const arena = document.querySelector('#arena .arena');
+        // Chercher d'abord l'arène améliorée, puis l'ancienne en fallback
+        let arena = document.querySelector('#arena .arena-improved');
+        if (!arena) {
+            arena = document.querySelector('#arena .arena');
+        }
+        
         if (arena) {
+            console.log('✅ Arène trouvée:', arena.className);
             arena.style.position = 'relative';
             arena.appendChild(this.canvas);
             
@@ -34,13 +42,21 @@ export class CombatEffects {
             this.ctx = this.canvas.getContext('2d');
             
             window.addEventListener('resize', () => this.resizeCanvas());
+            console.log('✅ Canvas d\'effets initialisé avec succès');
+        } else {
+            console.error('❌ Arène non trouvée pour les effets visuels');
         }
     }
     
     resizeCanvas() {
         if (!this.canvas) return;
         
-        const arena = document.querySelector('#arena .arena');
+        // Chercher d'abord l'arène améliorée, puis l'ancienne en fallback
+        let arena = document.querySelector('#arena .arena-improved');
+        if (!arena) {
+            arena = document.querySelector('#arena .arena');
+        }
+        
         if (arena) {
             const rect = arena.getBoundingClientRect();
             this.canvas.width = rect.width;
@@ -48,8 +64,20 @@ export class CombatEffects {
         }
     }
     
+    // Forcer la réinitialisation du canvas si nécessaire
+    forceInit() {
+        console.log('🔄 Forcer la réinitialisation des effets visuels...');
+        if (this.canvas) {
+            this.canvas.remove();
+            this.canvas = null;
+            this.ctx = null;
+        }
+        this.initCanvas();
+    }
+    
     // Créer des particules d'attaque
     createAttackEffect(attackerSide, attackType, damage) {
+        console.log('🎯 Créer effet d\'attaque:', { attackerSide, attackType, damage });
         if (!this.ctx) this.initCanvas();
         
         const colors = this.getAttackColors(attackType);
@@ -131,6 +159,7 @@ export class CombatEffects {
     
     // Effet d'attaque physique (coup d'épée, masse, etc.)
     createPhysicalAttackEffect(attackerSide, weaponType = 'sword', damage = 0) {
+        console.log('⚔️ Créer effet d\'attaque physique:', { attackerSide, weaponType, damage });
         if (!this.ctx) this.initCanvas();
         
         const startX = attackerSide === 'left' ? 100 : this.canvas.width - 100;
@@ -1439,7 +1468,11 @@ export class CombatEffects {
     
     // Effet de dégâts sur l'interface
     showDamageNumber(damage, targetSide, damageType = 'normal') {
-        const arena = document.querySelector('#arena .arena');
+        // Chercher d'abord l'arène améliorée, puis l'ancienne en fallback
+        let arena = document.querySelector('#arena .arena-improved');
+        if (!arena) {
+            arena = document.querySelector('#arena .arena');
+        }
         if (!arena) return;
         
         const damageEl = document.createElement('div');
@@ -1487,7 +1520,11 @@ export class CombatEffects {
     
     // Secouer l'écran lors d'attaques puissantes
     screenShake(intensity = 5, duration = 300) {
-        const arena = document.querySelector('#arena .arena');
+        // Chercher d'abord l'arène améliorée, puis l'ancienne en fallback
+        let arena = document.querySelector('#arena .arena-improved');
+        if (!arena) {
+            arena = document.querySelector('#arena .arena');
+        }
         if (!arena) return;
         
         const originalTransform = arena.style.transform;

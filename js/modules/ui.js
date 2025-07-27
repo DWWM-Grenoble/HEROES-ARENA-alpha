@@ -61,6 +61,14 @@ export class UIManager {
         } else if (sectionName === 'arena') {
             console.log('🏟️ Affichage section arène, héros disponibles:', AppState.heroes.length);
             this.updateFighterSelectors();
+            
+            // Forcer la réinitialisation des effets visuels pour l'arène améliorée
+            setTimeout(() => {
+                if (window.combatEffects && window.combatEffects.forceInit) {
+                    console.log('🎨 Réinitialisation des effets visuels pour l\'arène améliorée');
+                    window.combatEffects.forceInit();
+                }
+            }, 100);
         }
     }
     
@@ -478,41 +486,163 @@ export class UIManager {
         const display = document.getElementById(displayId);
         if (!display) return;
         
+        // Check if we're using the improved arena interface
+        const isImprovedArena = display.classList.contains('fighter-card-improved');
+        
         if (!fighter) {
-            display.innerHTML = `
-                <div class="fighter-avatar-large">
-                    <span style="color: #64748b; font-size: 2rem;">?</span>
-                </div>
-                <div class="fighter-name">En attente...</div>
-                <div class="hero-class" style="background: rgba(255, 255, 255, 0.1);">Non sélectionné</div>
-                <div class="health-bar">
-                    <div class="health-fill" style="width: 0%"></div>
-                    <div class="health-text">0/0</div>
-                </div>
-            `;
+            if (isImprovedArena) {
+                // Improved arena structure
+                const avatar = display.querySelector('.fighter-avatar-improved');
+                const heroInfo = display.querySelector('.hero-info-improved');
+                const healthBar = display.querySelector('.health-bar-improved');
+                
+                if (avatar) avatar.innerHTML = '<span class="fighter-placeholder">?</span>';
+                if (heroInfo) {
+                    heroInfo.querySelector('.hero-name').textContent = 'En attente...';
+                    heroInfo.querySelector('.hero-class').textContent = 'Aucun héros sélectionné';
+                    heroInfo.querySelector('.hero-level').textContent = '-';
+                }
+                if (healthBar) {
+                    healthBar.querySelector('.health-fill').style.width = '100%';
+                    healthBar.querySelector('.health-text').textContent = '100/100';
+                }
+                
+                // Remove any combat state classes
+                display.className = 'fighter-card-improved';
+            } else {
+                // Original arena structure
+                display.innerHTML = `
+                    <div class="fighter-avatar-large">
+                        <span style="color: #64748b; font-size: 2rem;">?</span>
+                    </div>
+                    <div class="fighter-name">En attente...</div>
+                    <div class="hero-class" style="background: rgba(255, 255, 255, 0.1);">Non sélectionné</div>
+                    <div class="health-bar">
+                        <div class="health-fill" style="width: 0%"></div>
+                        <div class="health-text">0/0</div>
+                    </div>
+                `;
+            }
             return;
         }
         
         const healthPercent = calculateHealthPercentage(fighter.pv, fighter.pvMax);
         const healthColor = getHealthColor(healthPercent);
         
-        display.innerHTML = `
-            <div class="fighter-avatar-large">
-                <img src="assets/avatars/${fighter.avatar}" alt="${fighter.nom}">
-            </div>
-            <div class="fighter-name">${fighter.nom}</div>
-            <div class="hero-class ${fighter.classe.toLowerCase()}">${fighter.classe}</div>
-            <div class="fighter-stats">
-                <div class="stat-mini">⚔️ ${fighter.force}</div>
-                <div class="stat-mini">🏃 ${fighter.agility}</div>
-                <div class="stat-mini">🔮 ${fighter.magic}</div>
-                <div class="stat-mini">🛡️ ${fighter.defense}</div>
-            </div>
-            <div class="health-bar">
-                <div class="health-fill" style="width: ${healthPercent}%; background-color: ${healthColor}"></div>
-                <div class="health-text">${fighter.pv}/${fighter.pvMax}</div>
-            </div>
-        `;
+        if (isImprovedArena) {
+            // Improved arena structure
+            const avatar = display.querySelector('.fighter-avatar-improved');
+            const heroInfo = display.querySelector('.hero-info-improved');
+            const healthBar = display.querySelector('.health-bar-improved');
+            
+            if (avatar) {
+                avatar.innerHTML = `<img src="assets/avatars/${fighter.avatar}" alt="${fighter.nom}">`;
+            }
+            
+            if (heroInfo) {
+                heroInfo.querySelector('.hero-name').textContent = fighter.nom;
+                heroInfo.querySelector('.hero-class').textContent = `${fighter.classe} Légendaire`;
+                heroInfo.querySelector('.hero-level').textContent = `Niveau ${fighter.niveau}`;
+            }
+            
+            if (healthBar) {
+                healthBar.querySelector('.health-fill').style.width = `${healthPercent}%`;
+                healthBar.querySelector('.health-text').textContent = `${fighter.pv}/${fighter.pvMax}`;
+            }
+            
+            // Add ready state for improved arena
+            display.classList.add('ready');
+        } else {
+            // Original arena structure
+            display.innerHTML = `
+                <div class="fighter-avatar-large">
+                    <img src="assets/avatars/${fighter.avatar}" alt="${fighter.nom}">
+                </div>
+                <div class="fighter-name">${fighter.nom}</div>
+                <div class="hero-class ${fighter.classe.toLowerCase()}">${fighter.classe}</div>
+                <div class="fighter-stats">
+                    <div class="stat-mini">⚔️ ${fighter.force}</div>
+                    <div class="stat-mini">🏃 ${fighter.agility}</div>
+                    <div class="stat-mini">🔮 ${fighter.magic}</div>
+                    <div class="stat-mini">🛡️ ${fighter.defense}</div>
+                </div>
+                <div class="health-bar">
+                    <div class="health-fill" style="width: ${healthPercent}%; background-color: ${healthColor}"></div>
+                    <div class="health-text">${fighter.pv}/${fighter.pvMax}</div>
+                </div>
+            `;
+        }
+    }
+    
+    // New methods for improved arena interface
+    updateFighterDisplayImproved(fighterId, hero) {
+        const display = document.getElementById(`${fighterId}Display`);
+        if (!display) return;
+
+        const avatar = display.querySelector('.fighter-avatar-improved');
+        const heroInfo = display.querySelector('.hero-info-improved');
+        const healthBar = display.querySelector('.health-bar-improved');
+
+        if (hero) {
+            // Update avatar
+            avatar.innerHTML = hero.avatar ? 
+                `<img src="assets/avatars/${hero.avatar}" alt="${hero.nom}">` : 
+                '<span class="fighter-placeholder">?</span>';
+
+            // Update information
+            heroInfo.querySelector('.hero-name').textContent = hero.nom;
+            heroInfo.querySelector('.hero-class').textContent = `${hero.classe} Niveau ${hero.niveau}`;
+            heroInfo.querySelector('.hero-level').textContent = `Niveau ${hero.niveau}`;
+
+            // Update health bar
+            const healthPercent = (hero.pv / hero.pvMax) * 100;
+            healthBar.querySelector('.health-fill').style.width = `${healthPercent}%`;
+            healthBar.querySelector('.health-text').textContent = `${hero.pv}/${hero.pvMax}`;
+
+            // Add ready class
+            display.classList.add('ready');
+        } else {
+            // Reset display
+            avatar.innerHTML = '<span class="fighter-placeholder">?</span>';
+            heroInfo.querySelector('.hero-name').textContent = 'En attente...';
+            heroInfo.querySelector('.hero-class').textContent = 'Aucun héros sélectionné';
+            heroInfo.querySelector('.hero-level').textContent = '-';
+            healthBar.querySelector('.health-fill').style.width = '100%';
+            healthBar.querySelector('.health-text').textContent = '100/100';
+            
+            // Remove all state classes
+            display.className = 'fighter-card-improved';
+        }
+    }
+
+    setCombatStateImproved(fighterId, state) {
+        const display = document.getElementById(`${fighterId}Display`);
+        if (!display) return;
+
+        // Remove all previous states
+        display.classList.remove('ready', 'attacking', 'defending', 'victory', 'defeat');
+        
+        // Add the new state
+        if (state) {
+            display.classList.add(state);
+        }
+    }
+
+    updateHealthBarImproved(fighterId, currentHealth, maxHealth) {
+        const display = document.getElementById(`${fighterId}Display`);
+        if (!display) return;
+
+        const healthBar = display.querySelector('.health-bar-improved');
+        if (!healthBar) return;
+        
+        const healthFill = healthBar.querySelector('.health-fill');
+        const healthText = healthBar.querySelector('.health-text');
+
+        const healthPercent = Math.max(0, (currentHealth / maxHealth) * 100);
+        
+        // Smooth animation for health bar
+        healthFill.style.width = `${healthPercent}%`;
+        healthText.textContent = `${Math.max(0, currentHealth)}/${maxHealth}`;
     }
     
     filterHeroes(filter) {

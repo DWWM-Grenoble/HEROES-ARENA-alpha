@@ -160,6 +160,16 @@ export class CombatSystem {
         
         // Animation d'attaque
         uiManager.applyAttackingEffect(attackerId);
+        
+        // Also apply improved arena animation if available
+        const attackerFighterId = attacker.id === this.currentCombat.fighter1.id ? 'fighter1' : 'fighter2';
+        const defenderFighterId = defender.id === this.currentCombat.fighter1.id ? 'fighter1' : 'fighter2';
+        
+        if (uiManager.setCombatStateImproved) {
+            uiManager.setCombatStateImproved(attackerFighterId + 'Display', 'attacking');
+            uiManager.setCombatStateImproved(defenderFighterId + 'Display', 'defending');
+        }
+        
         await delay(gameConfig.attackAnimationDelay);
         
         // Vérifier si c'est un pouvoir spécial
@@ -229,6 +239,12 @@ export class CombatSystem {
                 oldHp, defender.pv, defender.pvMax
             );
             
+            // Update improved arena health bar if available
+            const defenderFighterId = defender.id === this.currentCombat.fighter1.id ? 'fighter1' : 'fighter2';
+            if (uiManager.updateHealthBarImproved) {
+                uiManager.updateHealthBarImproved(defenderFighterId + 'Display', defender.pv, defender.pvMax);
+            }
+            
             this.addLogEntry(`🛡️ ${defender.nom} bloque ! Seulement ${reducedDamage} dégâts !`, 'defense');
             return;
         }
@@ -255,6 +271,12 @@ export class CombatSystem {
             defenderSide === 'left' ? 'fighter1Display' : 'fighter2Display',
             oldHp, defender.pv, defender.pvMax
         );
+        
+        // Update improved arena health bar if available
+        const defenderFighterId = defender.id === this.currentCombat.fighter1.id ? 'fighter1' : 'fighter2';
+        if (uiManager.updateHealthBarImproved) {
+            uiManager.updateHealthBarImproved(defenderFighterId + 'Display', defender.pv, defender.pvMax);
+        }
         
         // Log des dégâts
         this.addLogEntry(`💥 ${finalDamage} dégâts infligés !`, 'attack');
@@ -678,6 +700,15 @@ export class CombatSystem {
             uiManager.applyDefeatEffect(loserId);
             await delay(1200);
             
+            // Apply improved arena victory/defeat effects if available
+            const winnerFighterId = winner.id === this.currentCombat.originalFighter1.id ? 'fighter1' : 'fighter2';
+            const loserFighterId = loser.id === this.currentCombat.originalFighter1.id ? 'fighter1' : 'fighter2';
+            
+            if (uiManager.setCombatStateImproved) {
+                uiManager.setCombatStateImproved(winnerFighterId + 'Display', 'victory');
+                uiManager.setCombatStateImproved(loserFighterId + 'Display', 'defeat');
+            }
+            
             this.addLogEntry(`🏆 ${winner.nom} REMPORTE LE COMBAT !`, 'info');
             uiManager.applyVictoryEffect(winnerId);
             combatEffects.screenShake(6, 600);
@@ -785,6 +816,12 @@ export class CombatSystem {
             
             // Réinitialiser les effets visuels
             uiManager.resetCombatEffects();
+            
+            // Reset improved arena states if available
+            if (uiManager.setCombatStateImproved) {
+                uiManager.setCombatStateImproved('fighter1Display', 'ready');
+                uiManager.setCombatStateImproved('fighter2Display', 'ready');
+            }
             
             if (this.currentCombat) {
                 this.currentCombat.endTime = new Date().toISOString();
