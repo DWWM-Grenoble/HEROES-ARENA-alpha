@@ -127,6 +127,531 @@ export class CombatEffects {
         this.startAnimation();
     }
     
+    // ========== EFFETS CLASSIQUES DE COMBAT ==========
+    
+    // Effet d'attaque physique (coup d'épée, masse, etc.)
+    createPhysicalAttackEffect(attackerSide, weaponType = 'sword', damage = 0) {
+        if (!this.ctx) this.initCanvas();
+        
+        const startX = attackerSide === 'left' ? 100 : this.canvas.width - 100;
+        const endX = attackerSide === 'left' ? this.canvas.width - 100 : 100;
+        const y = this.canvas.height / 2;
+        
+        switch (weaponType) {
+            case 'sword':
+                this.createSwordSlashEffect(startX, endX, y, damage);
+                break;
+            case 'axe':
+                this.createAxeChopEffect(startX, endX, y, damage);
+                break;
+            case 'mace':
+                this.createMaceSmashEffect(startX, endX, y, damage);
+                break;
+            case 'dagger':
+                this.createDaggerStabEffect(startX, endX, y, damage);
+                break;
+            case 'bow':
+                this.createArrowShotEffect(startX, endX, y, damage);
+                break;
+            default:
+                this.createSwordSlashEffect(startX, endX, y, damage);
+                break;
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet d'esquive
+    createDodgeEffect(defenderSide) {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = defenderSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        
+        // Nuage de poussière
+        const colors = ['#d4af37', '#e6c15f', '#f5e6a3', '#ffffff'];
+        for (let i = 0; i < 25; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 40,
+                y: y + 20 + Math.random() * 30,
+                vx: (Math.random() - 0.5) * 6,
+                vy: -Math.random() * 4 - 2,
+                size: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.03,
+                type: 'dust_cloud'
+            });
+        }
+        
+        // Effet de vitesse
+        for (let i = 0; i < 15; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 20,
+                y: y + (Math.random() - 0.5) * 40,
+                vx: (defenderSide === 'left' ? 1 : -1) * (Math.random() * 8 + 4),
+                vy: (Math.random() - 0.5) * 4,
+                size: Math.random() * 3 + 1,
+                color: '#ffffff',
+                life: 1.0,
+                decay: 0.05,
+                type: 'speed_line'
+            });
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet de blocage
+    createBlockEffect(defenderSide, blockType = 'shield') {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = defenderSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        
+        switch (blockType) {
+            case 'shield':
+                this.createShieldBlockEffect(x, y);
+                break;
+            case 'parry':
+                this.createParryEffect(x, y);
+                break;
+            case 'armor':
+                this.createArmorDeflectEffect(x, y);
+                break;
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet de soin
+    createHealingEffect(targetSide, healAmount = 0) {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = targetSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        const colors = ['#00ff88', '#44ffaa', '#88ffcc', '#aaffdd'];
+        
+        // Particules de soin montantes
+        for (let i = 0; i < 30; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 60,
+                y: y + 30 + Math.random() * 20,
+                vx: (Math.random() - 0.5) * 2,
+                vy: -3 - Math.random() * 3,
+                size: Math.random() * 6 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.015,
+                type: 'heal_particle'
+            });
+        }
+        
+        // Croix de soin
+        this.particles.push({
+            x: x,
+            y: y - 20,
+            size: 20,
+            color: '#00ff88',
+            life: 1.0,
+            decay: 0.02,
+            type: 'heal_cross'
+        });
+        
+        this.startAnimation();
+    }
+    
+    // Effet de dégâts de poison
+    createPoisonEffect(targetSide) {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = targetSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        const colors = ['#88ff00', '#aaff44', '#ccff88', '#44aa00'];
+        
+        // Bulles de poison
+        for (let i = 0; i < 20; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 50,
+                y: y + Math.random() * 40,
+                vx: (Math.random() - 0.5) * 3,
+                vy: -Math.random() * 2 - 1,
+                size: Math.random() * 8 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.02,
+                type: 'poison_bubble'
+            });
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet de brûlure
+    createBurnEffect(targetSide) {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = targetSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        const colors = ['#ff4400', '#ff6622', '#ff8844', '#ffaa66'];
+        
+        // Flammes montantes
+        for (let i = 0; i < 25; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 40,
+                y: y + Math.random() * 30,
+                vx: (Math.random() - 0.5) * 2,
+                vy: -Math.random() * 4 - 2,
+                size: Math.random() * 6 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.025,
+                type: 'burn_flame'
+            });
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet de foudre
+    createLightningStrikeEffect(targetSide) {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = targetSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        
+        // Éclair principal
+        const segments = 8;
+        const points = [];
+        for (let i = 0; i <= segments; i++) {
+            points.push({
+                x: x + (Math.random() - 0.5) * 40,
+                y: 0 + (y * i / segments) + (Math.random() - 0.5) * 30
+            });
+        }
+        
+        this.particles.push({
+            points: points,
+            color: '#ffffff',
+            life: 1.0,
+            decay: 0.15,
+            type: 'lightning_bolt',
+            width: 5
+        });
+        
+        // Étincelles
+        for (let i = 0; i < 30; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 60,
+                y: y + (Math.random() - 0.5) * 60,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8,
+                size: Math.random() * 4 + 2,
+                color: '#ccccff',
+                life: 1.0,
+                decay: 0.04,
+                type: 'spark'
+            });
+        }
+        
+        this.startAnimation();
+    }
+    
+    // Effet de buff
+    createBuffEffect(targetSide, buffType = 'strength') {
+        if (!this.ctx) this.initCanvas();
+        
+        const x = targetSide === 'left' ? 100 : this.canvas.width - 100;
+        const y = this.canvas.height / 2;
+        
+        let colors;
+        let symbol;
+        
+        switch (buffType) {
+            case 'strength':
+                colors = ['#ff4444', '#ff6666', '#ff8888'];
+                symbol = '💪';
+                break;
+            case 'defense':
+                colors = ['#4444ff', '#6666ff', '#8888ff'];
+                symbol = '🛡️';
+                break;
+            case 'speed':
+                colors = ['#44ff44', '#66ff66', '#88ff88'];
+                symbol = '💨';
+                break;
+            case 'magic':
+                colors = ['#ff44ff', '#ff66ff', '#ff88ff'];
+                symbol = '✨';
+                break;
+            default:
+                colors = ['#ffff44', '#ffff66', '#ffff88'];
+                symbol = '⭐';
+                break;
+        }
+        
+        // Aura de buff
+        for (let i = 0; i < 40; i++) {
+            const angle = (Math.PI * 2 * i) / 40;
+            const radius = 40 + Math.sin(Date.now() * 0.01 + i) * 10;
+            
+            this.particles.push({
+                x: x + Math.cos(angle) * radius,
+                y: y + Math.sin(angle) * radius,
+                vx: Math.cos(angle) * 1,
+                vy: Math.sin(angle) * 1,
+                size: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.015,
+                type: 'buff_aura'
+            });
+        }
+        
+        // Symbole de buff
+        this.particles.push({
+            x: x,
+            y: y - 30,
+            symbol: symbol,
+            size: 20,
+            color: colors[0],
+            life: 1.0,
+            decay: 0.01,
+            type: 'buff_symbol'
+        });
+        
+        this.startAnimation();
+    }
+    
+    // ========== EFFETS D'ARMES SPÉCIFIQUES ==========
+    
+    // Effet d'épée (slash)
+    createSwordSlashEffect(startX, endX, y, damage) {
+        const colors = ['#ffffff', '#e6e6e6', '#cccccc'];
+        const numParticles = Math.min(15 + damage, 40);
+        
+        // Traînée d'épée
+        for (let i = 0; i < numParticles; i++) {
+            const progress = i / numParticles;
+            this.particles.push({
+                x: startX + (endX - startX) * progress,
+                y: y + Math.sin(progress * Math.PI) * 30 + (Math.random() - 0.5) * 10,
+                vx: (endX - startX) / 20,
+                vy: (Math.random() - 0.5) * 4,
+                size: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.03,
+                type: 'sword_trail'
+            });
+        }
+        
+        // Étincelles d'impact
+        for (let i = 0; i < 10; i++) {
+            this.particles.push({
+                x: endX + (Math.random() - 0.5) * 20,
+                y: y + (Math.random() - 0.5) * 20,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 0.5) * 8,
+                size: Math.random() * 3 + 1,
+                color: '#ffff88',
+                life: 1.0,
+                decay: 0.05,
+                type: 'spark'
+            });
+        }
+    }
+    
+    // Effet de hache (chop)
+    createAxeChopEffect(startX, endX, y, damage) {
+        const colors = ['#8b4513', '#a0522d', '#cd853f'];
+        
+        // Impact brutal
+        for (let i = 0; i < 30; i++) {
+            const angle = Math.random() * Math.PI;
+            const speed = Math.random() * 10 + 5;
+            this.particles.push({
+                x: endX,
+                y: y,
+                vx: Math.cos(angle) * speed * (endX > startX ? 1 : -1),
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 6 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.02,
+                type: 'wood_chip'
+            });
+        }
+    }
+    
+    // Effet de masse (smash)
+    createMaceSmashEffect(startX, endX, y, damage) {
+        const colors = ['#696969', '#808080', '#a9a9a9'];
+        
+        // Onde de choc d'impact
+        this.particles.push({
+            x: endX,
+            y: y,
+            radius: 10,
+            maxRadius: 80 + damage,
+            color: '#ffffff',
+            life: 1.0,
+            decay: 0.04,
+            type: 'impact_wave'
+        });
+        
+        // Débris de pierre
+        for (let i = 0; i < 25; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 8 + 4;
+            this.particles.push({
+                x: endX,
+                y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 5 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.025,
+                type: 'stone_debris'
+            });
+        }
+    }
+    
+    // Effet de dague (stab)
+    createDaggerStabEffect(startX, endX, y, damage) {
+        const colors = ['#ff0000', '#cc0000', '#990000'];
+        
+        // Jet de sang
+        for (let i = 0; i < 15; i++) {
+            this.particles.push({
+                x: endX + (Math.random() - 0.5) * 10,
+                y: y + (Math.random() - 0.5) * 10,
+                vx: (Math.random() - 0.5) * 6,
+                vy: -Math.random() * 4 - 2,
+                size: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.03,
+                type: 'blood_drop'
+            });
+        }
+    }
+    
+    // Effet de flèche (shot)
+    createArrowShotEffect(startX, endX, y, damage) {
+        const colors = ['#8b4513', '#654321', '#daa520'];
+        
+        // Traînée de flèche
+        for (let i = 0; i < 20; i++) {
+            const progress = i / 20;
+            this.particles.push({
+                x: startX + (endX - startX) * progress - i * 3,
+                y: y + (Math.random() - 0.5) * 4,
+                vx: (endX - startX) / 15,
+                vy: (Math.random() - 0.5) * 2,
+                size: Math.random() * 2 + 1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.04,
+                type: 'arrow_trail'
+            });
+        }
+        
+        // Plumes qui s'envolent
+        for (let i = 0; i < 5; i++) {
+            this.particles.push({
+                x: startX + Math.random() * 20,
+                y: y + (Math.random() - 0.5) * 10,
+                vx: (Math.random() - 0.5) * 3,
+                vy: -Math.random() * 2 - 1,
+                size: Math.random() * 3 + 2,
+                color: '#ffffff',
+                life: 1.0,
+                decay: 0.02,
+                type: 'feather'
+            });
+        }
+    }
+    
+    // ========== EFFETS DE BLOCAGE SPÉCIFIQUES ==========
+    
+    // Blocage avec bouclier
+    createShieldBlockEffect(x, y) {
+        const colors = ['#ffd700', '#ffee44', '#ffffff'];
+        
+        // Éclat métallique
+        for (let i = 0; i < 20; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 6 + 3;
+            this.particles.push({
+                x: x,
+                y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 4 + 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.04,
+                type: 'metal_spark'
+            });
+        }
+        
+        // Onde de protection
+        this.particles.push({
+            x: x,
+            y: y,
+            radius: 10,
+            maxRadius: 60,
+            color: '#4444ff',
+            life: 1.0,
+            decay: 0.05,
+            type: 'shield_wave'
+        });
+    }
+    
+    // Parade d'épée
+    createParryEffect(x, y) {
+        const colors = ['#ffffff', '#ffff88', '#ffcc00'];
+        
+        // Étincelles de lames qui se croisent
+        for (let i = 0; i < 15; i++) {
+            this.particles.push({
+                x: x + (Math.random() - 0.5) * 30,
+                y: y + (Math.random() - 0.5) * 30,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10,
+                size: Math.random() * 3 + 1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.06,
+                type: 'clash_spark'
+            });
+        }
+    }
+    
+    // Déviation par armure
+    createArmorDeflectEffect(x, y) {
+        const colors = ['#708090', '#778899', '#b0c4de'];
+        
+        // Particules métalliques qui rebondissent
+        for (let i = 0; i < 12; i++) {
+            const angle = Math.random() * Math.PI + Math.PI / 4;
+            const speed = Math.random() * 8 + 4;
+            this.particles.push({
+                x: x,
+                y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 3 + 1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                life: 1.0,
+                decay: 0.05,
+                type: 'armor_deflect'
+            });
+        }
+    }
+    
     getAttackColors(attackType) {
         const colorSchemes = {
             normal: ['#ffffff', '#ffdd44', '#ff8844'],
@@ -627,6 +1152,21 @@ export class CombatEffects {
             case 'heal_sparkle':
             case 'arrow_trail':
             case 'arrow_head':
+            case 'dust_cloud':
+            case 'speed_line':
+            case 'heal_particle':
+            case 'poison_bubble':
+            case 'burn_flame':
+            case 'spark':
+            case 'buff_aura':
+            case 'sword_trail':
+            case 'wood_chip':
+            case 'stone_debris':
+            case 'blood_drop':
+            case 'feather':
+            case 'metal_spark':
+            case 'clash_spark':
+            case 'armor_deflect':
                 this.ctx.fillStyle = particle.color;
                 this.ctx.beginPath();
                 this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -665,6 +1205,23 @@ export class CombatEffects {
                 
             case 'nature_root':
                 this.drawNatureRoot(particle);
+                break;
+                
+            case 'heal_cross':
+                this.drawHealCross(particle);
+                break;
+                
+            case 'buff_symbol':
+                this.drawBuffSymbol(particle);
+                break;
+                
+            case 'lightning_bolt':
+                this.drawLightning(particle);
+                break;
+                
+            case 'impact_wave':
+            case 'shield_wave':
+                this.drawShockwave(particle);
                 break;
         }
         
@@ -800,6 +1357,23 @@ export class CombatEffects {
             }
         }
         this.ctx.stroke();
+    }
+    
+    // Nouvelles méthodes de dessin
+    drawHealCross(particle) {
+        this.ctx.fillStyle = particle.color;
+        this.ctx.font = `${particle.size}px Arial`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText('✚', particle.x, particle.y);
+    }
+    
+    drawBuffSymbol(particle) {
+        this.ctx.fillStyle = particle.color;
+        this.ctx.font = `${particle.size}px Arial`;
+        this.ctx.textAlign = 'center';
+        this.ctx.textBaseline = 'middle';
+        this.ctx.fillText(particle.symbol, particle.x, particle.y);
     }
     
     updateParticle(particle) {

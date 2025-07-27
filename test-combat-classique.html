@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Effets de Combat Classiques - Heroes Arena</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .arena-container {
+            position: relative;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 3px solid #d4af37;
+            border-radius: 15px;
+            height: 400px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .arena {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+        }
+
+        .fighter-indicators {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .fighter-left {
+            left: 80px;
+        }
+
+        .fighter-right {
+            right: 80px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #d4af37;
+            text-align: center;
+        }
+
+        .section-description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 50%, #d4af37 100%);
+            border: none;
+            border-radius: 6px;
+            color: #1e293b;
+            font-weight: bold;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            min-height: 40px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #e6c15f 0%, #d4af37 50%, #e6c15f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .status {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .side-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .side-btn {
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            border: 2px solid #64748b;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .side-btn.active {
+            background: linear-gradient(135deg, #d4af37 0%, #b8962e 100%);
+            border-color: #d4af37;
+            color: #1e293b;
+        }
+
+        .clear-controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 12px 24px;
+            font-size: 1rem;
+        }
+
+        .clear-btn:hover {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 2rem; }
+            .arena-container { height: 300px; }
+            .fighter-indicators { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔️ Test des Effets de Combat Classiques</h1>
+        
+        <div class="status" id="status">Initialisation...</div>
+
+        <div class="side-controls">
+            <button class="side-btn active" id="leftBtn">🟦 Attaquant Gauche</button>
+            <button class="side-btn" id="rightBtn">🟥 Attaquant Droite</button>
+        </div>
+
+        <div class="arena-container">
+            <div class="arena" id="arena">
+                <div class="fighter-indicators fighter-left">🛡️</div>
+                <div class="fighter-indicators fighter-right">⚔️</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <!-- Attaques d'armes -->
+            <div class="section">
+                <div class="section-title">⚔️ Attaques d'Armes</div>
+                <div class="section-description">Effets visuels pour différents types d'armes</div>
+                <div class="button-grid">
+                    <button onclick="testWeapon('sword')">Épée</button>
+                    <button onclick="testWeapon('axe')">Hache</button>
+                    <button onclick="testWeapon('mace')">Masse</button>
+                    <button onclick="testWeapon('dagger')">Dague</button>
+                    <button onclick="testWeapon('bow')">Arc</button>
+                </div>
+            </div>
+
+            <!-- Actions défensives -->
+            <div class="section">
+                <div class="section-title">🛡️ Actions Défensives</div>
+                <div class="section-description">Esquives, blocages et parades</div>
+                <div class="button-grid">
+                    <button onclick="testDefense('dodge')">Esquive</button>
+                    <button onclick="testDefense('shield')">Bouclier</button>
+                    <button onclick="testDefense('parry')">Parade</button>
+                    <button onclick="testDefense('armor')">Armure</button>
+                </div>
+            </div>
+
+            <!-- Effets de statut -->
+            <div class="section">
+                <div class="section-title">🌟 Effets de Statut</div>
+                <div class="section-description">Soins, poisons, brûlures et buffs</div>
+                <div class="button-grid">
+                    <button onclick="testStatus('heal')">Soin</button>
+                    <button onclick="testStatus('poison')">Poison</button>
+                    <button onclick="testStatus('burn')">Brûlure</button>
+                    <button onclick="testStatus('lightning')">Foudre</button>
+                </div>
+            </div>
+
+            <!-- Buffs -->
+            <div class="section">
+                <div class="section-title">✨ Améliorations</div>
+                <div class="section-description">Buffs temporaires et enchantements</div>
+                <div class="button-grid">
+                    <button onclick="testBuff('strength')">Force</button>
+                    <button onclick="testBuff('defense')">Défense</button>
+                    <button onclick="testBuff('speed')">Vitesse</button>
+                    <button onclick="testBuff('magic')">Magie</button>
+                </div>
+            </div>
+
+            <!-- Effets génériques -->
+            <div class="section">
+                <div class="section-title">💥 Effets Génériques</div>
+                <div class="section-description">Attaques de base et effets standards</div>
+                <div class="button-grid">
+                    <button onclick="testGeneric('normal')">Normal</button>
+                    <button onclick="testGeneric('special')">Spécial</button>
+                    <button onclick="testGeneric('power')">Puissance</button>
+                    <button onclick="testGeneric('critical')">Critique</button>
+                </div>
+            </div>
+
+            <!-- Classes spéciales -->
+            <div class="section">
+                <div class="section-title">🏛️ Capacités de Classes</div>
+                <div class="section-description">Pouvoirs spéciaux des différentes classes</div>
+                <div class="button-grid">
+                    <button onclick="testClass('Guerrier')">Guerrier</button>
+                    <button onclick="testClass('Mage')">Mage</button>
+                    <button onclick="testClass('Archer')">Archer</button>
+                    <button onclick="testClass('Paladin')">Paladin</button>
+                    <button onclick="testClass('Assassin')">Assassin</button>
+                    <button onclick="testClass('Druide')">Druide</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear-controls">
+            <button class="clear-btn" onclick="clearAll()">🧹 Nettoyer tous les effets</button>
+        </div>
+    </div>
+
+    <!-- Import du système d'effets -->
+    <script type="module">
+        import { combatEffects } from './js/modules/combat-effects.js';
+        
+        // Variables globales
+        let currentSide = 'left';
+        
+        // Fonctions d'interface
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+        }
+        
+        function setSide(side) {
+            currentSide = side;
+            document.getElementById('leftBtn').classList.toggle('active', side === 'left');
+            document.getElementById('rightBtn').classList.toggle('active', side === 'right');
+            
+            // Mettre à jour les indicateurs visuels
+            const leftFighter = document.querySelector('.fighter-left');
+            const rightFighter = document.querySelector('.fighter-right');
+            
+            if (side === 'left') {
+                leftFighter.textContent = '⚔️';
+                rightFighter.textContent = '🛡️';
+                updateStatus('🟦 Attaquant de gauche sélectionné');
+            } else {
+                leftFighter.textContent = '🛡️';
+                rightFighter.textContent = '⚔️';
+                updateStatus('🟥 Attaquant de droite sélectionné');
+            }
+        }
+        
+        // Fonctions de test - Globales
+        window.testWeapon = function(weaponType) {
+            try {
+                combatEffects.createPhysicalAttackEffect(currentSide, weaponType, 25);
+                updateStatus(`💥 Attaque ${weaponType} du côté ${currentSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur weapon:', error);
+                updateStatus('❌ Erreur lors de l\'effet d\'arme');
+            }
+        };
+        
+        window.testDefense = function(defenseType) {
+            const targetSide = currentSide === 'left' ? 'right' : 'left';
+            try {
+                if (defenseType === 'dodge') {
+                    combatEffects.createDodgeEffect(targetSide);
+                } else {
+                    combatEffects.createBlockEffect(targetSide, defenseType);
+                }
+                updateStatus(`🛡️ ${defenseType} du côté ${targetSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur defense:', error);
+                updateStatus('❌ Erreur lors de l\'effet défensif');
+            }
+        };
+        
+        window.testStatus = function(statusType) {
+            const targetSide = currentSide === 'left' ? 'right' : 'left';
+            try {
+                switch (statusType) {
+                    case 'heal':
+                        combatEffects.createHealingEffect(targetSide, 25);
+                        break;
+                    case 'poison':
+                        combatEffects.createPoisonEffect(targetSide);
+                        break;
+                    case 'burn':
+                        combatEffects.createBurnEffect(targetSide);
+                        break;
+                    case 'lightning':
+                        combatEffects.createLightningStrikeEffect(targetSide);
+                        break;
+                }
+                updateStatus(`🌟 Effet ${statusType} sur le côté ${targetSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur status:', error);
+                updateStatus('❌ Erreur lors de l\'effet de statut');
+            }
+        };
+        
+        window.testBuff = function(buffType) {
+            const targetSide = currentSide === 'left' ? 'right' : 'left';
+            try {
+                combatEffects.createBuffEffect(targetSide, buffType);
+                updateStatus(`✨ Buff ${buffType} sur le côté ${targetSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur buff:', error);
+                updateStatus('❌ Erreur lors du buff');
+            }
+        };
+        
+        window.testGeneric = function(attackType) {
+            try {
+                combatEffects.createAttackEffect(currentSide, attackType, 25);
+                updateStatus(`💥 Attaque ${attackType} du côté ${currentSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur generic:', error);
+                updateStatus('❌ Erreur lors de l\'attaque générique');
+            }
+        };
+        
+        window.testClass = function(heroClass) {
+            try {
+                combatEffects.createClassSpecialEffect(currentSide, heroClass, 25);
+                updateStatus(`🏛️ Capacité ${heroClass} du côté ${currentSide === 'left' ? 'gauche' : 'droit'}`);
+            } catch (error) {
+                console.error('Erreur class:', error);
+                updateStatus('❌ Erreur lors de la capacité de classe');
+            }
+        };
+        
+        window.clearAll = function() {
+            try {
+                combatEffects.cleanup();
+                setTimeout(() => {
+                    combatEffects.initCanvas();
+                    updateStatus('🧹 Tous les effets ont été nettoyés');
+                }, 100);
+            } catch (error) {
+                console.error('Erreur clear:', error);
+                updateStatus('❌ Erreur lors du nettoyage');
+            }
+        };
+        
+        // Événements pour les boutons de côté
+        document.getElementById('leftBtn').onclick = () => setSide('left');
+        document.getElementById('rightBtn').onclick = () => setSide('right');
+        
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                combatEffects.initCanvas();
+                updateStatus('✅ Système d\'effets de combat initialisé - Prêt à tester!');
+                setSide('left'); // Initialiser avec le côté gauche
+            } catch (error) {
+                console.error('Erreur initialisation:', error);
+                updateStatus('❌ Erreur lors de l\'initialisation: ' + error.message);
+            }
+        });
+        
+        // Redimensionnement automatique
+        window.addEventListener('resize', () => {
+            try {
+                combatEffects.resizeCanvas();
+            } catch (error) {
+                console.error('Erreur resize:', error);
+            }
+        });
+    </script>
+</body>
+</html>
