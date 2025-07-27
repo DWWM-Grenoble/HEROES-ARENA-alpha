@@ -1,0 +1,50 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ========== SYSTÈME D'AVATAR UNIFORME ==========
+
+// Classe utilitaire pour normaliser l'affichage des avatars
+.avatar-uniform {
+    position: relative;
+    overflow: hidden;
+    
+    img {
+        width: 90% !important;
+        height: 90% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        border-radius: inherit;
+    }
+}
+
+// Application automatique à tous les conteneurs d'avatar
+.hero-avatar,
+.fighter-avatar,
+.fighter-avatar-large,
+.user-avatar,
+.user-avatar-large,
+.avatar-option,
+.avatar-item,
+.hero-preview-avatar,
+.hero-option-avatar,
+.hero-avatar-large,
+.hero-avatar-result,
+.hero-avatar-result-enhanced {
+    @extend .avatar-uniform;
+}
+
+// Correction spécifique pour les conteneurs qui n'ont pas position: relative
+.avatar-option,
+.avatar-item,
+.user-avatar-large,
+.hero-avatar,
+.fighter-avatar-large,
+.hero-preview-avatar,
+.hero-option-avatar {
+    position: relative;
+    overflow: hidden;
+}

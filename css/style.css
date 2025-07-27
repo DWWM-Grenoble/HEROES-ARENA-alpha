@@ -1029,6 +1029,55 @@ body::after {
     transform: translateY(0);
   }
 }
+.avatar-uniform, .hero-avatar,
+.fighter-avatar,
+.fighter-avatar-large,
+.user-avatar,
+.user-avatar-large,
+.avatar-option,
+.avatar-item,
+.hero-preview-avatar,
+.hero-option-avatar,
+.hero-avatar-large,
+.hero-avatar-result,
+.hero-avatar-result-enhanced {
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uniform img, .hero-avatar img,
+.fighter-avatar img,
+.fighter-avatar-large img,
+.user-avatar img,
+.user-avatar-large img,
+.avatar-option img,
+.avatar-item img,
+.hero-preview-avatar img,
+.hero-option-avatar img,
+.hero-avatar-large img,
+.hero-avatar-result img,
+.hero-avatar-result-enhanced img {
+  width: 90% !important;
+  height: 90% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  border-radius: inherit;
+}
+
+.avatar-option,
+.avatar-item,
+.user-avatar-large,
+.hero-avatar,
+.fighter-avatar-large,
+.hero-preview-avatar,
+.hero-option-avatar {
+  position: relative;
+  overflow: hidden;
+}
+
 /* Interface d'authentification - Contrastes WCAG optimisés */
 .auth-overlay {
   position: fixed;
@@ -2385,10 +2434,14 @@ body::after {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(212, 175, 55, 0.2);
 }
 .hero-avatar img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
   object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: calc(12px - 2px);
 }
 .hero-avatar .avatar-placeholder {
@@ -2534,8 +2587,14 @@ body::after {
     height: 50px;
   }
   .hero-card .hero-avatar img {
-    width: 50px;
-    height: 50px;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .hero-card .hero-info {
     gap: 4px;
@@ -2588,8 +2647,14 @@ body::after {
     height: 45px;
   }
   .hero-card .hero-avatar img {
-    width: 45px;
-    height: 45px;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   .hero-card .hero-info .hero-name {
     font-size: 0.75rem;
@@ -2684,10 +2749,17 @@ body::after {
     width: 50px;
     height: 50px;
     border-radius: 8px;
+    position: relative;
   }
   .avatar-catalog .avatar-grid .avatar-item img {
-    width: 50px;
-    height: 50px;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 @media (max-width: 480px) {
@@ -3060,9 +3132,14 @@ body::after {
   }
 }
 .fighter-avatar-large img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .fighter-avatar-large .avatar-placeholder {
   position: absolute;
@@ -3320,9 +3397,14 @@ body::after {
   }
 }
 .hero-preview-avatar img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .hero-preview-avatar .preview-placeholder {
   color: #e0e0e0;
@@ -3485,9 +3567,14 @@ body::after {
   }
 }
 .hero-option-avatar img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .hero-option-info {
@@ -4478,12 +4565,13 @@ body::after {
 }
 .hero-modal-left .hero-avatar-large img {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
+  top: 50%;
+  left: 50%;
+  width: 90% !important;
+  height: 90% !important;
   object-fit: cover;
   object-position: center;
+  transform: translate(-50%, -50%);
   border-radius: calc(16px - 3px);
 }
 @media (max-width: 768px) {
@@ -4790,12 +4878,13 @@ body::after {
 }
 .combat-result-content .combat-result-body .winner-section .result-hero-card .hero-avatar-result img {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
+  top: 50%;
+  left: 50%;
+  width: 90% !important;
+  height: 90% !important;
   object-fit: cover;
   object-position: center;
+  transform: translate(-50%, -50%);
   border-radius: calc(12px - 2px);
 }
 .combat-result-content .combat-result-body .winner-section .result-hero-card .hero-info {
@@ -4983,13 +5072,20 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   background: linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 2px 0 rgba(212, 175, 55, 0.2);
 }
 .user-avatar-large img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
 }
 .user-avatar-large .user-initials {
   font-size: 1.25rem;
@@ -5122,6 +5218,7 @@ body::after {
   cursor: pointer;
   transition: all 0.3s ease;
   background: rgba(15, 15, 15, 0.5);
+  position: relative;
 }
 #profileAvatarGrid .avatar-option:hover {
   border-color: #e0e0e0;
@@ -5129,9 +5226,15 @@ body::after {
   transform: scale(1.05);
 }
 #profileAvatarGrid .avatar-option img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
 }
 @media (max-width: 480px) {
   #profileAvatarGrid {
@@ -5735,6 +5838,7 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 .avatar-option:hover {
   border-color: rgba(255, 255, 255, 0.3);
@@ -5746,10 +5850,16 @@ body::after {
   transform: scale(1.05);
 }
 .avatar-option img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
   border-radius: 8px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .create-hero-title {
@@ -7677,9 +7787,15 @@ button[onclick*=startCombat]::before {
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.5), inset 0 0 10px rgba(212, 175, 55, 0.2);
 }
 .hero-avatar-large-container .hero-avatar-large img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
 }
 .hero-avatar-large-container .hero-avatar-large .avatar-border-glow {
   position: absolute;
@@ -8276,9 +8392,15 @@ button[onclick*=startCombat]::before {
   box-shadow: 0 0 20px rgba(107, 114, 128, 0.4), inset 0 0 15px rgba(107, 114, 128, 0.1);
 }
 .hero-avatar-result-enhanced img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: inherit;
 }
 .hero-avatar-result-enhanced .hero-glow {
   position: absolute;
@@ -9526,9 +9648,14 @@ button[onclick*=startCombat]::before {
 }
 .victory-modal .hero-result .hero-avatar img,
 .draw-modal .hero-result .hero-avatar img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: cover;
+  object-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .victory-modal .hero-result .hero-name,
 .draw-modal .hero-result .hero-name {

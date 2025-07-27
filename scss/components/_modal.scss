@@ -34,7 +34,7 @@
 }
 
 .modal-content {
-    background: 
+    background:
         linear-gradient(135deg, rgba(26, 22, 18, 0.98) 0%, $bg-primary 50%, rgba(15, 13, 10, 0.99) 100%),
         repeating-linear-gradient(45deg,
             transparent,
@@ -66,14 +66,12 @@
         left: -6px;
         right: -6px;
         bottom: -6px;
-        background: linear-gradient(
-            45deg, 
-            $rust-red 0%, 
-            $gore-red 25%, 
-            $text-fire 50%, 
-            $primary-gold 75%, 
-            $rust-red 100%
-        );
+        background: linear-gradient(45deg,
+                $rust-red 0%,
+                $gore-red 25%,
+                $text-fire 50%,
+                $primary-gold 75%,
+                $rust-red 100%);
         border-radius: calc(#{get($border-radius, lg)} + 2px);
         z-index: -1;
         opacity: 0.6;
@@ -87,14 +85,12 @@
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: linear-gradient(
-            135deg,
-            transparent 0%,
-            rgba(212, 175, 55, 0.1) 25%,
-            rgba(212, 175, 55, 0.2) 50%,
-            rgba(212, 175, 55, 0.1) 75%,
-            transparent 100%
-        );
+        background: linear-gradient(135deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.1) 25%,
+                rgba(212, 175, 55, 0.2) 50%,
+                rgba(212, 175, 55, 0.1) 75%,
+                transparent 100%);
         border-radius: calc(#{get($border-radius, lg)} + 1px);
         z-index: -1;
         opacity: 0.8;
@@ -133,22 +129,21 @@
     position: relative;
     padding: get($spacings, lg) 60px get($spacings, lg) get($spacings, lg);
     border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-    background: linear-gradient(
-        135deg,
-        rgba(26, 22, 18, 0.95) 0%,
-        rgba(15, 13, 10, 0.98) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(26, 22, 18, 0.95) 0%,
+            rgba(15, 13, 10, 0.98) 100%);
     backdrop-filter: blur(10px);
     flex-shrink: 0;
 
-    h2, h3 {
+    h2,
+    h3 {
         margin: 0;
         color: $primary-gold;
         font-family: $font-family-secondary;
         text-align: center;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        text-shadow: 
+        text-shadow:
             0 0 10px rgba(212, 175, 55, 0.5),
             0 0 20px rgba(212, 175, 55, 0.3);
         font-size: get($font-sizes, 2xl);
@@ -157,24 +152,27 @@
 
     @include tablet {
         padding: get($spacings, md) 50px get($spacings, md) get($spacings, md);
-        
-        h2, h3 {
+
+        h2,
+        h3 {
             font-size: get($font-sizes, xl);
         }
     }
 
     @include mobile {
         padding: get($spacings, md) 45px get($spacings, md) get($spacings, md);
-        
-        h2, h3 {
+
+        h2,
+        h3 {
             font-size: get($font-sizes, lg);
         }
     }
 
     @include xs {
         padding: get($spacings, sm) 40px get($spacings, sm) get($spacings, sm);
-        
-        h2, h3 {
+
+        h2,
+        h3 {
             font-size: get($font-sizes, base);
             letter-spacing: 0.03em;
         }
@@ -201,7 +199,7 @@
     min-height: 48px; // Touch-friendly
     min-width: 48px;
     backdrop-filter: blur(10px);
-    box-shadow: 
+    box-shadow:
         0 4px 12px rgba($error, 0.3),
         0 0 20px rgba($error, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -600,19 +598,25 @@
 }
 
 @keyframes xp-shimmer {
-    0%, 100% {
+
+    0%,
+    100% {
         background-position: 200% 0;
     }
+
     50% {
         background-position: -200% 0;
     }
 }
 
 @keyframes borderGlow {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.6;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.8;
         transform: scale(1.002);
@@ -620,25 +624,26 @@
 }
 
 @keyframes iconGlow {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.3;
-        background: linear-gradient(45deg, 
-            transparent 0%, 
-            rgba(212, 175, 55, 0.1) 25%, 
-            rgba(212, 175, 55, 0.2) 50%, 
-            rgba(212, 175, 55, 0.1) 75%, 
-            transparent 100%
-        );
+        background: linear-gradient(45deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.1) 25%,
+                rgba(212, 175, 55, 0.2) 50%,
+                rgba(212, 175, 55, 0.1) 75%,
+                transparent 100%);
     }
+
     50% {
         opacity: 0.6;
-        background: linear-gradient(45deg, 
-            transparent 0%, 
-            rgba(212, 175, 55, 0.2) 25%, 
-            rgba(212, 175, 55, 0.4) 50%, 
-            rgba(212, 175, 55, 0.2) 75%, 
-            transparent 100%
-        );
+        background: linear-gradient(45deg,
+                transparent 0%,
+                rgba(212, 175, 55, 0.2) 25%,
+                rgba(212, 175, 55, 0.4) 50%,
+                rgba(212, 175, 55, 0.2) 75%,
+                transparent 100%);
     }
 }
 
@@ -818,12 +823,13 @@
 
         img {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
+            top: 50%;
+            left: 50%;
+            width: 90% !important;
+            height: 90% !important;
             object-fit: cover;
             object-position: center;
+            transform: translate(-50%, -50%);
             border-radius: calc(#{get($border-radius, lg)} - 3px);
         }
 
@@ -1143,12 +1149,13 @@
 
                     img {
                         position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100% !important;
-                        height: 100% !important;
+                        top: 50%;
+                        left: 50%;
+                        width: 90% !important;
+                        height: 90% !important;
                         object-fit: cover;
                         object-position: center;
+                        transform: translate(-50%, -50%);
                         border-radius: calc(#{get($border-radius, md)} - 2px);
                     }
                 }
@@ -1264,8 +1271,8 @@
 }
 
 .avatar-preview-image {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 80vh;
+    max-height: 80vh;
     object-fit: contain;
     border-radius: get($border-radius, md);
     box-shadow:
@@ -1358,15 +1365,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     background: linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
     box-shadow:
         0 0 20px rgba(212, 175, 55, 0.3),
         inset 0 2px 0 rgba(212, 175, 55, 0.2);
 
     img {
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 90%;
         object-fit: cover;
+        object-position: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: inherit;
     }
 
     .user-initials {
@@ -1516,6 +1530,7 @@
         cursor: pointer;
         transition: all get($transitions, normal);
         background: rgba(15, 15, 15, 0.5);
+        position: relative;
 
         &:hover {
             border-color: $primary-gold;
@@ -1524,9 +1539,15 @@
         }
 
         img {
-            width: 100%;
-            height: 100%;
+            width: 90%;
+            height: 90%;
             object-fit: cover;
+            object-position: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: inherit;
         }
     }
 
@@ -1549,16 +1570,14 @@
     gap: get($spacings, xl);
     align-items: start;
     padding: get($spacings, lg);
-    background: linear-gradient(
-        135deg,
-        rgba(26, 22, 18, 0.4) 0%,
-        rgba(15, 13, 10, 0.6) 50%,
-        rgba(26, 22, 18, 0.4) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(26, 22, 18, 0.4) 0%,
+            rgba(15, 13, 10, 0.6) 50%,
+            rgba(26, 22, 18, 0.4) 100%);
     border-radius: get($border-radius, lg);
     margin: get($spacings, md);
     border: 1px solid rgba(212, 175, 55, 0.2);
-    box-shadow: 
+    box-shadow:
         inset 0 1px 0 rgba(212, 175, 55, 0.1),
         0 4px 20px rgba(0, 0, 0, 0.3);
 
@@ -1586,12 +1605,12 @@
     font-size: 140px;
     text-align: center;
     padding: get($spacings, xl);
-    background: 
+    background:
         radial-gradient(circle at center, rgba($primary-gold, 0.2) 0%, rgba($primary-gold, 0.05) 70%, transparent 100%),
         linear-gradient(135deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
     border-radius: get($border-radius, lg);
     border: 3px solid rgba($primary-gold, 0.4);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(0, 0, 0, 0.4),
         0 0 40px rgba($primary-gold, 0.3),
         inset 0 2px 0 rgba($primary-gold, 0.3),
@@ -1607,13 +1626,12 @@
         left: -3px;
         right: -3px;
         bottom: -3px;
-        background: linear-gradient(45deg, 
-            transparent 0%, 
-            rgba($primary-gold, 0.2) 25%, 
-            rgba($primary-gold, 0.4) 50%, 
-            rgba($primary-gold, 0.2) 75%, 
-            transparent 100%
-        );
+        background: linear-gradient(45deg,
+                transparent 0%,
+                rgba($primary-gold, 0.2) 25%,
+                rgba($primary-gold, 0.4) 50%,
+                rgba($primary-gold, 0.2) 75%,
+                transparent 100%);
         border-radius: calc(#{get($border-radius, lg)} + 3px);
         z-index: -1;
         animation: iconGlow 4s ease-in-out infinite;
@@ -1684,7 +1702,9 @@
     }
 }
 
-.class-bonuses, .class-abilities, .class-power-preview {
+.class-bonuses,
+.class-abilities,
+.class-power-preview {
     margin-bottom: get($spacings, lg);
 
     h4 {
@@ -1750,7 +1770,7 @@
 }
 
 .power-card {
-    background: 
+    background:
         linear-gradient(135deg, rgba($primary-gold, 0.15) 0%, rgba($primary-gold, 0.05) 100%),
         linear-gradient(45deg, rgba(26, 22, 18, 0.8) 0%, rgba(15, 13, 10, 0.9) 100%);
     border: 2px solid rgba($primary-gold, 0.4);
@@ -1758,7 +1778,7 @@
     padding: get($spacings, lg);
     position: relative;
     overflow: hidden;
-    box-shadow: 
+    box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.3),
         0 0 20px rgba($primary-gold, 0.2),
         inset 0 1px 0 rgba($primary-gold, 0.2);
@@ -1771,18 +1791,17 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba($primary-gold, 0.1) 50%, 
-            transparent 100%
-        );
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba($primary-gold, 0.1) 50%,
+                transparent 100%);
         transition: left 0.8s ease;
     }
 
     &:hover {
         transform: translateY(-2px);
         border-color: rgba($primary-gold, 0.6);
-        box-shadow: 
+        box-shadow:
             0 12px 32px rgba(0, 0, 0, 0.4),
             0 0 30px rgba($primary-gold, 0.4),
             inset 0 1px 0 rgba($primary-gold, 0.3);
@@ -1791,7 +1810,7 @@
             left: 100%;
         }
     }
-    
+
     h5 {
         color: $primary-gold;
         font-size: get($font-sizes, xl);

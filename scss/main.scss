@@ -17,6 +17,7 @@
 @use 'layout/mobile';
 
 // 4. Components (reusable components)
+@use 'components/avatar-uniform'; // Avatar uniform system - must be first
 @use 'components/auth';
 @use 'components/hero-card';
 @use 'components/hero-card-mobile';

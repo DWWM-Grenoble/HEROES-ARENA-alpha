@@ -312,6 +312,7 @@
     cursor: pointer;
     transition: all get($transitions, normal);
     @include flex-center;
+    position: relative;
 
     &:hover {
         border-color: rgba(255, 255, 255, 0.3);
@@ -325,10 +326,16 @@
     }
 
     img {
-        width: 100%;
-        height: 100%;
+        width: 90%;
+        height: 90%;
         object-fit: cover;
+        object-position: center;
         border-radius: get($border-radius, sm);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.05);
     }
 }
 
