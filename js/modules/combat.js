@@ -43,6 +43,10 @@ export class CombatSystem {
         this.isRunning = true;
         this.combatLog = [];
         
+        // Initialiser les effets visuels de combat
+        console.log('🎨 Initialisation forcée des effets de combat...');
+        combatEffects.forceInit();
+        
         this.addLogEntry(`🏟️ NOUVEAU COMBAT ! ${fighter1.nom} VS ${fighter2.nom}`, 'info');
         this.addLogEntry(`⚔️ Que le meilleur gagne !`, 'info');
         this.addLogEntry(`${fighter1.nom}: ${this.currentCombat.fighter1.pv}/${this.currentCombat.fighter1.pvMax} PV`, 'info');

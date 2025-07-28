@@ -15,6 +15,13 @@ export class CombatEffects {
         
         console.log('🎨 Initialisation du canvas d\'effets de combat...');
         
+        // Debug: vérifier les éléments disponibles
+        console.log('🔍 Recherche d\'arène disponible...');
+        console.log('- #arena .arena-improved:', !!document.querySelector('#arena .arena-improved'));
+        console.log('- #arena .arena:', !!document.querySelector('#arena .arena'));
+        console.log('- .arena-improved:', !!document.querySelector('.arena-improved'));
+        console.log('- .arena:', !!document.querySelector('.arena'));
+        
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'combatEffectsCanvas';
         this.canvas.style.cssText = `
@@ -31,6 +38,12 @@ export class CombatEffects {
         let arena = document.querySelector('#arena .arena-improved');
         if (!arena) {
             arena = document.querySelector('#arena .arena');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena-improved');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena');
         }
         
         if (arena) {
@@ -55,6 +68,12 @@ export class CombatEffects {
         let arena = document.querySelector('#arena .arena-improved');
         if (!arena) {
             arena = document.querySelector('#arena .arena');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena-improved');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena');
         }
         
         if (arena) {
@@ -1473,6 +1492,12 @@ export class CombatEffects {
         if (!arena) {
             arena = document.querySelector('#arena .arena');
         }
+        if (!arena) {
+            arena = document.querySelector('.arena-improved');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena');
+        }
         if (!arena) return;
         
         const damageEl = document.createElement('div');
@@ -1524,6 +1549,12 @@ export class CombatEffects {
         let arena = document.querySelector('#arena .arena-improved');
         if (!arena) {
             arena = document.querySelector('#arena .arena');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena-improved');
+        }
+        if (!arena) {
+            arena = document.querySelector('.arena');
         }
         if (!arena) return;
         
