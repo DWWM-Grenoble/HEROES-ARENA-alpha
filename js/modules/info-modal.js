@@ -131,7 +131,7 @@ export class InfoModal {
                     </h3>
                     <p style="margin-bottom: 15px;">
                         <strong>Heroes Arena</strong> est un projet de groupe développé dans le cadre d'une 
-                        <strong>formation Développeur Web et Web Mobile</strong>.
+                        <strong>formation Développeur Web et Web Mobile de la promotion 2025-2026 de Grenoble-échirolles</strong>.
                     </p>
                     <div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
                         <h4 style="color: #60a5fa; margin-bottom: 10px;">🎯 Objectifs pédagogiques :</h4>
