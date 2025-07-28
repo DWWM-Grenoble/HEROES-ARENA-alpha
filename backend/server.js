@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
 
 const database = require('./config/database');
 
@@ -12,6 +13,7 @@ const heroRoutes = require('./routes/heroes');
 const combatRoutes = require('./routes/combats');
 const userRoutes = require('./routes/users');
 const statsRoutes = require('./routes/stats');
+const { router: authRoutes } = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -54,6 +56,17 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
+// Session middleware (pour OAuth state)
+app.use(session({
+    secret: process.env.JWT_SECRET || 'heroes-arena-session-secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 10 * 60 * 1000 // 10 minutes pour OAuth state
+    }
+}));
+
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -93,6 +106,7 @@ app.get('/health', async (req, res) => {
 });
 
 // Routes API
+app.use('/api/auth', authRoutes);
 app.use('/api/heroes', heroRoutes);
 app.use('/api/combats', combatRoutes);
 app.use('/api/users', userRoutes);

@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Email invalide']
     },
+    emailVerified: {
+        type: Boolean,
+        default: false
+    },
     password: {
         type: String,
         required: [true, 'Le mot de passe est requis'],
@@ -53,6 +57,19 @@ const userSchema = new mongoose.Schema({
         notifications: { type: Boolean, default: true },
         musique: { type: Boolean, default: true },
         effetsSonores: { type: Boolean, default: true }
+    },
+    // Authentification GitHub
+    github: {
+        id: String,
+        username: String,
+        profileUrl: String,
+        avatarUrl: String,
+        connectedAt: { type: Date, default: Date.now }
+    },
+    authMethod: {
+        type: String,
+        enum: ['local', 'github'],
+        default: 'local'
     },
     role: {
         type: String,
