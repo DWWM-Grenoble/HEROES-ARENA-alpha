@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heroes Arena - Ultimate Edition</title>
+    <link rel="icon" href="./assets/icon/icons8-battle-16.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.min.css?v=20250727-1115">
+</head>
+<body>
+    <div class="background"></div>
+
+    <!-- Page d'accueil -->
+    <div id="homeScreen" class="home-screen">
+        <div class="home-container">
+            <h1 class="home-title">Heroes Arena</h1>
+            <p class="home-slogan">Créez vos héros légendaires et dominez l'arène</p>
+            <button class="home-btn" onclick="enterApplication()">
+                Commencer l'aventure
+            </button>
+        </div>
+    </div>
+
+    <!-- Écran d'authentification -->
+    <div id="authScreen" class="auth-screen" style="display: none;">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>HEROES ARENA</h1>
+                <p>Connectez-vous pour créer vos héros légendaires</p>
+            </div>
+
+            <!-- Formulaire de Connexion -->
+            <div id="loginForm" class="auth-form active">
+                <h2>Connexion</h2>
+                <form onsubmit="return HeroesAuth.handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
+                        <div class="error-message" id="loginEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" class="form-input" 
+                               placeholder="Votre mot de passe" required>
+                        <div class="error-message" id="loginPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Se connecter</button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>Pas encore de compte ? 
+                        <a href="#" onclick="HeroesAuth.showRegister()">Créer un compte</a>
+                    </p>
+                    <p class="forgot-link">
+                        <a href="#" onclick="HeroesAuth.showForgotPassword()">Mot de passe oublié ?</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulaire d'Inscription -->
+            <div id="registerForm" class="auth-form">
+                <h2>Créer un compte</h2>
+                <form onsubmit="return HeroesAuth.handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerUsername">Nom d'utilisateur</label>
+                        <input type="text" id="registerUsername" class="form-input" 
+                               placeholder="Votre nom d'utilisateur" required>
+                        <div class="error-message" id="registerUsernameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
+                        <div class="error-message" id="registerEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe</label>
+                        <input type="password" id="registerPassword" class="form-input" 
+                               placeholder="Choisissez un mot de passe" required>
+                        <div class="error-message" id="registerPasswordError"></div>
+                        <div class="password-requirements">
+                            <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmer le mot de passe</label>
+                        <input type="password" id="confirmPassword" class="form-input" 
+                               placeholder="Confirmez votre mot de passe" required>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Créer mon compte</button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>Déjà un compte ? 
+                        <a href="#" onclick="HeroesAuth.showLogin()">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulaire de récupération de mot de passe -->
+            <div id="forgotPasswordForm" class="auth-form">
+                <h2>Récupération de mot de passe</h2>
+                <p class="forgot-description">Entrez votre adresse email pour recevoir un code de récupération</p>
+                
+                <form onsubmit="return HeroesAuth.handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label for="forgotEmail">Email</label>
+                        <input type="email" id="forgotEmail" class="form-input" 
+                               placeholder="Votre adresse email" required>
+                        <div class="error-message" id="forgotEmailError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Envoyer le code</button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>Vous vous souvenez de votre mot de passe ? 
+                        <a href="#" onclick="HeroesAuth.showLogin()">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulaire de vérification du code -->
+            <div id="verifyCodeForm" class="auth-form">
+                <h2>Vérification du code</h2>
+                <p class="verify-description">Un code de récupération a été généré. Notez-le bien !</p>
+                
+                <div class="recovery-code-display" id="recoveryCodeDisplay">
+                    <!-- Le code sera affiché ici -->
+                </div>
+
+                <form onsubmit="return HeroesAuth.handleVerifyCode(event)">
+                    <div class="form-group">
+                        <label for="verificationCode">Code de récupération</label>
+                        <input type="text" id="verificationCode" class="form-input" 
+                               placeholder="Entrez le code à 6 chiffres" required maxlength="6">
+                        <div class="error-message" id="verificationCodeError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Vérifier le code</button>
+                </form>
+
+                <div class="auth-switch">
+                    <p>
+                        <a href="#" onclick="HeroesAuth.showLogin()">Retour à la connexion</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulaire de nouveau mot de passe -->
+            <div id="resetPasswordForm" class="auth-form">
+                <h2>Nouveau mot de passe</h2>
+                <p class="reset-description">Choisissez un nouveau mot de passe sécurisé</p>
+                
+                <form onsubmit="return HeroesAuth.handleResetPassword(event)">
+                    <div class="form-group">
+                        <label for="newPassword">Nouveau mot de passe</label>
+                        <input type="password" id="newPassword" class="form-input" 
+                               placeholder="Choisissez un nouveau mot de passe" required>
+                        <div class="error-message" id="newPasswordError"></div>
+                        <div class="password-requirements">
+                            <small>Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmNewPassword">Confirmer le nouveau mot de passe</label>
+                        <input type="password" id="confirmNewPassword" class="form-input" 
+                               placeholder="Confirmez votre nouveau mot de passe" required>
+                        <div class="error-message" id="confirmNewPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="btn auth-btn">Changer le mot de passe</button>
+                </form>
+            </div>
+
+            <!-- Messages d'erreur généraux -->
+            <div id="authMessages" class="auth-messages"></div>
+        </div>
+    </div>
+
+    <div class="container" id="mainApp" style="display: none;">
+        <!-- Carte utilisateur en haut à droite -->
+        <div class="user-card" id="userCard">
+            <div class="user-card-header" onclick="toggleUserMenu()">
+                <div class="user-avatar">
+                    <span id="userInitials">U</span>
+                </div>
+                <div class="user-basic-info">
+                    <div class="user-name" id="currentUsername">Utilisateur</div>
+                    <div class="user-status">En ligne</div>
+                </div>
+                <div class="dropdown-arrow">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                        <path d="M6 8L2 4h8z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="user-menu" id="userMenu">
+                <div class="user-details">
+                    <div class="user-detail-item">
+                        <span class="detail-icon">📧</span>
+                        <span class="detail-label">Email</span>
+                        <span class="detail-value" id="userEmail">email@example.com</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-icon">📅</span>
+                        <span class="detail-label">Membre depuis</span>
+                        <span class="detail-value" id="userJoinDate">01/01/2024</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-icon">🦸</span>
+                        <span class="detail-label">Héros créés</span>
+                        <span class="detail-value" id="userHeroCount">0</span>
+                    </div>
+                    <div class="user-detail-item">
+                        <span class="detail-icon">🏆</span>
+                        <span class="detail-label">Victoires totales</span>
+                        <span class="detail-value" id="userTotalWins">0</span>
+                    </div>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="user-action-btn" onclick="showUserProfile()">
+                        <span class="action-icon">👤</span>
+                        Profil
+                    </button>
+                    <button class="user-action-btn" onclick="showUserSettings()">
+                        <span class="action-icon">⚙️</span>
+                        Paramètres
+                    </button>
+                    <button class="user-action-btn logout-btn" onclick="HeroesAuth.logout()">
+                        <span class="action-icon">🚪</span>
+                        Déconnexion
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>HEROES ARENA</h1>
+            <p>Créez vos héros avec des pouvoirs uniques et regardez-les gravir les échelons</p>
+            <div id="appStatus" class="app-loading-status">
+                Chargement de l'application...
+            </div>
+        </div>
+
+        <div class="nav">
+            <button class="nav-tab active" data-section="create" onclick="HeroesArena.showSection('create')">Créer un Héros</button>
+            <button class="nav-tab" data-section="heroes" onclick="HeroesArena.showSection('heroes')">Mes Héros</button>
+            <button class="nav-tab" data-section="arena" onclick="HeroesArena.showSection('arena')">Arène</button>
+        </div>
+
+        <div class="content">
+            <!-- Section Création -->
+            <div class="section active" id="create">
+                <h2 class="create-hero-title">Créer un Nouveau Héros</h2>
+
+                <div class="form-grid">
+                    <div>
+                        <div class="form-group">
+                            <label for="heroName">Nom du Héros</label>
+                            <input type="text" id="heroName" class="form-input"
+                                placeholder="Entrez le nom de votre héros" maxlength="20">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="heroClass">Spécialisation</label>
+                            
+                            <!-- Interface moderne de sélection de classe -->
+                            <div class="class-selector-modern" id="classSelector">
+                                <div class="class-cards-grid">
+                                    <div class="class-card" data-class="Guerrier" onclick="openClassModal('Guerrier')">
+                                        <div class="class-icon">⚔️</div>
+                                        <div class="class-info">
+                                            <h4>Guerrier</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Mage" onclick="openClassModal('Mage')">
+                                        <div class="class-icon">🔮</div>
+                                        <div class="class-info">
+                                            <h4>Mage</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Archer" onclick="openClassModal('Archer')">
+                                        <div class="class-icon">🏹</div>
+                                        <div class="class-info">
+                                            <h4>Archer</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Paladin" onclick="openClassModal('Paladin')">
+                                        <div class="class-icon">✨</div>
+                                        <div class="class-info">
+                                            <h4>Paladin</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Assassin" onclick="openClassModal('Assassin')">
+                                        <div class="class-icon">🗡️</div>
+                                        <div class="class-info">
+                                            <h4>Assassin</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="class-card" data-class="Druide" onclick="openClassModal('Druide')">
+                                        <div class="class-icon">🌿</div>
+                                        <div class="class-info">
+                                            <h4>Druide</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Élément caché pour maintenir la compatibilité avec les scripts -->
+                            <input type="hidden" id="heroClass" value="Guerrier">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Catalogue d'Avatars</label>
+                            <div class="avatar-catalog">
+                                <!-- Interface moderne de sélection de spécialisation -->
+                                <div class="specialty-selector-modern">
+                                    <h4 class="specialty-title">🎭 Choisir une Spécialisation d'Avatar</h4>
+                                    <div class="specialty-cards-grid">
+                                        <div class="specialty-card active" data-category="guerriers" onclick="selectAvatarSpecialty('guerriers')">
+                                            <div class="specialty-icon">⚔️</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Guerriers</div>
+                                                <div class="specialty-desc">Maîtres de la Guerre</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="mages" onclick="selectAvatarSpecialty('mages')">
+                                            <div class="specialty-icon">🔮</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Mages</div>
+                                                <div class="specialty-desc">Seigneurs de la Magie</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="archers" onclick="selectAvatarSpecialty('archers')">
+                                            <div class="specialty-icon">🏹</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Archers</div>
+                                                <div class="specialty-desc">Tireurs d'Élite</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="paladins" onclick="selectAvatarSpecialty('paladins')">
+                                            <div class="specialty-icon">✨</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Paladins</div>
+                                                <div class="specialty-desc">Gardiens de Lumière</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="assassins" onclick="selectAvatarSpecialty('assassins')">
+                                            <div class="specialty-icon">🗡️</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Assassins</div>
+                                                <div class="specialty-desc">Maîtres de l'Ombre</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="druides" onclick="selectAvatarSpecialty('druides')">
+                                            <div class="specialty-icon">🌿</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Druides</div>
+                                                <div class="specialty-desc">Gardiens de la Nature</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="specialty-card" data-category="generiques" onclick="selectAvatarSpecialty('generiques')">
+                                            <div class="specialty-icon">⭐</div>
+                                            <div class="specialty-content">
+                                                <div class="specialty-name">Génériques</div>
+                                                <div class="specialty-desc">Héros Universels</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Élément caché pour maintenir la compatibilité avec les scripts -->
+                                <input type="hidden" id="avatarCategorySelect" value="guerriers">
+                                
+                                <div class="avatar-grid" id="avatarGrid">
+                                    <!-- Les avatars seront générés par JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="classInfo" class="class-info">
+                            <h4>Guerrier - Maître de la Rage</h4>
+                            <p>Bonus de +20% en Force. Spécialiste du combat rapproché avec une attaque spéciale "Charge
+                                Brutale" qui inflige des dégâts massifs.</p>
+                            <div class="power-preview">
+                                <h5>Pouvoir : Rage Berserker</h5>
+                                <p>Augmente les dégâts de 50% pendant 3 tours, mais réduit la défense de 30%. Se
+                                    déclenche automatiquement quand les PV tombent sous 40%.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="stats-container">
+                            <h3>Caractéristiques</h3>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <span class="stat-label">Force</span>
+                                    <span class="stat-value" id="forceValue">20</span>
+                                </div>
+                                <input type="range" id="force" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
+                                <div class="stat-bar">
+                                    <div class="stat-fill force" style="width: 50%"></div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <span class="stat-label">Agilité</span>
+                                    <span class="stat-value" id="agilityValue">20</span>
+                                </div>
+                                <input type="range" id="agility" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
+                                <div class="stat-bar">
+                                    <div class="stat-fill agility" style="width: 50%"></div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <span class="stat-label">Magie</span>
+                                    <span class="stat-value" id="magicValue">20</span>
+                                </div>
+                                <input type="range" id="magic" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
+                                <div class="stat-bar">
+                                    <div class="stat-fill magic" style="width: 50%"></div>
+                                </div>
+                            </div>
+
+                            <div class="stat-group">
+                                <div class="stat-header">
+                                    <span class="stat-label">Défense</span>
+                                    <span class="stat-value" id="defenseValue">20</span>
+                                </div>
+                                <input type="range" id="defense" class="stat-slider" min="10" max="40" value="20"
+                                    oninput="HeroesArena.updateStats()">
+                                <div class="stat-bar">
+                                    <div class="stat-fill defense" style="width: 50%"></div>
+                                </div>
+                            </div>
+
+                            <div class="total-points valid" id="totalPoints">
+                                Total: 80/100 points
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn" onclick="HeroesArena.createHeroFromForm()" id="createBtn">Créer le
+                                Héros</button>
+                            <button class="btn btn-secondary" onclick="HeroesArena.randomStats()">Stats
+                                Aléatoires</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Héros -->
+            <div id="heroes" class="section">
+                <div class="section-header">
+                    <h2>Mes Héros</h2>
+                    <p>Cliquez sur un héros pour voir ses détails complets</p>
+                </div>
+
+                <!-- Gestion des fichiers -->
+                <div class="file-management-section">
+                    <h3>💾 Gestion des Sauvegardes</h3>
+                    <div class="file-buttons">
+                        <button class="file-button save" onclick="HeroesArena.exportData()">
+                            📁 Exporter vers Fichier
+                        </button>
+                        <button class="file-button load" onclick="document.getElementById('importFile').click()">
+                            📂 Importer depuis Fichier
+                        </button>
+                        <input type="file" id="importFile" accept=".json" class="hidden-file-input" onchange="handleFileImport(this)">
+                        <button class="file-button load" onclick="HeroesArena.loadData()">
+                            💾 Recharger Données
+                        </button>
+                        <button class="file-button danger" onclick="HeroesArena.clearAllData()">
+                            🗑️ Supprimer Tous
+                        </button>
+                        <button class="file-button" onclick="HeroesArena.createDemoHeroes()">
+                            🎭 Héros de Démo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filtres -->
+                <div class="filter-section">
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all" onclick="HeroesArena.filterHeroes('all')">Tous</button>
+                        <button class="filter-btn" data-filter="Guerrier" onclick="HeroesArena.filterHeroes('Guerrier')">Guerriers</button>
+                        <button class="filter-btn" data-filter="Mage" onclick="HeroesArena.filterHeroes('Mage')">Mages</button>
+                        <button class="filter-btn" data-filter="Archer" onclick="HeroesArena.filterHeroes('Archer')">Archers</button>
+                        <button class="filter-btn" data-filter="Paladin" onclick="HeroesArena.filterHeroes('Paladin')">Paladins</button>
+                        <button class="filter-btn" data-filter="Assassin" onclick="HeroesArena.filterHeroes('Assassin')">Assassins</button>
+                        <button class="filter-btn" data-filter="Druide" onclick="HeroesArena.filterHeroes('Druide')">Druides</button>
+                    </div>
+                </div>
+
+                <!-- Liste des héros -->
+                <div id="heroesList" class="heroes-grid">
+                    <!-- Les héros seront affichés ici -->
+                </div>
+            </div>
+
+            <!-- Section Arène -->
+            <div class="section" id="arena">
+                <div class="arena-improved">
+                    <div class="arena-header-improved">
+                        <h3 class="arena-title">Arène Légendaire</h3>
+                        <p class="arena-subtitle">Préparez-vous au combat épique</p>
+                    </div>
+
+                    <div class="fighter-selection-improved">
+                        <div class="hero-selector-improved">
+                            <div class="hero-selector-label">🛡️ Champion 1</div>
+                            <div class="hero-selector-modern" id="fighter1Selector">
+                                <div class="selected-hero-display" id="fighter1Selected" onclick="toggleHeroSelector('fighter1')">
+                                    <div class="hero-preview-avatar">
+                                        <span class="preview-placeholder">?</span>
+                                    </div>
+                                    <div class="hero-preview-info">
+                                        <div class="hero-preview-name">Sélectionnez un héros</div>
+                                        <div class="hero-preview-class">Aucun héros sélectionné</div>
+                                    </div>
+                                    <div class="selector-arrow">▼</div>
+                                </div>
+                                <div class="hero-options-dropdown" id="fighter1Options" style="display: none;">
+                                    <div style="padding: 10px; text-align: center; color: #888;">
+                                        Chargement des héros...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fallback pour compatibility -->
+                            <select class="hero-selector-dropdown hidden" id="fighter1Select" onchange="HeroesArena.updateFighters()">
+                                <option value="">Choisissez votre champion</option>
+                            </select>
+                        </div>
+
+                        <div class="vs-divider-improved">
+                            <div class="vs-icon">VS</div>
+                            <div class="vs-swords"></div>
+                        </div>
+
+                        <div class="hero-selector-improved">
+                            <div class="hero-selector-label">⚔️ Champion 2</div>
+                            <div class="hero-selector-modern" id="fighter2Selector">
+                                <div class="selected-hero-display" id="fighter2Selected" onclick="toggleHeroSelector('fighter2')">
+                                    <div class="hero-preview-avatar">
+                                        <span class="preview-placeholder">?</span>
+                                    </div>
+                                    <div class="hero-preview-info">
+                                        <div class="hero-preview-name">Sélectionnez un héros</div>
+                                        <div class="hero-preview-class">Aucun héros sélectionné</div>
+                                    </div>
+                                    <div class="selector-arrow">▼</div>
+                                </div>
+                                <div class="hero-options-dropdown" id="fighter2Options" style="display: none;">
+                                    <div style="padding: 10px; text-align: center; color: #888;">
+                                        Chargement des héros...
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fallback pour compatibility -->
+                            <select class="hero-selector-dropdown hidden" id="fighter2Select" onchange="HeroesArena.updateFighters()">
+                                <option value="">Choisissez votre champion</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fighters-display-improved">
+                        <div class="fighter-card-improved" id="fighter1Display">
+                            <div class="fighter-avatar-improved">
+                                <span class="fighter-placeholder">?</span>
+                            </div>
+                            <div class="hero-info-improved">
+                                <div class="hero-name">En attente...</div>
+                                <div class="hero-class">Aucun héros sélectionné</div>
+                                <div class="hero-level">-</div>
+                            </div>
+                            <div class="health-bar-improved">
+                                <div class="health-fill" style="width: 100%"></div>
+                                <div class="health-text">100/100</div>
+                            </div>
+                        </div>
+
+                        <div class="vs-divider-improved">
+                            <div class="vs-icon">⚔️</div>
+                        </div>
+
+                        <div class="fighter-card-improved" id="fighter2Display">
+                            <div class="fighter-avatar-improved">
+                                <span class="fighter-placeholder">?</span>
+                            </div>
+                            <div class="hero-info-improved">
+                                <div class="hero-name">En attente...</div>
+                                <div class="hero-class">Aucun héros sélectionné</div>
+                                <div class="hero-level">-</div>
+                            </div>
+                            <div class="health-bar-improved">
+                                <div class="health-fill" style="width: 100%"></div>
+                                <div class="health-text">100/100</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arena-actions-improved">
+                        <button class="action-btn-improved" onclick="HeroesArena.startCombat()" id="fightBtn" disabled>
+                            🗡️ Commencer le Duel
+                        </button>
+                        <button class="action-btn-improved" onclick="HeroesArena.resetArena()">
+                            🔄 Nouvelle Bataille
+                        </button>
+                        <button class="action-btn-improved" onclick="HeroesArena.stopCombat()">
+                            🛡️ Arrêter Combat
+                        </button>
+                    </div>
+
+                    <div class="combat-log" id="combatLog">
+                        <div class="log-entry log-info">Bienvenue dans l'arène ! Sélectionnez deux héros pour commencer le combat...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de détails de classe -->
+    <div id="classModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="classModalTitle">Classe de Héros</h2>
+                <button class="modal-close" onclick="closeClassModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="class-details">
+                    <div class="class-icon-large" id="classModalIcon">⚔️</div>
+                    <div class="class-info-detailed">
+                        <h3 id="classModalName">Nom de la classe</h3>
+                        <p class="class-subtitle" id="classModalSubtitle">Titre de la classe</p>
+                        <p class="class-description" id="classModalDescription">Description détaillée de la classe...</p>
+                        <div class="class-bonuses">
+                            <h4>Bonus de classe :</h4>
+                            <div class="bonus-item" id="classModalBonus">+20% Force</div>
+                        </div>
+                        <div class="class-abilities">
+                            <h4>Capacités spéciales :</h4>
+                            <ul id="classModalAbilities">
+                                <!-- Les capacités seront insérées ici -->
+                            </ul>
+                        </div>
+                        <div class="class-power-preview">
+                            <h4>Pouvoir spécial :</h4>
+                            <div class="power-card" id="classModalPower">
+                                <h5 id="classModalPowerName">Nom du pouvoir</h5>
+                                <p id="classModalPowerDescription">Description du pouvoir spécial</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="selectClassFromModal()" id="selectClassBtn">Choisir cette classe</button>
+                <button class="btn btn-secondary" onclick="closeClassModal()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation entre pages -->
+    <script>
+        // Variable pour éviter les exécutions automatiques
+        let isManualNavigation = false;
+        
+        // ========== FONCTIONS POUR L'INTERFACE DE SÉLECTION MODERNE ==========
+        
+        /**
+         * Basculer l'affichage du sélecteur de héros moderne
+         */
+        window.toggleHeroSelector = function(fighterId) {
+            console.log('🔍 Toggle selector pour:', fighterId);
+            
+            const dropdown = document.getElementById(`${fighterId}Options`);
+            const display = document.getElementById(`${fighterId}Selected`);
+            
+            console.log('🔍 Éléments trouvés:', { 
+                dropdown: !!dropdown, 
+                display: !!display,
+                dropdownId: `${fighterId}Options`,
+                displayId: `${fighterId}Selected`
+            });
+            
+            if (!dropdown || !display) {
+                console.error('❌ Éléments non trouvés:', { dropdown: !!dropdown, display: !!display });
+                return;
+            }
+            
+            const allDropdowns = document.querySelectorAll('.hero-options-dropdown');
+            const allDisplays = document.querySelectorAll('.selected-hero-display');
+            
+            console.log('🔍 Tous les dropdowns:', allDropdowns.length);
+            console.log('🔍 Tous les displays:', allDisplays.length);
+            
+            // Fermer tous les autres dropdowns
+            allDropdowns.forEach(d => {
+                if (d.id !== `${fighterId}Options`) {
+                    d.style.display = 'none';
+                }
+            });
+            
+            // Retirer la classe active de tous les displays
+            allDisplays.forEach(d => {
+                if (d.id !== `${fighterId}Selected`) {
+                    d.classList.remove('active');
+                    const arrow = d.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                }
+            });
+            
+            // Basculer le dropdown actuel
+            const isVisible = dropdown.style.display === 'block';
+            console.log('🔍 Dropdown actuellement visible:', isVisible, 'Style:', dropdown.style.display);
+            
+            dropdown.style.display = isVisible ? 'none' : 'block';
+            display.classList.toggle('active', !isVisible);
+            
+            // Mettre à jour la flèche
+            const arrow = display.querySelector('.selector-arrow');
+            if (arrow) {
+                arrow.textContent = isVisible ? '▼' : '▲';
+            }
+            
+            // Mettre à jour les options disponibles quand on ouvre
+            if (!isVisible && window.HeroesArena && window.HeroesArena.ui) {
+                window.HeroesArena.ui.updateModernHeroSelectors();
+            }
+        }
+        
+        /**
+         * Sélectionner un héros de manière sécurisée (nouvelle version)
+         */
+        window.selectModernHeroSecure = function(fighterId, heroIndex, heroName) {
+            console.log('Sélection sécurisée:', fighterId, heroIndex, heroName);
+            
+            // Méthode simple : utiliser l'ancien système qui fonctionne
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect && oldSelect.options[heroIndex + 1]) { // +1 car la première option est "Sélectionnez"
+                oldSelect.value = heroIndex.toString();
+                oldSelect.dispatchEvent(new Event('change'));
+                
+                // Mettre à jour l'affichage moderne aussi
+                const display = document.getElementById(`${fighterId}Selected`);
+                if (display) {
+                    const avatar = display.querySelector('.hero-preview-avatar');
+                    const name = display.querySelector('.hero-preview-name');
+                    const heroClass = display.querySelector('.hero-preview-class');
+                    
+                    if (name) name.textContent = heroName;
+                    if (heroClass) heroClass.textContent = oldSelect.options[heroIndex + 1].textContent.split(' (')[1]?.replace(')', '') || 'Héros';
+                    
+                    // Essayer de trouver l'avatar via AppState si possible
+                    if (window.AppState && window.AppState.heroes && window.AppState.heroes[heroIndex]) {
+                        const hero = window.AppState.heroes[heroIndex];
+                        if (avatar && hero.avatar) {
+                            avatar.innerHTML = `<img src="assets/avatars/${hero.avatar}" alt="${hero.nom}" loading="lazy">`;
+                        }
+                    }
+                }
+                
+                // Fermer le dropdown
+                const dropdown = document.getElementById(`${fighterId}Options`);
+                if (dropdown) dropdown.style.display = 'none';
+                
+                const displayElement = document.getElementById(`${fighterId}Selected`);
+                if (displayElement) {
+                    displayElement.classList.remove('active');
+                    const arrow = displayElement.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                }
+                
+                console.log('Sélection réussie pour:', heroName);
+                return;
+            }
+            
+            console.error('Impossible de sélectionner le héros');
+        }
+        
+        /**
+         * Sélectionner un héros dans l'interface moderne
+         */
+        window.selectModernHero = function(fighterId, heroIndex) {
+            console.log('Sélection moderne hero:', fighterId, heroIndex);
+            
+            // Accéder aux héros directement via AppState
+            let heroes = [];
+            try {
+                if (window.AppState && window.AppState.heroes) {
+                    heroes = window.AppState.heroes;
+                    console.log('Héros trouvés via AppState:', heroes.length);
+                } else if (window.HeroesArena && window.HeroesArena.getState) {
+                    heroes = window.HeroesArena.getState().heroes || [];
+                    console.log('Héros trouvés via HeroesArena.getState:', heroes.length);
+                } else {
+                    console.error('Impossible d\'accéder aux héros - AppState:', !!window.AppState, 'HeroesArena:', !!window.HeroesArena);
+                    // Essayer une approche de fallback
+                    const heroesFromUI = document.getElementById('fighter1Select')?.options;
+                    if (heroesFromUI && heroesFromUI.length > 1) {
+                        console.log('Fallback: utilisation du select classique');
+                        // Simuler la sélection via l'ancien système
+                        const oldSelect = document.getElementById(`${fighterId}Select`);
+                        if (oldSelect) {
+                            oldSelect.value = heroIndex.toString();
+                            oldSelect.dispatchEvent(new Event('change'));
+                        }
+                        return;
+                    }
+                    return;
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'accès aux héros:', error);
+                return;
+            }
+            
+            const hero = heroes[heroIndex];
+            if (!hero) {
+                console.error('Héros non trouvé à l\'index:', heroIndex);
+                return;
+            }
+            
+            console.log('Héros sélectionné:', hero.nom);
+            
+            // Mettre à jour l'ancien sélecteur pour compatibilité
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect) {
+                oldSelect.value = heroIndex.toString();
+                // Déclencher l'événement change pour assurer la compatibilité
+                oldSelect.dispatchEvent(new Event('change'));
+            }
+            
+            // Mettre à jour l'affichage moderne
+            updateModernHeroDisplay(fighterId, hero);
+            
+            // Fermer le dropdown
+            const dropdown = document.getElementById(`${fighterId}Options`);
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (dropdown) dropdown.style.display = 'none';
+            if (display) {
+                display.classList.remove('active');
+                const arrow = display.querySelector('.selector-arrow');
+                if (arrow) arrow.textContent = '▼';
+            }
+            
+            // Déclencher la mise à jour des combattants
+            if (window.HeroesArena) {
+                if (window.HeroesArena.updateFighters) {
+                    window.HeroesArena.updateFighters();
+                } else if (window.HeroesArena.ui && window.HeroesArena.ui.updateFighters) {
+                    window.HeroesArena.ui.updateFighters();
+                    window.HeroesArena.ui.updateModernHeroSelectors(); // Actualiser les options disponibles
+                }
+            }
+        }
+        
+        /**
+         * Mettre à jour l'affichage d'un héros sélectionné
+         */
+        window.updateModernHeroDisplay = function(fighterId, hero) {
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (!display) return;
+            
+            const avatar = display.querySelector('.hero-preview-avatar');
+            const name = display.querySelector('.hero-preview-name');
+            const heroClass = display.querySelector('.hero-preview-class');
+            
+            if (avatar) {
+                avatar.innerHTML = `<img src="assets/avatars/${hero.avatar}" alt="${hero.nom}" loading="lazy">`;
+            }
+            
+            if (name) {
+                name.textContent = hero.nom;
+            }
+            
+            if (heroClass) {
+                heroClass.textContent = `${hero.classe} - Niv. ${hero.niveau}`;
+            }
+        }
+        
+        /**
+         * Fermer tous les dropdowns quand on clique ailleurs
+         */
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.hero-selector-modern')) {
+                const allDropdowns = document.querySelectorAll('.hero-options-dropdown');
+                const allDisplays = document.querySelectorAll('.selected-hero-display');
+                
+                allDropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+                
+                allDisplays.forEach(display => {
+                    display.classList.remove('active');
+                    const arrow = display.querySelector('.selector-arrow');
+                    if (arrow) arrow.textContent = '▼';
+                });
+            }
+        });
+        
+        /**
+         * Réinitialiser la sélection d'un combattant
+         */
+        window.clearModernHeroSelection = function(fighterId) {
+            const display = document.getElementById(`${fighterId}Selected`);
+            if (!display) return;
+            
+            const avatar = display.querySelector('.hero-preview-avatar');
+            const name = display.querySelector('.hero-preview-name');
+            const heroClass = display.querySelector('.hero-preview-class');
+            
+            if (avatar) {
+                avatar.innerHTML = '<span class="preview-placeholder">?</span>';
+            }
+            
+            if (name) {
+                name.textContent = 'Sélectionnez un héros';
+            }
+            
+            if (heroClass) {
+                heroClass.textContent = 'Aucun héros sélectionné';
+            }
+            
+            // Mettre à jour l'ancien sélecteur
+            const oldSelect = document.getElementById(`${fighterId}Select`);
+            if (oldSelect) {
+                oldSelect.value = '';
+            }
+        }
+        
+        // ========== FONCTIONS POUR LE MODAL DE CLASSE ==========
+        
+        // Variable globale pour stocker la classe sélectionnée
+        let currentClassSelection = null;
+        
+        // Données des classes
+        const classData = {
+            Guerrier: {
+                name: 'Guerrier',
+                icon: '⚔️',
+                subtitle: 'Maître de la Rage',
+                description: 'Le Guerrier est un combattant féroce qui excelle dans le combat rapproché. Sa force brute et sa résistance exceptionnelle en font un adversaire redoutable sur le champ de bataille. Spécialisé dans l\'art de la guerre, il mène ses alliés vers la victoire.',
+                bonus: '+20% Force',
+                abilities: [
+                    'Maîtrise des armes lourdes et boucliers',
+                    'Résistance accrue aux dégâts physiques',
+                    'Techniques de combat avancées',
+                    'Intimidation et leadership au combat',
+                    'Régénération rapide des points de vie'
+                ],
+                power: {
+                    name: 'Rage Berserker',
+                    description: 'Augmente les dégâts de 50% pendant 3 tours, mais réduit la défense de 30%. Se déclenche automatiquement quand les PV tombent sous 40%.'
+                }
+            },
+            Mage: {
+                name: 'Mage',
+                icon: '🔮',
+                subtitle: 'Seigneur des Boucliers',
+                description: 'Le Mage est un érudit des arts mystiques, capable de manipuler les énergies magiques pour créer des effets dévastateurs ou protecteurs. Son vaste savoir lui permet de maîtriser les forces élémentaires et de tisser des sorts complexes.',
+                bonus: '+20% Magie',
+                abilities: [
+                    'Sorts offensifs élémentaires puissants',
+                    'Boucliers magiques et sorts de protection',
+                    'Manipulation des énergies mystiques',
+                    'Télépathie et divination',
+                    'Invocation de familiers magiques'
+                ],
+                power: {
+                    name: 'Bouclier Mystique',
+                    description: 'Crée un bouclier absorbant 75% des dégâts pendant 4 tours. Le bouclier renvoie 25% des dégâts absorbés à l\'attaquant.'
+                }
+            },
+            Archer: {
+                name: 'Archer',
+                icon: '🏹',
+                subtitle: 'Tireur Mortel',
+                description: 'L\'Archer est un maître du tir à distance, capable d\'éliminer ses ennemis avec une précision légendaire avant qu\'ils ne puissent s\'approcher. Son agilité exceptionnelle et sa connaissance du terrain en font un adversaire insaisissable.',
+                bonus: '+20% Agilité',
+                abilities: [
+                    'Précision de tir exceptionnelle',
+                    'Vitesse de déplacement accrue',
+                    'Flèches spéciales et pièges',
+                    'Camouflage et furtivité',
+                    'Tir multiple et ricochet'
+                ],
+                power: {
+                    name: 'Pluie de Flèches',
+                    description: 'Tire une volée de flèches qui frappent tous les ennemis, infligeant 150% des dégâts normaux avec 30% de chance de coup critique.'
+                }
+            },
+            Paladin: {
+                name: 'Paladin',
+                icon: '✨',
+                subtitle: 'Gardien Lumineux',
+                description: 'Le Paladin est un guerrier saint qui unit la force martiale à la sagesse divine. Protecteur des innocents et ennemi des ténèbres, il tire sa puissance de sa foi inébranlable et de sa dévotion à la justice.',
+                bonus: '+20% Défense',
+                abilities: [
+                    'Sorts de guérison et de purification',
+                    'Aura protectrice pour les alliés',
+                    'Résistance aux effets néfastes',
+                    'Bannissement des créatures maléfiques',
+                    'Bénédictions divines au combat'
+                ],
+                power: {
+                    name: 'Lumière Divine',
+                    description: 'Soigne instantanément 40% des PV et purifie tous les effets négatifs. Inflige également des dégâts sacrés aux ennemis proches.'
+                }
+            },
+            Assassin: {
+                name: 'Assassin',
+                icon: '🗡️',
+                subtitle: 'Maître de l\'Ombre',
+                description: 'L\'Assassin est un tueur silencieux qui frappe depuis les ombres avec une efficacité mortelle. Sa vitesse fulgurante et sa maîtrise des poisons en font un adversaire que l\'on ne voit jamais venir.',
+                bonus: '+20% Agilité',
+                abilities: [
+                    'Attaques furtives dévastatrices',
+                    'Maîtrise des poisons et toxines',
+                    'Vitesse d\'attaque exceptionnelle',
+                    'Invisibilité temporaire',
+                    'Coups critiques mortels'
+                ],
+                power: {
+                    name: 'Frappe Assassine',
+                    description: 'Attaque surprise qui inflige 300% des dégâts normaux et applique un poison mortel pendant 3 tours. Ignore les armures.'
+                }
+            },
+            Druide: {
+                name: 'Druide',
+                icon: '🌿',
+                subtitle: 'Gardien de la Nature',
+                description: 'Le Druide vit en harmonie parfaite avec les forces naturelles, capable d\'invoquer le pouvoir des éléments et de communier avec toutes les créatures vivantes. Protecteur de l\'équilibre naturel.',
+                bonus: '+10% Magie/Défense',
+                abilities: [
+                    'Métamorphose en créatures animales',
+                    'Contrôle des éléments naturels',
+                    'Communication avec la faune',
+                    'Guérison par les plantes médicinales',
+                    'Invocation d\'alliés de la nature'
+                ],
+                power: {
+                    name: 'Furie de la Nature',
+                    description: 'Invoque des lianes et des racines qui immobilisent l\'ennemi pendant 2 tours tout en régénérant 15% des PV par tour.'
+                }
+            }
+        };
+        
+        /**
+         * Ouvrir le modal de détails de classe
+         */
+        window.openClassModal = function(className) {
+            currentClassSelection = className;
+            const data = classData[className];
+            
+            if (!data) {
+                console.error('Données de classe non trouvées pour:', className);
+                return;
+            }
+            
+            // Mettre à jour le contenu du modal
+            document.getElementById('classModalTitle').textContent = `Classe : ${data.name}`;
+            document.getElementById('classModalIcon').textContent = data.icon;
+            document.getElementById('classModalName').textContent = data.name;
+            document.getElementById('classModalSubtitle').textContent = data.subtitle;
+            document.getElementById('classModalDescription').textContent = data.description;
+            document.getElementById('classModalBonus').textContent = data.bonus;
+            
+            // Mettre à jour les capacités
+            const abilitiesList = document.getElementById('classModalAbilities');
+            abilitiesList.innerHTML = '';
+            data.abilities.forEach(ability => {
+                const li = document.createElement('li');
+                li.textContent = ability;
+                abilitiesList.appendChild(li);
+            });
+            
+            // Mettre à jour le pouvoir spécial
+            document.getElementById('classModalPowerName').textContent = data.power.name;
+            document.getElementById('classModalPowerDescription').textContent = data.power.description;
+            
+            // Mettre à jour le bouton de sélection
+            document.getElementById('selectClassBtn').textContent = `Choisir ${data.name}`;
+            
+            // Afficher le modal
+            document.getElementById('classModal').style.display = 'flex';
+            
+            // Ajouter la classe pour l\'animation si nécessaire
+            setTimeout(() => {
+                document.getElementById('classModal').style.opacity = '1';
+            }, 10);
+        };
+        
+        /**
+         * Fermer le modal de classe
+         */
+        window.closeClassModal = function() {
+            const modal = document.getElementById('classModal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            currentClassSelection = null;
+        };
+        
+        /**
+         * Sélectionner la classe depuis le modal
+         */
+        window.selectClassFromModal = function() {
+            if (currentClassSelection) {
+                // Appeler la fonction originale de sélection
+                selectHeroClass(currentClassSelection);
+                // Fermer le modal
+                closeClassModal();
+            }
+        };
+        
+        // Fermer le modal de classe en cliquant sur l\'overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('classModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeClassModal();
+                    }
+                });
+            }
+        });
+        
+        // Fermer le modal avec la touche Échap (gérer les deux modals)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeClassModal();
+            }
+        });
+        
+        function enterApplication() {
+            console.log('Navigation vers la page de connexion');
+            
+            // Utiliser le système d'authentification si disponible
+            if (window.HeroesAuth && window.HeroesAuth.showAuthScreen) {
+                window.HeroesAuth.showAuthScreen();
+            } else {
+                // Fallback manuel
+                const homeScreen = document.getElementById('homeScreen');
+                const authScreen = document.getElementById('authScreen');
+                
+                if (homeScreen && authScreen) {
+                    homeScreen.classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        homeScreen.style.display = 'none';
+                        authScreen.style.display = 'flex';
+                    }, 500);
+                }
+            }
+        }
+        
+        // S'assurer que la page d'accueil reste affichée au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeScreen = document.getElementById('homeScreen');
+            const authScreen = document.getElementById('authScreen');
+            
+            if (homeScreen && authScreen) {
+                homeScreen.style.display = 'flex';
+                authScreen.style.display = 'none';
+                isManualNavigation = false;
+            }
+        });
+    </script>
+
+    <!-- Chargeur d'application -->
+    <script type="module" src="./js/app-loader.js"></script>
+    
+    <!-- Modal d'information -->
+    <script type="module" src="./js/modules/info-modal.js"></script>
+</body>
+</html>
